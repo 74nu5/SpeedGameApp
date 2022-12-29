@@ -1,0 +1,15 @@
+﻿.toggle-button {
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+}
+
+.toggle-button.on {
+    background-image: url('path/to/on.png');
+}
+
+.toggle-button.off {
+    background-image: url('path/to/off.png');
+}

@@ -1,0 +1,83 @@
+﻿@page "/admin"
+@inherits GamePageBase
+<PageTitle>Speed Game App - Admin</PageTitle>
+
+<h3>Admin</h3>
+<h4>Parties en cours</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Party name</th>
+        <th>Urls</th>
+        <th>Teams</th>
+        <th>   
+            <button class="btn btn-danger" @onclick="this.DeleteAllParties">Supprimer tout</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (id, (_, name, teams)) in this.GameService.Parties)
+    {
+        <tr>
+            <td>@id.ToString("D")</td>
+            <td>@name</td>
+            <td>
+                    <p><a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/admin")">Admin</a></p>
+            </td>
+            <td>
+                <ol>
+                    @foreach (var (_ , team) in teams.OrderByDescending(pair => pair.Value.Score))
+                    {
+                            <li>@team.Name : @team.Score (@team.Players.Count joueurs) (<a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/team/{team.Id}/play")">Lien</a>)</li>
+                    }
+                </ol>
+            </td>
+            <td>
+                <button class="btn btn-danger" @onclick="() => this.DeleteParty(id)">Supprimer</button>
+                <button class="btn btn-success" @onclick="() => this.SavePartyAsync(id)">Sauvegarder</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h4>Parties sauvegardées</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Party name</th>
+        <th>Urls</th>
+        <th>Teams</th>
+        <th>   
+            <button class="btn btn-danger" @onclick="this.DeleteAllParties">Supprimer tout</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (id, (_, name, teams)) in this.dbParties)
+    {
+        <tr>
+            <td>@id.ToString("D")</td>
+            <td>@name</td>
+            <td>
+                <p><a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/admin")">Admin</a></p>
+            </td>
+            <td>
+                <ol>
+                    @foreach (var (_ , team) in teams.OrderByDescending(pair => pair.Value.Score))
+                    {
+                        <li>@team.Name : @team.Score (@team.Players.Count joueurs) (<a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/team/{team.Id}/play")">Lien</a>)</li>
+                    }
+                </ol>
+            </td>
+            <td>
+                <button class="btn btn-danger" @onclick="() => this.DeleteDbPartyAsync(id)">Supprimer de la base</button>
+                <button class="btn btn-success" @onclick="() => this.LoadPartyAsync(id)">Charger la partie</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

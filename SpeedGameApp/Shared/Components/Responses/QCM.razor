@@ -1,0 +1,55 @@
+﻿@using SpeedGameApp.Business.Services.Models
+@if (this.Question == null)
+{
+    return;
+}
+
+<div class="card text-black">
+    <div class="card-header">
+        @(this.Question.Question)
+    </div>
+    <div class="card-body">
+        <EditForm Model="this.response">
+            <InputRadioGroup TValue="string" @bind-Value="this.response">
+                <div class="form-check">
+                    <InputRadio class="form-check-input" id="option1" Value="@(this.Question.Option1)"></InputRadio>
+                    <label class="form-check-label" for="option1">@(this.Question.Option1)</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio class="form-check-input" id="option2" Value="@(this.Question.Option2)">@(this.Question.Option2)</InputRadio>
+                        <label class="form-check-label" for="option2">@(this.Question.Option2)</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio class="form-check-input" id="option3" Value="@(this.Question.Option3)">@(this.Question.Option3)</InputRadio>
+                        <label class="form-check-label" for="option3">@(this.Question.Option3)</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio class="form-check-input" id="option4" Value="@(this.Question.Option4)">@(this.Question.Option4)</InputRadio>
+                        <label class="form-check-label" for="option4">@(this.Question.Option4)</label>
+                </div>
+            </InputRadioGroup>
+            <button class="btn btn-success" @onclick="this.Callback">Valider</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private string response = string.Empty;
+
+    [Parameter]
+    public QcmQuestionDto? Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ResponseCallback { get; set; }
+
+    [Parameter]
+    public bool AlreadyResponse { get; set; }
+
+    private async Task Callback()
+    {
+        await this.ResponseCallback.InvokeAsync(this.response).ConfigureAwait(true);
+        this.response = string.Empty;
+    }
+
+}

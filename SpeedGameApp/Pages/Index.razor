@@ -1,0 +1,10 @@
+﻿@page "/"
+
+<PageTitle>Speed Game App - Accueil</PageTitle>
+
+<h1>Création d'une partie</h1>
+<EditForm Model="this.partyName">
+    <InputText class="form-control" placeholder="Nom de la partie" type="text" id="party-name" @bind-Value="this.partyName"/>
+
+    <button class="btn btn-primary" type="submit" @onclick="@(this.CreatePartyAsync)">Créer une partie</button>
+</EditForm>

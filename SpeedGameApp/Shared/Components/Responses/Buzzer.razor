@@ -1,0 +1,24 @@
+﻿<div class="card text-black">
+    <div class="card-header">
+        Buzzer
+    </div>
+    <div class="card-body">
+        <button class="btn btn-outline-primary w-100" @onclick="this.Callback" disabled="@this.AlreadyResponse">Buzz !!</button>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback Buzz { get; set; }
+
+    [Parameter]
+    public bool AlreadyResponse { get; set; }
+
+    private async Task Callback()
+    {
+        await this.Buzz.InvokeAsync().ConfigureAwait(true);
+    }
+
+}

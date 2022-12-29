@@ -1,0 +1,26 @@
+﻿@page "/admin/questions"
+
+<h3>Gestion des questions</h3>
+
+<InputFile OnChange="this.InputFileHandlerAsync" placeholder="Import QCM"/>
+
+<h4>Liste des questions</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Thème</th>
+        <th>Difficulté</th>
+        <th>Question</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var question in this.questions)
+    {
+        <tr>
+            <td>@question.Theme.Name</td>
+            <td>@question.Difficulty.ToString()</td>
+            <td>@question.Question</td>
+        </tr>
+    }
+    </tbody>
+</table>

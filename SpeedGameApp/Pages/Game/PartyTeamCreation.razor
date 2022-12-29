@@ -1,0 +1,13 @@
+﻿@page "/party/{PartyId:guid}/team/new"
+@inherits PartyPageBase
+
+<PageTitle>Speed Game App - Création d'un équipe</PageTitle>
+
+<h3>Création d'une équipe pour la partie @this.CurrentParty.Name</h3>
+
+<EditForm Model="this.teamName">
+
+    <InputText class="form-control" placeholder="Nom de l'équipe" type="text" id="party-name" @bind-Value="this.teamName" />
+
+    <button class="btn btn-primary" type="submit" @onclick="@(this.CreateTeamPartyAsync)">Créer une équipe</button>
+</EditForm>

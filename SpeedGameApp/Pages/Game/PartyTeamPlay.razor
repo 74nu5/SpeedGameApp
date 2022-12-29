@@ -1,0 +1,46 @@
+﻿@page "/party/{PartyId:guid}/team/{TeamId:guid}/play"
+@using SpeedGameApp.DataEnum
+@using SpeedGameApp.Shared.Components.Responses
+@inherits PartyPageBase
+<PageTitle>Speed Game App - Equipe @(this.CurrentTeam.Name) - Partie en cours</PageTitle>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    <div class="p-3 @(this.CurrentTeam.Buzz ? "text-white bg-success" : "bg-light")">
+        <h3>Equipe @(this.CurrentTeam.Name)</h3>
+
+        <h4>Score de l'équipe : @(this.CurrentTeam.Score)</h4>
+
+        <hr/>
+
+        @switch (this.CurrentParty.CurrentResponseType)
+        {
+            case ResponseType.None:
+                break;
+            case ResponseType.Buzzer:
+                <Buzzer Buzz="this.BuzzTeam" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                break;
+            case ResponseType.Proposition:
+                <Proposition ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                break;
+            case ResponseType.Qcm:
+                <QCM Question="this.CurrentParty.CurrentQcm" AlreadyResponse="this.CurrentParty.AlreadyResponse" ResponseCallback="this.CallbackQcm"/>
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header">
+                Autres équipes
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var team in this.CurrentParty.TeamsSortedByScore)
+                {
+                    <li class="list-group-item @(team.Id == this.TeamId ? "list-group-item-success" : string.Empty)">@team.Name : @team.Score</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

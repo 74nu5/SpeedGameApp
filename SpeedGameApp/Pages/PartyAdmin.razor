@@ -1,0 +1,68 @@
+﻿@page "/party/{PartyId:guid}/admin"
+
+@using SpeedGameApp.DataEnum
+@inherits PartyPageBase
+<PageTitle>Speed Game App - Party admin</PageTitle>
+
+<h3>Party @(this.CurrentParty.Name) (@(this.PartyId.ToString("D")))</h3>
+<p>
+    <button class="btn btn-danger" @onclick="@(() => this.GameService.SavePartyAsync(this.PartyId, CancellationToken.None))">Save party</button>
+    <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/team/new"))" target="_blank">Lien à partager aux joueurs</a>
+</p>
+
+<div>
+    <h4>Type de réponse</h4>
+    <div>
+        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.None)">Aucune</button>
+        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Buzzer)">Buzzer</button>
+        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Proposition)">Proposition rapidité</button>
+        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)">QCM</button>
+        <button class="btn btn-secondary" @onclick="@(this.ResetQuestion)">Reset</button>
+    </div>
+</div>
+<hr/>
+
+@if (this.CurrentParty.CurrentResponseType == ResponseType.Qcm)
+{
+    <button class="btn btn-success" @onclick="this.RandomizeQcm">Choisir une question aléatoire</button>
+}
+
+<div>
+    <h4>Liste des équipes de la partie</h4>
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 mb-3">
+        @foreach (var (_, team) in this.CurrentParty.Teams)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <a class="fs-4" target="_blank" href="@($"/party/{this.PartyId}/team/{team.Id}/play")">@team.Name</a>
+                        <button class="btn btn-danger" @onclick="() => this.DeleteTeamAsync(this.PartyId, team.Id)">Supprimer</button>
+                    </div>
+                    <div class="card-body @(team.Answered ? "bg-team-success" : string.Empty)">
+                        <p class="fs-2 fw-bolder">
+                            <span class="">Score : </span><span class="@(team.Score < 0 ? "text-danger" : "text-success")">@team.Score</span>
+                        </p>
+                        <p class="d-flex flex-row gap-3">
+                            <div class="d-flex flex-column gap-3">
+                                <button class="btn btn-danger" @onclick="async () => await this.AddPointsAsync(team, -100)">-100</button>
+                                <button class="btn btn-danger" @onclick="async () => await this.AddPointsAsync(team, -10)">-10</button>
+                                <button class="btn btn-danger" @onclick="async () => await this.AddPointsAsync(team, -1)">-1</button>
+
+                            </div>
+                            <div class="d-flex flex-column gap-3">
+                                <button class="btn btn-success" @onclick="async () => await this.AddPointsAsync(team, 1)">+1</button>
+                                <button class="btn btn-success" @onclick="async () => await this.AddPointsAsync(team, 10)">+10</button>
+                                <button class="btn btn-success" @onclick="async () => await this.AddPointsAsync(team, 100)">+100</button>
+                            </div>
+                        </p>
+
+                        @if (!string.IsNullOrWhiteSpace(team.Response))
+                        {
+                            <p>Réponse : @team.Response</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
