@@ -166,8 +166,11 @@ internal sealed class PartyContext
 
         if (!team.AlreadyQcmResponse)
         {
+            var party = this.Parties[partyId];
+
             team.Response = response;
-            team.AlreadyQcmResponse = true;
+            //team.AlreadyQcmResponse = true;
+            team.QcmValidResponse = team.Response == party.CurrentQcm?.Response;
         }
 
         this.parties[partyId].OnPartyChanged();

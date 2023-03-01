@@ -24,7 +24,7 @@
                 <Proposition @ref="@this.proposition" ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
                 break;
             case ResponseType.Qcm:
-                <QCM Question="this.CurrentParty.CurrentQcm" AlreadyResponse="this.CurrentParty.AlreadyResponse" ResponseCallback="this.CallbackQcm"/>
+                <QCM Question="this.CurrentParty.CurrentQcm" ResponseCallback="this.CallbackQcm"/>
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

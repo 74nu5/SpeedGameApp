@@ -10,6 +10,8 @@ public sealed partial class PartyTeamPlay : PartyPageBase
 {
     private Proposition? proposition;
 
+    private QCM? qcm;
+
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
@@ -37,5 +39,8 @@ public sealed partial class PartyTeamPlay : PartyPageBase
     {
         if (this.proposition is not null)
             await this.proposition.ResetAsync().ConfigureAwait(true);
+
+        if (this.qcm is not null)
+            await this.qcm.ResetAsync().ConfigureAwait(true);
     }
 }

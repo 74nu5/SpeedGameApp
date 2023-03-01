@@ -43,13 +43,15 @@
     [Parameter]
     public EventCallback<string> ResponseCallback { get; set; }
 
-    [Parameter]
-    public bool AlreadyResponse { get; set; }
-
     private async Task Callback()
     {
         await this.ResponseCallback.InvokeAsync(this.response).ConfigureAwait(true);
+    }
+
+    public async Task ResetAsync()
+    {
         this.response = string.Empty;
+        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
     }
 
 }

@@ -4,6 +4,124 @@
         <name>SpeedGameApp.Business</name>
     </assembly>
     <members>
+        <member name="T:SpeedGameApp.Business.Data.PartyContext">
+            <summary>
+                The party context.
+            </summary>
+        </member>
+        <member name="E:SpeedGameApp.Business.Data.PartyContext.PartyChanged">
+            <summary>
+                Event raised when the party changed.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyContext.Parties">
+            <summary>
+                Gets the parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.DeleteParty(System.Guid)">
+            <summary>
+                Delete a party.
+            </summary>
+            <param name="id">The party id to delete.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.ExistsParty(System.Guid)">
+            <summary>
+                Determines whether the party exists.
+            </summary>
+            <param name="id">The party id.</param>
+            <returns><c>true</c> if the party exists; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.AddPoints(SpeedGameApp.Business.Data.TeamDto,System.Int32)">
+            <summary>
+                Add points to a team.
+            </summary>
+            <param name="teamDto">The team to add points.</param>
+            <param name="points">The points to add.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.DeleteAllParties">
+            <summary>
+                Delete all parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+            <summary>
+                Set the current response.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="responseType">The response type.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.BuzzTeam(System.Guid,System.Guid)">
+            <summary>
+                Buzz for a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.ResetTeam(System.Guid)">
+            <summary>
+                Method to reset the party.
+            </summary>
+            <param name="partyId">The party id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.PropositionTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Method to proposition from team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="response">The team response.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.LoadParty(SpeedGameApp.Business.Data.PartyDto)">
+            <summary>
+                Method to load a party.
+            </summary>
+            <param name="partyDto">Party to load.</param>
+            <returns>Returns the new party.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.RemoveTeam(System.Guid,System.Guid)">
+            <summary>
+                Method to remove a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.SetCurrentQcm(System.Guid,SpeedGameApp.Business.Services.Models.QcmQuestionDto)">
+            <summary>
+                Method to set the current qcm.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="question">The qcm.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.PropositionQcmTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Method to get the current qcm response.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="response">The qcm response.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.AddParty(System.Guid,System.String)">
+            <summary>
+                Method to add party.
+            </summary>
+            <param name="guidParty">The party id.</param>
+            <param name="partyName">Party name.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.AddTeamParty(System.Guid,SpeedGameApp.DataAccessLayer.Entities.Team)">
+            <summary>
+                Method to add team to a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="team">The new team.</param>
+            <returns>Returns the team id.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.OnPartyChanged(SpeedGameApp.Business.Data.PartyDto)">
+            <summary>
+                Method to raise the party changed event.
+            </summary>
+            <param name="e">The party changed.</param>
+        </member>
         <member name="T:SpeedGameApp.Business.Data.PartyDto">
             <summary>
                 Record which represents a party.
@@ -95,6 +213,21 @@
                 Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyReset" /> event.
             </summary>
         </member>
+        <member name="T:SpeedGameApp.Business.Data.Player">
+            <summary>
+                The player.
+            </summary>
+            <param name="Name">The player name.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.Player.#ctor(System.String)">
+            <summary>
+                The player.
+            </summary>
+            <param name="Name">The player name.</param>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.Player.Name">
+            <summary>The player name.</summary>
+        </member>
         <member name="T:SpeedGameApp.Business.Data.TeamDto">
             <summary>
                 Record which represents a team.
@@ -127,7 +260,7 @@
         </member>
         <member name="M:SpeedGameApp.Business.Data.TeamDto.#ctor(System.Guid,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Data.TeamDto"/> class.
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Data.TeamDto" /> class.
             </summary>
             <param name="id">The team id.</param>
             <param name="name">The team name.</param>
@@ -160,6 +293,11 @@
         <member name="P:SpeedGameApp.Business.Data.TeamDto.PartyId">
             <summary>
                 Gets the party id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.TeamDto.QcmValidResponse">
+            <summary>
+                Gets or sets a value indicating whether the qcm valid response.
             </summary>
         </member>
         <member name="M:SpeedGameApp.Business.Data.TeamDto.FromDbTeam(System.Guid,SpeedGameApp.DataAccessLayer.Entities.Team)">

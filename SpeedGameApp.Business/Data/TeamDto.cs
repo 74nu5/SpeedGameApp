@@ -16,7 +16,7 @@ public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
     public static readonly TeamDto Empty = new(Guid.Empty, string.Empty);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TeamDto"/> class.
+    ///     Initializes a new instance of the <see cref="TeamDto" /> class.
     /// </summary>
     /// <param name="id">The team id.</param>
     /// <param name="name">The team name.</param>
@@ -53,6 +53,11 @@ public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
     ///     Gets the party id.
     /// </summary>
     public Guid PartyId { get; init; }
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether the qcm valid response.
+    /// </summary>
+    public bool? QcmValidResponse { get; set; }
 
     /// <summary>
     ///     Method to convert a db team to a team dto.

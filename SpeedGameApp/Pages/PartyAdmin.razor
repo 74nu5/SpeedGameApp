@@ -25,7 +25,24 @@
 @if (this.CurrentParty.CurrentResponseType == ResponseType.Qcm)
 {
     <button class="btn btn-success" @onclick="this.RandomizeQcm">Choisir une question aléatoire</button>
-}
+
+    var currentPartyCurrentQcm = this.CurrentParty.CurrentQcm;
+    if (currentPartyCurrentQcm is not null) 
+    {
+        <div class="card text-black">
+            <div class="card-header">
+                @currentPartyCurrentQcm.Question
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option1 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option1</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option2 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option2</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option3 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option3</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option4 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option4</li>
+                </ol>
+            </div>
+        </div>
+    }}
 
 <div>
     <h4>Liste des équipes de la partie</h4>
@@ -58,6 +75,18 @@
 
                         @if (!string.IsNullOrWhiteSpace(team.Response))
                         {
+                            @switch (team.QcmValidResponse)
+                            {
+                                case true:
+                                    <p class="text-success">Bonne réponse</p>
+                                    break;
+                                case false:
+                                    <p class="text-danger">Mauvaise réponse</p>
+                                    break;
+                                case null:
+                                    break;    
+                            }
+
                             <p>Réponse : @team.Response</p>
                         }
                     </div>
