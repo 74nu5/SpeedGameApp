@@ -3,12 +3,14 @@
         Buzzer
     </div>
     <div class="card-body">
-        <button class="btn btn-outline-primary w-100" @onclick="this.Callback" disabled="@this.AlreadyResponse">Buzz !!</button>
+        <button @ref="@this.button" class="btn btn-outline-primary w-100" @onclick="this.Callback" disabled="@this.AlreadyResponse">Buzz !!</button>
     </div>
 </div>
 
 
 @code {
+
+    private ElementReference button;
 
     [Parameter]
     public EventCallback Buzz { get; set; }
@@ -17,8 +19,10 @@
     public bool AlreadyResponse { get; set; }
 
     private async Task Callback()
-    {
-        await this.Buzz.InvokeAsync().ConfigureAwait(true);
-    }
+        => await this.Buzz.InvokeAsync().ConfigureAwait(true);
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        => await this.button.FocusAsync().ConfigureAwait(true);
 
 }

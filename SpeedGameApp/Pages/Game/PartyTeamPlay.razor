@@ -38,7 +38,7 @@
             <ul class="list-group list-group-flush">
                 @foreach (var team in this.CurrentParty.TeamsSortedByScore)
                 {
-                    <li class="list-group-item @(team.Id == this.TeamId ? "list-group-item-success" : string.Empty)">@team.Name : @team.Score</li>
+                    <li class="d-flex list-group-item @(this.GetTeamCss(team)) justify-content-between"><span>@team.Name : @team.Score</span><span class="text-end">@(!string.IsNullOrEmpty(team.Response) ? $"Réponse : {team.Response} " : string.Empty)</span></li>
                 }
             </ul>
         </div>

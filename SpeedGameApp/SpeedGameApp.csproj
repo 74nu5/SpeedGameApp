@@ -4,36 +4,23 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+  		<LangVersion>preview</LangVersion>
+	  <LangVersion>preview</LangVersion>
+    </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Game\PartyTeamPlay.razor" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Game\PartyTeamPlay.razor" />
-    <_ContentIncludedByDefault Remove="Shared\Components\Responses\Buzzer.razor" />
-    <_ContentIncludedByDefault Remove="Shared\Components\TabPage.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Shared\Components\TabPage.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Shared\Components\Responses\Buzzer.razor" />
+	<ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SpeedGameApp.Business\SpeedGameApp.Business.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
