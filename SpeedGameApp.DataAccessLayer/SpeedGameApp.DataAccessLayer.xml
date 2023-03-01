@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpeedGameApp.DataAccessLayer</name>
+    </assembly>
+    <members>
+        <member name="M:SpeedGameApp.DataAccessLayer.AppContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Entities.Party">
+            <summary>
+                Class which represent a party.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Party.Id">
+            <summary>
+                Gets or sets the party id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Party.Name">
+            <summary>
+                Gets or sets the party name.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Party.Teams">
+            <summary>
+                Gets or sets the party teams.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion">
+            <summary>
+                Class which represent a qcm question.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Id">
+            <summary>
+                Gets or sets the id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Difficulty">
+            <summary>
+                Gets or sets the question difficulty.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Question">
+            <summary>
+                Gets or sets the question.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Option1">
+            <summary>
+                Gets or sets the question option 1.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Option2">
+            <summary>
+                Gets or sets the question option 2.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Option3">
+            <summary>
+                Gets or sets the question option 3.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Option4">
+            <summary>
+                Gets or sets the question option 4.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Response">
+            <summary>
+                Gets or sets the question response.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.ThemeId">
+            <summary>
+                Gets or sets the question theme id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmQuestion.Theme">
+            <summary>
+                Gets or sets the question theme.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Entities.QcmTheme">
+            <summary>
+                Class which represents a question theme.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmTheme.Id">
+            <summary>
+                Gets or sets the theme id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmTheme.Name">
+            <summary>
+                Gets or sets the thme name.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.QcmTheme.Questions">
+            <summary>
+                Gets or sets the theme questions.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Entities.Team">
+            <summary>
+                Class which represent a team.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Team.Id">
+            <summary>
+                Gets or sets the team id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Team.Score">
+            <summary>
+                Gets or sets the score.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Team.Name">
+            <summary>
+                Gets or sets the team name.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Team.PartyId">
+            <summary>
+                Gets or sets the party id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Team.Party">
+            <summary>
+                Gets or sets the party.
+            </summary>
+        </member>
+    </members>
+</doc>
