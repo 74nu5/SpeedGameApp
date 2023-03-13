@@ -31,6 +31,9 @@
         <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="P:SpeedGameApp.Pages.Index.GameService">
             <summary>
                 Gets or sets the game service.

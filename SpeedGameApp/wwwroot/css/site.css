@@ -67,3 +67,16 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.buzzer {
+    animation: buzzer 1s infinite;
+    height: 20rem;
+}
+
+.proposition {
+    margin-bottom: 2rem;
+}

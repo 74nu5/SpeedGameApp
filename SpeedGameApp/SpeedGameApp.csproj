@@ -24,4 +24,12 @@
         <ProjectReference Include="..\SpeedGameApp.Business\SpeedGameApp.Business.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Pages\Game\PartyThemes.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Game\PartyThemes.razor" />
+    </ItemGroup>
+
 </Project>

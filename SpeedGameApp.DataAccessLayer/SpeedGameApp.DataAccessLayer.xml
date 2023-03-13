@@ -4,8 +4,22 @@
         <name>SpeedGameApp.DataAccessLayer</name>
     </assembly>
     <members>
-        <member name="M:SpeedGameApp.DataAccessLayer.AppContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions)">
-            <inheritdoc />
+        <member name="T:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer">
+            <summary>
+                Class which represents the theme access layer.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer.#ctor(SpeedGameApp.DataAccessLayer.AppContext)">
+            <summary>
+               Initializes a new instance of the <see cref="T:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer"/> class.
+            </summary>
+            <param name="context">The application context.</param>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer.GetAllThemesAsync">
+            <summary>
+                Gets all themes.
+            </summary>
+            <returns>The list of themes.</returns>
         </member>
         <member name="T:SpeedGameApp.DataAccessLayer.Entities.Party">
             <summary>
@@ -131,6 +145,32 @@
             <summary>
                 Gets or sets the party.
             </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Entities.Theme">
+            <summary>
+                Class which represent a theme.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Theme.Id">
+            <summary>
+                Gets or sets the theme id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.Entities.Theme.Name">
+            <summary>
+                Gets or sets the thme name.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Extensions.DalExtensions">
+            <summary>
+                Class which represents the dal extensions.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Extensions.DalExtensions.AddDalServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                Adds the dal services.
+            </summary>
+            <param name="services">The services.</param>
         </member>
     </members>
 </doc>

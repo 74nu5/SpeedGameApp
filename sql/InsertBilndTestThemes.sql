@@ -1,0 +1,17 @@
+insert into main.Themes (Id, Name)values
+('d880bbcf-dbb0-40fa-8fcd-586c85e7a817', 'Les années 80'),
+('e37eb5d3-60c2-4aed-af77-bff727a9068d', 'Les musiques de films'),
+('461b5a19-ba64-46c7-b48a-94a51ec957d5', 'Les tubes de l''été'),
+('467ef6ed-d3d9-48f6-8e39-fbe72e72add2', 'Les chansons françaises'),
+('7e71b041-18cf-467d-908d-086ad94b29c7', 'Le rock'),
+('44207c45-d12d-4242-8cac-1756ec3832e1', 'Hellfest 2022'),
+('fd2d25fe-5ac6-415f-9059-e0e4b8ba188b', 'Le rap français des années 90-2000'),
+('a6ec49eb-1de6-4e8c-8e81-26f778ad0276', 'Les tubes du rap US'),
+('3979dd7d-df8d-4f2c-980b-3a4559503aef', 'Pop'),
+('29a0ab73-8804-4fd7-a0fd-70a25a3b1b81', 'La musique classique'),
+('d09e162f-bdc8-415b-88a7-d63024036bcc', 'Les comédies musicales'),
+('48a508a0-727d-4b39-9384-08470c493c2a', 'Les Disney'),
+('5030bbbb-e461-4440-8bee-b3631c777295', 'Les génériques de séries TV'),
+('a4935108-6b26-4b58-b14c-211d56e74caf', 'Le metal'),
+('83629f46-6f4c-4741-a895-e88c91a04bbd', 'Electro'),
+('1315ab8a-83c8-4e22-8d26-c01184ed954c', 'Les duos');

@@ -18,17 +18,21 @@ public sealed class GameService
 
     private readonly QuestionAccessLayer questionAccessLayer;
 
+    private readonly ThemeAccessLayer themeAccessLayer;
+
     /// <summary>
     ///     Initializes a new instance of the <see cref="GameService" /> class.
     /// </summary>
     /// <param name="serviceProvider">The DI service provider.</param>
     /// <param name="partyAccessLayer">The party access layer.</param>
     /// <param name="questionAccessLayer">The question access layer.</param>
-    public GameService(IServiceProvider serviceProvider, PartyAccessLayer partyAccessLayer, QuestionAccessLayer questionAccessLayer)
+    /// <param name="themeAccessLayer">The theme access layer.</param>
+    public GameService(IServiceProvider serviceProvider, PartyAccessLayer partyAccessLayer, QuestionAccessLayer questionAccessLayer, ThemeAccessLayer themeAccessLayer)
     {
         this.context = serviceProvider.GetRequiredService<PartyContext>();
         this.partyAccessLayer = partyAccessLayer;
         this.questionAccessLayer = questionAccessLayer;
+        this.themeAccessLayer = themeAccessLayer;
     }
 
     /// <summary>
@@ -130,7 +134,7 @@ public sealed class GameService
     }
 
     /// <summary>
-    /// Asynchronously retrieves all parties from the database.
+    ///     Asynchronously retrieves all parties from the database.
     /// </summary>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation. The result of the task is a dictionary mapping party IDs to party data.</returns>
@@ -193,4 +197,78 @@ public sealed class GameService
 
     public void SetCurrentResponse(Guid partyId, ResponseType responseType)
         => this.context.SetCurrentResponse(partyId, responseType);
+
+    public async Task<IEnumerable<ThemeDto>> GetThemesAsync(Guid partyId)
+    {
+        if (this.Parties[partyId].Themes.Any())
+            return this.context.Parties[partyId].Themes;
+
+        var allThemes = await this.themeAccessLayer.GetAllThemesAsync();
+
+        this.context.LoadThemes(partyId,
+                                allThemes.Select(t => new ThemeDto
+                                {
+                                    Id = t.Id,
+                                    Name = t.Name,
+                                }));
+
+        return this.context.Parties[partyId].Themes;
+    }
+
+    public void SelectTheme(Guid partyId, Guid? teamId, ThemeDto theme)
+        => this.context.SelectTheme(partyId, teamId, theme);
+
+    public void ChoiceTheme(Guid partyId, Guid? teamId, ThemeDto theme)
+        => this.context.ChoiceTheme(partyId, teamId, theme);
+
+    public void ResetThemesChoices(Guid partyId)
+        => this.context.ResetThemesChoices(partyId);
+
+    public void HideTheme(Guid partyId)
+    {
+        this.Parties[partyId].ShowThemes = false;
+        this.Parties[partyId].OnPartyChanged();
+    }
+
+    public void ShowTheme(Guid partyId)
+    {
+        this.Parties[partyId].ShowThemes = true;
+        this.Parties[partyId].OnPartyChanged();
+    }
+
+    public void GenerateThemes(Guid partyId)
+    {
+        var currentParty = this.Parties[partyId];
+        var random = new Random();
+        var themes = new List<ThemeDto>();
+
+        foreach (var (_, team) in currentParty.Teams)
+        {
+            var themesTeam = currentParty.Themes.Where(th => th.Team?.Id == team.Id).ToList();
+
+            foreach (var themeTeam in themesTeam)
+            {
+                for (var i = 0; i < 5; i++)
+                {
+                    themes.Add(new() { Id = Guid.NewGuid(), Name = themeTeam.Name, Team = team });
+                }
+            }
+        }
+
+        var otherThemes = currentParty.Themes.Where(th => !themes.DistinctBy(theme => theme.Name).Select(theme => theme.Name).Contains(th.Name));
+
+        var otherThemesLimited = new List<ThemeDto>();
+        foreach (var otherTheme in otherThemes)
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                otherThemesLimited.Add(new() { Id = Guid.NewGuid(), Name = otherTheme.Name, Team = null });
+            }
+        }
+
+        themes.AddRange(themes.Count < 50 ? otherThemesLimited.Take(50 - themes.Count) : otherThemesLimited);
+
+        var randomThemes = themes.OrderBy(x => random.Next());
+        currentParty.LoadRandomThemes(randomThemes);
+    }
 }

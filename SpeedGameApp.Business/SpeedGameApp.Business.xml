@@ -122,6 +122,13 @@
             </summary>
             <param name="e">The party changed.</param>
         </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.LoadThemes(System.Guid,System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="themesDtos">The themesDtos to load.</param>
+        </member>
         <member name="T:SpeedGameApp.Business.Data.PartyDto">
             <summary>
                 Record which represents a party.
@@ -179,6 +186,11 @@
                 Gets the current response type.
             </summary>
         </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.ShowThemes">
+            <summary>
+               Gets a value indicating whether the themes displayed.
+            </summary>
+        </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.AlreadyResponse">
             <summary>
                 Gets a value indicating whether the party already response.
@@ -187,6 +199,16 @@
         <member name="P:SpeedGameApp.Business.Data.PartyDto.CurrentQcm">
             <summary>
                 Gets the current qcm.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.Themes">
+            <summary>
+                Gets the parties.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.RandomThemes">
+            <summary>
+                Gets the parties.
             </summary>
         </member>
         <member name="M:SpeedGameApp.Business.Data.PartyDto.FromDbParty(SpeedGameApp.DataAccessLayer.Entities.Party)">
@@ -212,6 +234,18 @@
             <summary>
                 Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyReset" /> event.
             </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadRandomThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
         </member>
         <member name="T:SpeedGameApp.Business.Data.Player">
             <summary>
@@ -322,6 +356,31 @@
             </summary>
             <param name="points">The point to add.</param>
         </member>
+        <member name="T:SpeedGameApp.Business.Data.ThemeDto">
+            <summary>
+               Class which represents the theme dto.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.ThemeDto.Id">
+            <summary>
+               Gets or sets the theme id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.ThemeDto.Name">
+            <summary>
+               Gets or sets the theme name.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.ThemeDto.Team">
+            <summary>
+                Gets or sets the theme team.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.ThemeDto.AlreadyTaken">
+            <summary>
+               Gets or sets a value indicating whether the theme is already taken.
+            </summary>
+        </member>
         <member name="T:SpeedGameApp.Business.Extensions.BusinessExtensions">
             <summary>
                 Extension methods for business services.
@@ -338,13 +397,14 @@
                 Class which defines all game mathods.
             </summary>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.#ctor(System.IServiceProvider,SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer,SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer)">
+        <member name="M:SpeedGameApp.Business.Services.GameService.#ctor(System.IServiceProvider,SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer,SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer,SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer)">
             <summary>
                 Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Services.GameService" /> class.
             </summary>
             <param name="serviceProvider">The DI service provider.</param>
             <param name="partyAccessLayer">The party access layer.</param>
             <param name="questionAccessLayer">The question access layer.</param>
+            <param name="themeAccessLayer">The theme access layer.</param>
         </member>
         <member name="E:SpeedGameApp.Business.Services.GameService.PartyChanged">
             <summary>
@@ -391,7 +451,7 @@
         </member>
         <member name="M:SpeedGameApp.Business.Services.GameService.GetDbPartiesAsync(System.Threading.CancellationToken)">
             <summary>
-            Asynchronously retrieves all parties from the database.
+                Asynchronously retrieves all parties from the database.
             </summary>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>A task representing the asynchronous operation. The result of the task is a dictionary mapping party IDs to party data.</returns>

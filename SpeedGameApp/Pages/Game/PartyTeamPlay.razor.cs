@@ -12,12 +12,30 @@ public sealed partial class PartyTeamPlay : PartyPageBase
 
     private QCM? qcm;
 
+    private IEnumerable<ThemeDto> themes = new List<ThemeDto>();
+
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
         this.CurrentParty.PartyReset += this.CurrentPartyOnPartyResetAsync;
+        this.themes = this.CurrentParty.RandomThemes;
     }
+
+    private async Task SelectThemeAsync(ThemeDto theme)
+    {
+        this.GameService.SelectTheme(this.PartyId, this.TeamId, theme);
+        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
+    }
+
+    private string GetCardCss(ThemeDto themeDto)
+        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch {
+            (null, _, _) => "card bg-light",
+            (_, true, var teamId) when teamId == this.TeamId => "card bg-success",
+            (_, true, { } teamId) when this.CurrentParty.Teams.ContainsKey(teamId) => "card bg-danger",
+            (_, true, null) => "card bg-secondary",
+            _ => "card bg-light",
+        };
 
     private void BuzzTeam()
         => this.GameService.BuzzTeam(this.PartyId, this.CurrentTeam.Id);

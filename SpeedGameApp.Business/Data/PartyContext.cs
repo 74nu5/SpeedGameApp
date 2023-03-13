@@ -214,4 +214,43 @@ internal sealed class PartyContext
     /// <param name="e">The party changed.</param>
     public void OnPartyChanged(PartyDto e)
         => this.PartyChanged?.Invoke(this, e);
+
+    /// <summary>
+    ///     Method to load themesDtos.
+    /// </summary>
+    /// <param name="partyId">The party id.</param>
+    /// <param name="themesDtos">The themesDtos to load.</param>
+    public void LoadThemes(Guid partyId, IEnumerable<ThemeDto> themesDtos)
+        => this.parties[partyId].LoadThemes(themesDtos.ToList());
+
+    public void SelectTheme(Guid partyId, Guid? teamId, ThemeDto theme)
+    {
+        var themeDto = this.parties[partyId].RandomThemes.FirstOrDefault(t => t.Id == theme.Id);
+
+        if (themeDto is null)
+            return;
+
+        themeDto.AlreadyTaken = true;
+        this.parties[partyId].OnPartyChanged();
+    }
+
+    public void ChoiceTheme(Guid partyId, Guid? teamId, ThemeDto theme)
+    {
+        var themeDto = this.parties[partyId].Themes.FirstOrDefault(t => t.Id == theme.Id);
+
+        if (themeDto is null || teamId is null)
+            return;
+
+        themeDto.Team = this.parties[partyId].Teams[(Guid)teamId];
+        this.parties[partyId].OnPartyChanged();
+    }
+
+    public void ResetThemesChoices(Guid partyId)
+    {
+        foreach (var theme in this.parties[partyId].Themes) {
+            theme.Team = null;
+        }
+
+        this.parties[partyId].OnPartyChanged();
+    }
 }
