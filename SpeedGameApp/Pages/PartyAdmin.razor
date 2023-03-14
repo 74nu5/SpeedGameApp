@@ -11,12 +11,24 @@
 </p>
 
 <div>
+    @if (!this.CurrentParty.ShowThemes)
+    {
+        <button class="btn btn-success" @onclick="this.ShowTheme">Affiche les themes</button>    
+    }
+    else
+    {
+        <button class="btn btn-success" @onclick="this.HideTheme">Cache les themes</button>    
+    }
+    
+    
+</div>
+<div>
     <h4>Type de réponse</h4>
     <div>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.None)">Aucune</button>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Buzzer)">Buzzer</button>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Proposition)">Proposition rapidité</button>
-        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)">QCM</button>
+        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)" disabled>QCM</button>
         <button class="btn btn-secondary" @onclick="@(this.ResetQuestion)">Reset</button>
     </div>
 </div>
@@ -25,7 +37,24 @@
 @if (this.CurrentParty.CurrentResponseType == ResponseType.Qcm)
 {
     <button class="btn btn-success" @onclick="this.RandomizeQcm">Choisir une question aléatoire</button>
-}
+
+    var currentPartyCurrentQcm = this.CurrentParty.CurrentQcm;
+    if (currentPartyCurrentQcm is not null) 
+    {
+        <div class="card text-black">
+            <div class="card-header">
+                @currentPartyCurrentQcm.Question
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option1 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option1</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option2 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option2</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option3 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option3</li>
+                    <li class="@(currentPartyCurrentQcm.Response == currentPartyCurrentQcm.Option4 ? "fw-bold" : string.Empty)">@currentPartyCurrentQcm.Option4</li>
+                </ol>
+            </div>
+        </div>
+    }}
 
 <div>
     <h4>Liste des équipes de la partie</h4>
@@ -36,6 +65,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <a class="fs-4" target="_blank" href="@($"/party/{this.PartyId}/team/{team.Id}/play")">@team.Name</a>
+                        <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/themes/{team.Id}"))" target="_blank">Lien à partager aux joueurs pour le choix des thèmes</a>
                         <button class="btn btn-danger" @onclick="() => this.DeleteTeamAsync(this.PartyId, team.Id)">Supprimer</button>
                     </div>
                     <div class="card-body @(team.Answered ? "bg-team-success" : string.Empty)">
@@ -58,6 +88,18 @@
 
                         @if (!string.IsNullOrWhiteSpace(team.Response))
                         {
+                            @switch (team.QcmValidResponse)
+                            {
+                                case true:
+                                    <p class="text-success">Bonne réponse</p>
+                                    break;
+                                case false:
+                                    <p class="text-danger">Mauvaise réponse</p>
+                                    break;
+                                case null:
+                                    break;    
+                            }
+
                             <p>Réponse : @team.Response</p>
                         }
                     </div>
@@ -66,3 +108,30 @@
         }
     </div>
 </div>
+
+@if (this.CurrentParty.ShowThemes)
+{
+    <div class="container">
+        <h1>Thèmes de musique pour un blind test</h1>
+        <div class="row row-cols-1 row-cols-md-6 g-4">
+            @{
+                var index = 0;
+            }
+            @foreach (var theme in this.CurrentParty.RandomThemes)
+            {
+                index++;
+                <div class="cursor-pointer col">
+                    <div class="@(this.GetCardCss(theme))">
+                        <div class="card-body">
+                            <h5 class="card-title">@index</h5>
+                            @if (theme.AlreadyTaken)
+                            {
+                                <p>@theme.Name</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

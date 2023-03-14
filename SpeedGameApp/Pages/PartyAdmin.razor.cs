@@ -26,4 +26,22 @@ public sealed partial class PartyAdmin : PartyPageBase
 
     private void ResetQuestion()
         => this.GameService.ResetTeam(this.PartyId);
+
+    private void HideTheme()
+        => this.GameService.HideTheme(this.PartyId);
+
+    private void ShowTheme()
+    {
+        this.GameService.GenerateThemes(this.PartyId);
+        this.GameService.ShowTheme(this.PartyId);
+    }
+
+    private string GetCardCss(ThemeDto themeDto)
+        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch {
+            (null, _, _) => "card bg-light",
+            (_, true, var teamId) when teamId == this.TeamId => "card bg-success",
+            (_, true, { } teamId) when this.CurrentParty.Teams.ContainsKey(teamId) => "card bg-danger",
+            (_, true, null) => "card bg-secondary",
+            _ => "card bg-light",
+        };
 }

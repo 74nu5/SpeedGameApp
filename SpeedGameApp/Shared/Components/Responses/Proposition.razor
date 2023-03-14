@@ -3,10 +3,10 @@
         Proposition
     </div>
     <div class="card-body">
-        <EditForm Model="this.Response">
+        <EditForm Model="this.response" OnValidSubmit="this.Callback">
             <fieldset disabled="@this.AlreadyResponse">
-                <input class="form-control" type="text" placeholder="Réponse" @bind="this.Response"/>
-                <button class="btn btn-success w-100" @onclick="this.Callback">Valider</button>
+                <InputText class="form-control proposition" type="text" placeholder="Réponse" @ref="this.inputResponse" @bind-Value="this.response"/>
+                <button class="btn btn-success w-100" type="submit">Valider</button>
             </fieldset>
         </EditForm>
     </div>
@@ -14,7 +14,9 @@
 
 @code {
 
-    public string Response { get; set; } = string.Empty;
+    private InputText? inputResponse;
+
+    private string response = string.Empty;
 
     [Parameter]
     public EventCallback<string> ResponseCallback { get; set; }
@@ -23,9 +25,19 @@
     public bool AlreadyResponse { get; set; }
 
     private async Task Callback()
+        => await this.ResponseCallback.InvokeAsync(this.response).ConfigureAwait(true);
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await this.ResponseCallback.InvokeAsync(this.Response).ConfigureAwait(true);
-        this.Response = string.Empty;
+        var inputResponseElement = this.inputResponse?.Element;
+        if (inputResponseElement is not null)
+            await inputResponseElement.Value.FocusAsync().ConfigureAwait(true);
     }
 
+    public async Task ResetAsync()
+    {
+        this.response = string.Empty;
+        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
+    }
 }

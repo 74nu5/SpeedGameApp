@@ -1,0 +1,28 @@
+﻿@page "/party/{PartyId:guid}/themes/{TeamId:guid?}"
+
+@inherits PartyPageBase
+<h3>Thèmes</h3>
+
+<div class="container">
+    <h1>Thèmes de musique pour un blind test</h1>
+    @if(this.TeamId is null)
+    {
+        <button class="btn btn-primary" @onclick="this.ResetChoices">Reset choices</button>
+    }
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var theme in this.themes)
+        {
+            <div class="cursor-pointer col" @onclick="() => this.SelectThemeAsync(theme)">
+                <div class="@(this.GetCardCss(theme))">
+                    <div class="card-body">
+                        <h5 class="card-title">@theme.Name</h5>
+                        @if (this.TeamId is null)
+                        {
+                            <p>@theme.Team?.Name</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -6,7 +6,6 @@ using SpeedGameApp.DataAccessLayer.Entities;
 
 public class AppContext : DbContext
 {
-    /// <inheritdoc />
     public AppContext(DbContextOptions options)
         : base(options)
     {
@@ -15,6 +14,10 @@ public class AppContext : DbContext
     public DbSet<Party> Parties => this.Set<Party>();
 
     public DbSet<Team> Teams => this.Set<Team>();
+
     public DbSet<QcmQuestion> Questions => this.Set<QcmQuestion>();
-    public DbSet<QcmTheme> Themes => this.Set<QcmTheme>();
+
+    public DbSet<QcmTheme> QcmThemes => this.Set<QcmTheme>();
+
+    public DbSet<Theme> Themes => this.Set<Theme>();
 }

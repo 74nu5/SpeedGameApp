@@ -15,11 +15,11 @@ public sealed class CsvService
     {
         foreach (var themeDto in questions.Select(q => q.Theme).DistinctBy(t => t.Name))
         {
-            var themeFound = this.context.Themes.FirstOrDefault(t => t.Name == themeDto.Name);
+            var themeFound = this.context.QcmThemes.FirstOrDefault(t => t.Name == themeDto.Name);
 
             if (themeFound == null)
             {
-                _ = this.context.Themes.Add(new()
+                _ = this.context.QcmThemes.Add(new()
                 {
                     Name = themeDto.Name,
                 });
@@ -45,7 +45,7 @@ public sealed class CsvService
                     Option4 = question.Option4,
                 };
 
-                var themeFound = this.context.Themes.FirstOrDefault(t => t.Name == question.Theme.Name);
+                var themeFound = this.context.QcmThemes.FirstOrDefault(t => t.Name == question.Theme.Name);
 
                 if (themeFound is not null)
                     newQuestion.Theme = themeFound;

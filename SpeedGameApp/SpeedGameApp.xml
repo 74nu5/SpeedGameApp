@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpeedGameApp</name>
+    </assembly>
+    <members>
+        <member name="M:SpeedGameApp.Pages.Admin.Admin.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.GameService">
+            <summary>
+                Gets or sets the game service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.NavigationManager">
+            <summary>
+                Gets or sets the navigation manager.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.GamePageBase.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.Pages.Game.PartyTeamPlay">
+            <summary>
+                The party team play.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:SpeedGameApp.Pages.Index.GameService">
+            <summary>
+                Gets or sets the game service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.Index.NavigationManager">
+            <summary>
+                Gets or sets the navigation manager.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Pages.PartyPageBase">
+            <summary>
+                The party page base.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.PartyPageBase.PartyId">
+            <summary>
+                Gets or sets the current party id.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.PartyPageBase.TeamId">
+            <summary>
+                Gets or sets the current team id.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.PartyPageBase.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.Buzzer.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

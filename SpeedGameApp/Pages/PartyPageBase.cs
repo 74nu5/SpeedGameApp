@@ -4,11 +4,20 @@ using Microsoft.AspNetCore.Components;
 
 using SpeedGameApp.Business.Data;
 
+/// <summary>
+///     The party page base.
+/// </summary>
 public class PartyPageBase : GamePageBase
 {
+    /// <summary>
+    ///     Gets or sets the current party id.
+    /// </summary>
     [Parameter]
     public Guid PartyId { get; set; }
 
+    /// <summary>
+    ///     Gets or sets the current team id.
+    /// </summary>
     [Parameter]
     public Guid? TeamId { get; set; }
 
@@ -27,6 +36,5 @@ public class PartyPageBase : GamePageBase
             this.NavigationManager.NavigateTo("/");
 
         this.CurrentParty.PartyChanged += async (_, _) => await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
-
     }
 }

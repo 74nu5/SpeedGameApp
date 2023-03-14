@@ -1,22 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+        <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="AccessLayers\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="StyleCop.Analyzers" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SpeedGameApp.DataEnum\SpeedGameApp.DataEnum.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SpeedGameApp.DataEnum\SpeedGameApp.DataEnum.csproj" />
+	</ItemGroup>
 
 </Project>
