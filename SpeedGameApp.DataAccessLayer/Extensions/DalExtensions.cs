@@ -28,7 +28,7 @@ public static class DalExtensions
                 ? services.AddDbContext<AppContext>(builder => builder.UseSqlite("Data Source=SpeedGameApp.db"))
                 : services.AddDbContext<AppContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SpeedGameDb")));
 
-        _ = services.BuildServiceProvider().GetRequiredService<AppContext>().Database.EnsureCreated();
+        //_ = services.BuildServiceProvider().GetRequiredService<AppContext>().Database.EnsureCreated();
 
         services.TryAddTransient<PartyAccessLayer>();
         services.TryAddTransient<QuestionAccessLayer>();
