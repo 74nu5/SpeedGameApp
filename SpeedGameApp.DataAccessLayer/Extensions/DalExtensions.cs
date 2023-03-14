@@ -1,8 +1,10 @@
 ﻿namespace SpeedGameApp.DataAccessLayer.Extensions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 
 using SpeedGameApp.DataAccessLayer.AccessLayers;
 
@@ -17,9 +19,16 @@ public static class DalExtensions
     /// <param name="services">The services.</param>
     public static void AddDalServices(this IServiceCollection services)
     {
-        _ = services.AddDbContext<AppContext>(builder => builder.UseSqlite("Data Source=SpeedGameApp.db"));
+        var provider = services.BuildServiceProvider();
 
-        _ = services.BuildServiceProvider().GetRequiredService<AppContext>().Database.EnsureCreated();
+        var environment = provider.GetRequiredService<IHostEnvironment>();
+        var configuration = provider.GetRequiredService<IConfiguration>();
+
+        _ = environment.IsDevelopment()
+                ? services.AddDbContext<AppContext>(builder => builder.UseSqlite("Data Source=SpeedGameApp.db"))
+                : services.AddDbContext<AppContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SpeedGameDb")));
+
+        _ = provider.GetRequiredService<AppContext>().Database.EnsureCreated();
 
         services.TryAddTransient<PartyAccessLayer>();
         services.TryAddTransient<QuestionAccessLayer>();
