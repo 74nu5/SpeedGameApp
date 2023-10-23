@@ -5,6 +5,8 @@ using SpeedGameApp.DataEnum;
 
 public sealed partial class PartyAdmin : PartyPageBase
 {
+    private TimeOnly propositionDuration = TimeOnly.MinValue;
+
     private async Task AddPointsAsync(TeamDto teamDto, int points)
     {
         this.CancellationTokenSource = new();
@@ -37,11 +39,15 @@ public sealed partial class PartyAdmin : PartyPageBase
     }
 
     private string GetCardCss(ThemeDto themeDto)
-        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch {
+        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch
+        {
             (null, _, _) => "card bg-light",
             (_, true, var teamId) when teamId == this.TeamId => "card bg-success",
             (_, true, { } teamId) when this.CurrentParty.Teams.ContainsKey(teamId) => "card bg-danger",
             (_, true, null) => "card bg-secondary",
             _ => "card bg-light",
         };
+
+    private void SetTimedPropositionResponse()
+        => this.GameService.SetCurrentTimedPropositionResponse(this.PartyId, this.propositionDuration);
 }

@@ -62,10 +62,16 @@
         <member name="M:SpeedGameApp.Pages.PartyPageBase.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.TimedProposition.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="M:SpeedGameApp.Shared.Components.Responses.Buzzer.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Timer.OnParametersSet">
             <inheritdoc />
         </member>
     </members>

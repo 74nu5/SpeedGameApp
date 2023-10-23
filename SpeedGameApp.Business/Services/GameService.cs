@@ -205,12 +205,14 @@ public sealed class GameService
 
         var allThemes = await this.themeAccessLayer.GetAllThemesAsync();
 
-        this.context.LoadThemes(partyId,
-                                allThemes.Select(t => new ThemeDto
-                                {
-                                    Id = t.Id,
-                                    Name = t.Name,
-                                }));
+        this.context.LoadThemes(
+            partyId,
+            allThemes.Select(
+                t => new ThemeDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                }));
 
         return this.context.Parties[partyId].Themes;
     }
@@ -258,6 +260,7 @@ public sealed class GameService
         var otherThemes = currentParty.Themes.Where(th => !themes.DistinctBy(theme => theme.Name).Select(theme => theme.Name).Contains(th.Name));
 
         var otherThemesLimited = new List<ThemeDto>();
+
         foreach (var otherTheme in otherThemes)
         {
             for (var i = 0; i < 5; i++)
@@ -270,5 +273,12 @@ public sealed class GameService
 
         var randomThemes = themes.OrderBy(x => random.Next());
         currentParty.LoadRandomThemes(randomThemes);
+    }
+
+    public void SetCurrentTimedPropositionResponse(Guid partyId, TimeOnly propositionDuration)
+    {
+        // TimeOnly to TimeSpan
+        var timeSpan = new TimeSpan(propositionDuration.Hour, propositionDuration.Minute, propositionDuration.Second);
+        this.context.SetCurrentResponse(partyId, ResponseType.TimedProposition, timeSpan);
     }
 }

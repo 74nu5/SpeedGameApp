@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedGameApp.DataAccessLayer", "SpeedGameApp.DataAccessLayer\SpeedGameApp.DataAccessLayer.csproj", "{0706A4B7-3AFC-4E86-8497-6D386462C8B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedGameApp.DataAccessLayer", "SpeedGameApp.DataAccessLayer\SpeedGameApp.DataAccessLayer.csproj", "{0706A4B7-3AFC-4E86-8497-6D386462C8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedGameApp.Business", "SpeedGameApp.Business\SpeedGameApp.Business.csproj", "{54E33B2E-BD77-4AB7-B8F9-940CE569473B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedGameApp.Business", "SpeedGameApp.Business\SpeedGameApp.Business.csproj", "{54E33B2E-BD77-4AB7-B8F9-940CE569473B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedGameApp.DataEnum", "SpeedGameApp.DataEnum\SpeedGameApp.DataEnum.csproj", "{3CAAA88E-6CA5-4540-9AC0-B733BD5F21F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedGameApp.DataEnum", "SpeedGameApp.DataEnum\SpeedGameApp.DataEnum.csproj", "{3CAAA88E-6CA5-4540-9AC0-B733BD5F21F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

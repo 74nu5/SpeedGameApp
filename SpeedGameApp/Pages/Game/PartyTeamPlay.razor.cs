@@ -1,6 +1,7 @@
 namespace SpeedGameApp.Pages.Game;
 
 using SpeedGameApp.Business.Data;
+using SpeedGameApp.Shared.Components;
 using SpeedGameApp.Shared.Components.Responses;
 
 /// <summary>
@@ -9,17 +10,50 @@ using SpeedGameApp.Shared.Components.Responses;
 public sealed partial class PartyTeamPlay : PartyPageBase
 {
     private Proposition? proposition;
+    private TimedProposition? timedProposition;
+    private Timer? timerComponent;
+
+    private TimeSpan? time;
 
     private QCM? qcm;
 
     private IEnumerable<ThemeDto> themes = new List<ThemeDto>();
+
+    private bool responseEnabled = true;
 
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
         this.CurrentParty.PartyReset += this.CurrentPartyOnPartyResetAsync;
+        this.CurrentParty.PartyChanged += this.CurrentPartyOnPartyChangedAsync;
+        this.CurrentParty.ResponseStarted += this.CurrentPartyOnResponseStartedAsync;
+        this.CurrentParty.TimerEnd += this.CurrentPartyOnTimerEndAsync;
+        this.CurrentParty.TickTimer += this.CurrentPartyOnTickTimerAsync;
         this.themes = this.CurrentParty.RandomThemes;
+        this.time = this.CurrentParty.ElapsedTime;
+    }
+
+    private void CurrentPartyOnTickTimerAsync(object? sender, bool e)
+    {
+        // Subscribe to the timer
+        this.timerComponent?.AdvanceTime();
+    }
+
+    private void CurrentPartyOnTimerEndAsync(object? sender, EventArgs e)
+    {
+        this.responseEnabled = false;
+    }
+
+    private void CurrentPartyOnResponseStartedAsync(object? sender, EventArgs e)
+    {
+        // Set the initial time
+        this.time = this.CurrentParty.ElapsedTime;
+        this.responseEnabled = true;
+    }
+
+    private void CurrentPartyOnPartyChangedAsync(object? sender, EventArgs e)
+    {
     }
 
     private async Task SelectThemeAsync(ThemeDto theme)

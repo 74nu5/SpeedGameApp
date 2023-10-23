@@ -28,6 +28,7 @@
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.None)">Aucune</button>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Buzzer)">Buzzer</button>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Proposition)">Proposition rapidité</button>
+        <button class="btn btn-success" @onclick="this.SetTimedPropositionResponse">Proposition timer</button><input type="time" step="1" @bind="this.propositionDuration" />
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)" disabled>QCM</button>
         <button class="btn btn-secondary" @onclick="@(this.ResetQuestion)">Reset</button>
     </div>

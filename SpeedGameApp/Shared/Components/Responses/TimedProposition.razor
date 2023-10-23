@@ -1,0 +1,13 @@
+﻿<div class="card text-black">
+    <div class="card-header">
+        Proposition
+    </div>
+    <div class="card-body">
+        <EditForm Model="this.response" OnValidSubmit="this.CallbackAsync">
+            <fieldset disabled="@(!this.Enabled)">
+                <InputText class="form-control proposition" type="text" placeholder="Réponse" @ref="this.inputResponse" @bind-Value="this.response" />
+                <button class="btn btn-success w-100" type="submit">Valider</button>
+            </fieldset>
+        </EditForm>
+    </div>
+</div>

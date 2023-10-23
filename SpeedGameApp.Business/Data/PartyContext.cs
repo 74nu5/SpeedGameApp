@@ -59,11 +59,9 @@ internal sealed class PartyContext
     /// </summary>
     /// <param name="partyId">The party id.</param>
     /// <param name="responseType">The response type.</param>
-    public void SetCurrentResponse(Guid partyId, ResponseType responseType)
-    {
-        this.parties[partyId].CurrentResponseType = responseType;
-        this.parties[partyId].OnPartyChanged();
-    }
+    /// <param name="propositionDuration">The proposition duration.</param>
+    public void SetCurrentResponse(Guid partyId, ResponseType responseType, TimeSpan? propositionDuration = default)
+        => this.parties[partyId].StartResponse(responseType, propositionDuration);
 
     /// <summary>
     ///     Buzz for a team.
@@ -247,7 +245,8 @@ internal sealed class PartyContext
 
     public void ResetThemesChoices(Guid partyId)
     {
-        foreach (var theme in this.parties[partyId].Themes) {
+        foreach (var theme in this.parties[partyId].Themes)
+        {
             theme.Team = null;
         }
 

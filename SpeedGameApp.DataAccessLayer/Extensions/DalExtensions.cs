@@ -24,11 +24,15 @@ public static class DalExtensions
         var environment = provider.GetRequiredService<IHostEnvironment>();
         var configuration = provider.GetRequiredService<IConfiguration>();
 
-        _ = environment.IsDevelopment()
-                ? services.AddDbContext<AppContext>(builder => builder.UseSqlite("Data Source=SpeedGameApp.db"))
-                : services.AddDbContext<AppContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SpeedGameDb")));
-
-        //_ = services.BuildServiceProvider().GetRequiredService<AppContext>().Database.EnsureCreated();
+        if (environment.IsDevelopment())
+        {
+            _ = services.AddDbContext<AppContext>(builder => builder.UseSqlite("Data Source=SpeedGameApp.db"));
+            _ = services.BuildServiceProvider().GetRequiredService<AppContext>().Database.EnsureCreated();
+        }
+        else
+        {
+            _ = services.AddDbContext<AppContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SpeedGameDb")));
+        }
 
         services.TryAddTransient<PartyAccessLayer>();
         services.TryAddTransient<QuestionAccessLayer>();

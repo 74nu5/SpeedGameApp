@@ -44,12 +44,13 @@
                 Delete all parties.
             </summary>
         </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyContext.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+        <member name="M:SpeedGameApp.Business.Data.PartyContext.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType,System.Nullable{System.TimeSpan})">
             <summary>
                 Set the current response.
             </summary>
             <param name="partyId">The party id.</param>
             <param name="responseType">The response type.</param>
+            <param name="propositionDuration">The proposition duration.</param>
         </member>
         <member name="M:SpeedGameApp.Business.Data.PartyContext.BuzzTeam(System.Guid,System.Guid)">
             <summary>
@@ -133,26 +134,6 @@
             <summary>
                 Record which represents a party.
             </summary>
-            <param name="Id">The party id.</param>
-            <param name="Name">The party name.</param>
-            <param name="Teams">The party teams.</param>
-        </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyDto.#ctor(System.Guid,System.String,System.Collections.Generic.Dictionary{System.Guid,SpeedGameApp.Business.Data.TeamDto})">
-            <summary>
-                Record which represents a party.
-            </summary>
-            <param name="Id">The party id.</param>
-            <param name="Name">The party name.</param>
-            <param name="Teams">The party teams.</param>
-        </member>
-        <member name="P:SpeedGameApp.Business.Data.PartyDto.Id">
-            <summary>The party id.</summary>
-        </member>
-        <member name="P:SpeedGameApp.Business.Data.PartyDto.Name">
-            <summary>The party name.</summary>
-        </member>
-        <member name="P:SpeedGameApp.Business.Data.PartyDto.Teams">
-            <summary>The party teams.</summary>
         </member>
         <member name="F:SpeedGameApp.Business.Data.PartyDto.Empty">
             <summary>
@@ -165,6 +146,14 @@
             </summary>
             <param name="id">The party id.</param>
             <param name="name">The party game.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.#ctor(System.Guid,System.String,System.Collections.Generic.Dictionary{System.Guid,SpeedGameApp.Business.Data.TeamDto})">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Data.PartyDto" /> class.
+            </summary>
+            <param name="id">The party id.</param>
+            <param name="name">The party name.</param>
+            <param name="teams">The party teams.</param>
         </member>
         <member name="E:SpeedGameApp.Business.Data.PartyDto.PartyChanged">
             <summary>
@@ -188,7 +177,7 @@
         </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.ShowThemes">
             <summary>
-               Gets a value indicating whether the themes displayed.
+                Gets a value indicating whether the themes displayed.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.AlreadyResponse">
@@ -211,6 +200,32 @@
                 Gets the parties.
             </summary>
         </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.IsTimerEnabled">
+            <summary>
+                Gets a value indicating whether the timer is enabled.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.Id">
+            <summary>The party id.</summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.Name">
+            <summary>The party name.</summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.Teams">
+            <summary>The party teams.</summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadRandomThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
+        </member>
         <member name="M:SpeedGameApp.Business.Data.PartyDto.FromDbParty(SpeedGameApp.DataAccessLayer.Entities.Party)">
             <summary>
                 Method to get <see cref="T:SpeedGameApp.Business.Data.PartyDto" /> from <see cref="T:SpeedGameApp.DataAccessLayer.Entities.Party" />.
@@ -230,22 +245,20 @@
                 Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyChanged" /> event.
             </summary>
         </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.OnResponseStarted">
+            <summary>
+                Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.ResponseStarted" /> event.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.OnTimerEnd">
+            <summary>
+                Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyChanged" /> event.
+            </summary>
+        </member>
         <member name="M:SpeedGameApp.Business.Data.PartyDto.OnPartyReset">
             <summary>
                 Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyReset" /> event.
             </summary>
-        </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
-            <summary>
-                Method to load themesDtos.
-            </summary>
-            <param name="themesDtos">The themesDtos to load.</param>
-        </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadRandomThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
-            <summary>
-                Method to load themesDtos.
-            </summary>
-            <param name="themesDtos">The themesDtos to load.</param>
         </member>
         <member name="T:SpeedGameApp.Business.Data.Player">
             <summary>

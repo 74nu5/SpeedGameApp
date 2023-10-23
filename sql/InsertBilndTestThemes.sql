@@ -1,4 +1,4 @@
-insert into main.Themes (Id, Name)values
+insert into Themes (Id, Name)values
 ('d880bbcf-dbb0-40fa-8fcd-586c85e7a817', 'Les années 80'),
 ('e37eb5d3-60c2-4aed-af77-bff727a9068d', 'Les musiques de films'),
 ('461b5a19-ba64-46c7-b48a-94a51ec957d5', 'Les tubes de l''été'),

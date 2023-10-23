@@ -36,5 +36,6 @@ public class PartyPageBase : GamePageBase
             this.NavigationManager.NavigateTo("/");
 
         this.CurrentParty.PartyChanged += async (_, _) => await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
+
     }
 }

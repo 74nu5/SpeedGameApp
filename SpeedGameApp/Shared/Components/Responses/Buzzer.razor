@@ -3,7 +3,7 @@
         Buzzer
     </div>
     <div class="card-body">
-        <button @ref="@this.button" class="buzzer btn btn-outline-primary w-100" @onclick="this.Callback" disabled="@this.AlreadyResponse">Buzz !!</button>
+        <button @ref="@this.button" class="buzzer btn btn-outline-primary w-100" @onclick="this.CallbackBuzzer" disabled="@this.AlreadyResponse">Buzz !!</button>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
     [Parameter]
     public bool AlreadyResponse { get; set; }
 
-    private async Task Callback()
+    private async Task CallbackBuzzer()
         => await this.Buzz.InvokeAsync().ConfigureAwait(true);
 
     /// <inheritdoc />
