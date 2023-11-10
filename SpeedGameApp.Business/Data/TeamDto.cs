@@ -8,7 +8,7 @@ using SpeedGameApp.DataAccessLayer.Entities;
 /// <param name="Id">The team id.</param>
 /// <param name="Name">The team name.</param>
 /// <param name="Players">The team players.</param>
-public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
+public sealed record TeamDto(Guid Id, string Name, List<PlayerDto> Players)
 {
     /// <summary>
     ///     The empty team.
@@ -20,8 +20,8 @@ public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
     /// </summary>
     /// <param name="id">The team id.</param>
     /// <param name="name">The team name.</param>
-    public TeamDto(Guid id, string name)
-        : this(id, name, new())
+    internal TeamDto(Guid id, string name)
+        : this(id, name, [])
         => this.Score = 0;
 
     /// <summary>
@@ -52,7 +52,7 @@ public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
     /// <summary>
     ///     Gets the party id.
     /// </summary>
-    public Guid PartyId { get; init; }
+    public Guid PartyId { get; private init; }
 
     /// <summary>
     ///     Gets or sets a value indicating whether the qcm valid response.

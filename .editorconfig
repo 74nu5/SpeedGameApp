@@ -180,6 +180,9 @@ csharp_indent_labels = one_less_than_current
 dotnet_diagnostic.SA1503.severity = silent
 dotnet_diagnostic.SA1633.severity = silent
 
+# SA1010: Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1010.severity = silent
+
 [*.vb]
 #### Styles de nommage ####
 

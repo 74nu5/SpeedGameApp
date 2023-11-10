@@ -1,10 +1,10 @@
 namespace SpeedGameApp.Pages.Admin;
 
-using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Context;
 
 public partial class Admin : GamePageBase
 {
-    private Dictionary<Guid, PartyDto> dbParties = new();
+    private Dictionary<Guid, PartyContext> dbParties = new();
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()

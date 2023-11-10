@@ -1,7 +1,8 @@
-﻿namespace SpeedGameApp.Business.Data;
+﻿namespace SpeedGameApp.Business.Context;
 
 using System.Timers;
 
+using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services.Models;
 using SpeedGameApp.DataAccessLayer.Entities;
 using SpeedGameApp.DataEnum;
@@ -9,45 +10,46 @@ using SpeedGameApp.DataEnum;
 /// <summary>
 ///     Record which represents a party.
 /// </summary>
-public sealed record PartyDto
+public sealed record PartyContext
 {
     /// <summary>
     ///     Empty party.
     /// </summary>
-    public static readonly PartyDto Empty = new(Guid.Empty, string.Empty);
+    public static readonly PartyContext Empty = new(Guid.Empty, string.Empty);
 
     private readonly Timer timerSecond = new(TimeSpan.FromSeconds(1)) { Enabled = false, AutoReset = true };
 
-    private List<ThemeDto> themes = new();
+    private List<ThemeDto> themes = [];
 
-    private List<ThemeDto> randomThemes = new();
+    private List<ThemeDto> randomThemes = [];
 
     private Timer? timerProposition;
 
     private double elapsedTime;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="PartyDto" /> class.
+    ///     Initializes a new instance of the <see cref="PartyContext" /> class.
     /// </summary>
     /// <param name="id">The party id.</param>
     /// <param name="name">The party game.</param>
-    public PartyDto(Guid id, string name)
-        : this(id, name, new())
+    internal PartyContext(Guid id, string name)
+        : this(id, name, [])
     {
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="PartyDto" /> class.
+    ///     Initializes a new instance of the <see cref="PartyContext" /> class.
     /// </summary>
     /// <param name="id">The party id.</param>
     /// <param name="name">The party name.</param>
     /// <param name="teams">The party teams.</param>
-    public PartyDto(Guid id, string name, Dictionary<Guid, TeamDto> teams)
+    internal PartyContext(Guid id, string name, Dictionary<Guid, TeamDto> teams)
     {
         this.Id = id;
         this.Name = name;
         this.Teams = teams;
         this.timerSecond.Elapsed += this.OnTickTimer;
+        this.Status = PartyStatus.WaitResponseType;
     }
 
     /// <summary>
@@ -65,6 +67,11 @@ public sealed record PartyDto
     public event EventHandler<bool>? TickTimer;
 
     public event EventHandler? TimerEnd;
+
+    /// <summary>
+    ///     Gets the party status.
+    /// </summary>
+    public PartyStatus Status { get; private set; }
 
     public TimeSpan Interval
         => TimeSpan.FromMilliseconds(this.timerProposition?.Interval ?? 0);
@@ -87,7 +94,7 @@ public sealed record PartyDto
     /// <summary>
     ///     Gets a value indicating whether the party already response.
     /// </summary>
-    public bool AlreadyResponse { get; internal set; }
+    public bool HasResponse { get; internal set; }
 
     /// <summary>
     ///     Gets the current qcm.
@@ -114,14 +121,14 @@ public sealed record PartyDto
     /// </summary>
     public bool IsTimerEnabled => this.timerProposition?.Enabled ?? false;
 
-    /// <summary>The party id.</summary>
-    public Guid Id { get; init; }
+    /// <summary>Gets the party id.</summary>
+    public Guid Id { get; }
 
-    /// <summary>The party name.</summary>
-    public string Name { get; init; }
+    /// <summary>Gets the party name.</summary>
+    public string Name { get; }
 
-    /// <summary>The party teams.</summary>
-    public Dictionary<Guid, TeamDto> Teams { get; init; }
+    /// <summary>Gets the party teams.</summary>
+    public Dictionary<Guid, TeamDto> Teams { get; }
 
     /// <summary>
     ///     Method to load themesDtos.
@@ -146,14 +153,35 @@ public sealed record PartyDto
         this.timerSecond.Start();
     }
 
+    public void PauseTimer()
+    {
+        this.timerProposition?.Stop();
+        this.timerSecond.Stop();
+        this.OnPartyChanged();
+    }
+
+    public void ResumeTimer()
+    {
+        this.timerProposition?.Start();
+        this.timerSecond.Start();
+        this.OnPartyChanged();
+    }
+
+    public void ResetTimer()
+    {
+        this.timerProposition?.Stop();
+        this.timerProposition?.Dispose();
+        this.timerProposition = null;
+        this.timerSecond.Stop();
+        this.elapsedTime = 0;
+    }
+
     public void StartResponse(ResponseType responseType, TimeSpan? propositionDuration)
     {
         this.CurrentResponseType = responseType;
 
         if (responseType == ResponseType.TimedProposition && propositionDuration.HasValue)
-        {
             this.StartTimer(propositionDuration.Value);
-        }
 
         this.OnResponseStarted();
         this.OnPartyChanged();
@@ -167,19 +195,19 @@ public sealed record PartyDto
     }
 
     /// <summary>
-    ///     Method to get <see cref="PartyDto" /> from <see cref="Party" />.
+    ///     Method to get <see cref="PartyContext" /> from <see cref="Party" />.
     /// </summary>
     /// <param name="dbParty">The party to transform.</param>
     /// <returns>Return the new party.</returns>
-    internal static PartyDto FromDbParty(Party dbParty)
+    internal static PartyContext FromDbParty(Party dbParty)
         => new(dbParty.Id, dbParty.Name, TeamDto.FromDbTeams(dbParty.Id, dbParty.Teams));
 
     /// <summary>
-    ///     Method to get <see cref="PartyDto" /> dictionary from <see cref="Party" /> list.
+    ///     Method to get <see cref="PartyContext" /> dictionary from <see cref="Party" /> list.
     /// </summary>
     /// <param name="dbParties">The parties to transform.</param>
     /// <returns>Returns the new parties dictionary.</returns>
-    internal static Dictionary<Guid, PartyDto> FromDbParties(IEnumerable<Party> dbParties)
+    internal static Dictionary<Guid, PartyContext> FromDbParties(IEnumerable<Party> dbParties)
         => dbParties.Select(FromDbParty).ToDictionary(p => p.Id, p => p);
 
     /// <summary>

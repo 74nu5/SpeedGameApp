@@ -1,17 +1,17 @@
 ﻿namespace SpeedGameApp.Business.Data;
 
 /// <summary>
-///    Class which represents the theme dto.
+///     Class which represents the theme dto.
 /// </summary>
-public record ThemeDto
+public sealed record ThemeDto
 {
     /// <summary>
-    ///    Gets or sets the theme id.
+    ///     Gets or sets the theme id.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    ///    Gets or sets the theme name.
+    ///     Gets or sets the theme name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
@@ -21,7 +21,7 @@ public record ThemeDto
     public TeamDto? Team { get; set; }
 
     /// <summary>
-    ///    Gets or sets a value indicating whether the theme is already taken.
+    ///     Gets or sets a value indicating whether the theme is already taken.
     /// </summary>
     public bool AlreadyTaken { get; set; }
 }

@@ -2,10 +2,42 @@ namespace SpeedGameApp.Pages;
 
 using SpeedGameApp.Business.Data;
 using SpeedGameApp.DataEnum;
+using SpeedGameApp.Shared.Components;
 
 public sealed partial class PartyAdmin : PartyPageBase
 {
     private TimeOnly propositionDuration = TimeOnly.MinValue;
+
+    private Timer? timerComponent;
+
+    private TimeSpan? time;
+    private bool resetEnabled = true;
+
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        this.CurrentParty.TickTimer += this.CurrentPartyOnTickTimerAsync;
+        this.CurrentParty.ResponseStarted += this.CurrentPartyOnResponseStartedAsync;
+        this.CurrentParty.TimerEnd += this.CurrentPartyOnTimerEndAsync;
+
+    }
+
+    private void CurrentPartyOnTimerEndAsync(object? sender, EventArgs e)
+    {
+        this.resetEnabled = true;
+    }
+
+    private void CurrentPartyOnResponseStartedAsync(object? sender, EventArgs e)
+    {
+        // Set the initial time
+        this.time = this.CurrentParty.ElapsedTime;
+        this.resetEnabled = false;
+    }
+
+
+    private void CurrentPartyOnTickTimerAsync(object? sender, bool e)
+        // Subscribe to the timer
+        => this.timerComponent?.AdvanceTime();
 
     private async Task AddPointsAsync(TeamDto teamDto, int points)
     {
@@ -50,4 +82,7 @@ public sealed partial class PartyAdmin : PartyPageBase
 
     private void SetTimedPropositionResponse()
         => this.GameService.SetCurrentTimedPropositionResponse(this.PartyId, this.propositionDuration);
+
+    private void ResumeTimedPropositionResponse()
+        => this.GameService.ResumeTimedPropositionResponse(this.PartyId);
 }

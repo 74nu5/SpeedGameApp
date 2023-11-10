@@ -25,13 +25,13 @@
             case ResponseType.None:
                 break;
             case ResponseType.Buzzer:
-                <Buzzer Buzz="this.BuzzTeam" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                <Buzzer Buzz="this.BuzzTeam" AlreadyResponse="@(this.CurrentParty.HasResponse)"/>
                 break;
             case ResponseType.Proposition:
-                <Proposition @ref="@(this.proposition)" ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                <Proposition @ref="@(this.proposition)" ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.HasResponse)"/>
                 break;
             case ResponseType.TimedProposition:
-                <TimedProposition @ref="@(this.timedProposition)" ResponseCallback="this.Callback" Enabled="this.responseEnabled" />
+                <TimedProposition ResponseCallback="this.Callback" Enabled="this.responseEnabled" />
                 break;
             case ResponseType.Qcm:
                 <QCM Question="this.CurrentParty.CurrentQcm" ResponseCallback="this.CallbackQcm"/>

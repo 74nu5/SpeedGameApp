@@ -44,6 +44,9 @@
                 Gets or sets the navigation manager.
             </summary>
         </member>
+        <member name="M:SpeedGameApp.Pages.PartyAdmin.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="T:SpeedGameApp.Pages.PartyPageBase">
             <summary>
                 The party page base.

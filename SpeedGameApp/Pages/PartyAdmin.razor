@@ -1,6 +1,7 @@
 ﻿@page "/party/{PartyId:guid}/admin"
 
 @using SpeedGameApp.DataEnum
+@using SpeedGameApp.Shared.Components
 @inherits PartyPageBase
 <PageTitle>Speed Game App - Party admin</PageTitle>
 
@@ -26,11 +27,22 @@
     <h4>Type de réponse</h4>
     <div>
         <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.None)">Aucune</button>
-        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Buzzer)">Buzzer</button>
-        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Proposition)">Proposition rapidité</button>
-        <button class="btn btn-success" @onclick="this.SetTimedPropositionResponse">Proposition timer</button><input type="time" step="1" @bind="this.propositionDuration" />
-        <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)" disabled>QCM</button>
         <button class="btn btn-secondary" @onclick="@(this.ResetQuestion)">Reset</button>
+        <section class="my-2">
+
+            <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Buzzer)">Buzzer</button>
+        </section>
+        <section class="my-2">
+            <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Proposition)">Proposition rapidité</button>
+            <button class="btn btn-success" @onclick="this.SetTimedPropositionResponse">Proposition timer</button>
+            <Timer @ref="this.timerComponent" Time="@this.time" />
+            <button class="btn btn-success" @onclick="this.ResumeTimedPropositionResponse" disabled="@this.resetEnabled">Reset timed proposition</button>
+            <input class="form-control" type="time" step="1" @bind="this.propositionDuration"/>
+        </section>
+        <section class="my-2">
+            <button class="btn btn-success" @onclick="() => this.SetResponse(ResponseType.Qcm)" disabled>QCM</button>
+
+        </section>
     </div>
 </div>
 <hr/>

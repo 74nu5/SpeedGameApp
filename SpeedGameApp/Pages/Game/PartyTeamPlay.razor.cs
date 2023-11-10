@@ -10,7 +10,6 @@ using SpeedGameApp.Shared.Components.Responses;
 public sealed partial class PartyTeamPlay : PartyPageBase
 {
     private Proposition? proposition;
-    private TimedProposition? timedProposition;
     private Timer? timerComponent;
 
     private TimeSpan? time;

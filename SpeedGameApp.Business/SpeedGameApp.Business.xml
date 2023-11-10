@@ -180,7 +180,7 @@
                 Gets a value indicating whether the themes displayed.
             </summary>
         </member>
-        <member name="P:SpeedGameApp.Business.Data.PartyDto.AlreadyResponse">
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.HasResponse">
             <summary>
                 Gets a value indicating whether the party already response.
             </summary>

@@ -1,7 +1,8 @@
-﻿namespace SpeedGameApp.Business.Data;
+﻿namespace SpeedGameApp.Business.Context;
 
 using System.Collections.Concurrent;
 
+using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services.Models;
 using SpeedGameApp.DataAccessLayer.Entities;
 using SpeedGameApp.DataEnum;
@@ -9,19 +10,19 @@ using SpeedGameApp.DataEnum;
 /// <summary>
 ///     The party context.
 /// </summary>
-internal sealed class PartyContext
+internal sealed class PartiesContext
 {
-    private readonly IDictionary<Guid, PartyDto> parties = new ConcurrentDictionary<Guid, PartyDto>();
+    private readonly IDictionary<Guid, PartyContext> parties = new ConcurrentDictionary<Guid, PartyContext>();
 
     /// <summary>
     ///     Event raised when the party changed.
     /// </summary>
-    public event EventHandler<PartyDto>? PartyChanged;
+    public event EventHandler<PartyContext>? PartyChanged;
 
     /// <summary>
     ///     Gets the parties.
     /// </summary>
-    public IReadOnlyDictionary<Guid, PartyDto> Parties
+    public IReadOnlyDictionary<Guid, PartyContext> Parties
         => this.parties.AsReadOnly();
 
     /// <summary>
@@ -72,10 +73,10 @@ internal sealed class PartyContext
     {
         var (_, team) = this.parties[partyId].Teams.FirstOrDefault(pair => pair.Key == teamId);
 
-        if (!this.parties[partyId].AlreadyResponse)
+        if (!this.parties[partyId].HasResponse)
         {
             team.Buzz = true;
-            this.parties[partyId].AlreadyResponse = true;
+            this.parties[partyId].HasResponse = true;
         }
 
         this.parties[partyId].OnPartyChanged();
@@ -87,7 +88,7 @@ internal sealed class PartyContext
     /// <param name="partyId">The party id.</param>
     public void ResetTeam(Guid partyId)
     {
-        this.parties[partyId].AlreadyResponse = false;
+        this.parties[partyId].HasResponse = false;
 
         foreach (var (_, team) in this.parties[partyId].Teams)
         {
@@ -95,8 +96,8 @@ internal sealed class PartyContext
             team.Response = string.Empty;
         }
 
-        this.parties[partyId].OnPartyChanged();
         this.parties[partyId].OnPartyReset();
+        this.parties[partyId].OnPartyChanged();
     }
 
     /// <summary>
@@ -109,10 +110,11 @@ internal sealed class PartyContext
     {
         var (_, team) = this.parties[partyId].Teams.FirstOrDefault(pair => pair.Key == teamId);
 
-        if (!this.parties[partyId].AlreadyResponse)
+        if (!this.parties[partyId].HasResponse)
         {
             team.Response = response;
-            this.parties[partyId].AlreadyResponse = true;
+            this.parties[partyId].HasResponse = true;
+            this.parties[partyId].PauseTimer();
         }
 
         this.parties[partyId].OnPartyChanged();
@@ -121,12 +123,12 @@ internal sealed class PartyContext
     /// <summary>
     ///     Method to load a party.
     /// </summary>
-    /// <param name="partyDto">Party to load.</param>
+    /// <param name="partyContext">Party to load.</param>
     /// <returns>Returns the new party.</returns>
-    public PartyDto LoadParty(PartyDto partyDto)
+    public PartyContext LoadParty(PartyContext partyContext)
     {
-        this.parties.Add(partyDto.Id, partyDto);
-        return partyDto;
+        this.parties.Add(partyContext.Id, partyContext);
+        return partyContext;
     }
 
     /// <summary>
@@ -181,7 +183,7 @@ internal sealed class PartyContext
     /// <param name="partyName">Party name.</param>
     public void AddParty(Guid guidParty, string partyName)
     {
-        var party = new PartyDto(guidParty, partyName);
+        var party = new PartyContext(guidParty, partyName);
         this.parties.Add(guidParty, party);
         this.OnPartyChanged(party);
     }
@@ -210,7 +212,7 @@ internal sealed class PartyContext
     ///     Method to raise the party changed event.
     /// </summary>
     /// <param name="e">The party changed.</param>
-    public void OnPartyChanged(PartyDto e)
+    public void OnPartyChanged(PartyContext e)
         => this.PartyChanged?.Invoke(this, e);
 
     /// <summary>
@@ -251,5 +253,17 @@ internal sealed class PartyContext
         }
 
         this.parties[partyId].OnPartyChanged();
+    }
+
+    public void ResumeResponse(Guid partyId, ResponseType timedProposition)
+    {
+        foreach (var (_, team) in this.parties[partyId].Teams)
+        {
+            team.Response = string.Empty;
+        }
+
+        this.parties[partyId].HasResponse = false;
+        this.parties[partyId].OnPartyChanged();
+        this.parties[partyId].ResumeTimer();
     }
 }

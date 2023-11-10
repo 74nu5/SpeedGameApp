@@ -2,8 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
-using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Context;
 using SpeedGameApp.Business.Services;
 using SpeedGameApp.DataAccessLayer.Extensions;
 
@@ -21,6 +20,6 @@ public static class BusinessExtensions
         services.AddDalServices();
         services.TryAddTransient<GameService>();
         services.TryAddTransient<CsvService>();
-        services.TryAddSingleton<PartyContext>();
+        services.TryAddSingleton<PartiesContext>();
     }
 }

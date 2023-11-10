@@ -4,4 +4,4 @@
 ///     The player.
 /// </summary>
 /// <param name="Name">The player name.</param>
-public record Player(string Name);
+public record PlayerDto(string Name);

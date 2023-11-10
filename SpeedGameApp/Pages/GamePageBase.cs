@@ -1,7 +1,7 @@
 ﻿namespace SpeedGameApp.Pages;
 
 using Microsoft.AspNetCore.Components;
-
+using SpeedGameApp.Business.Context;
 using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services;
 
@@ -9,7 +9,7 @@ public class GamePageBase : ComponentBase, IDisposable
 {
     protected CancellationTokenSource CancellationTokenSource = new();
 
-    protected PartyDto CurrentParty = PartyDto.Empty;
+    protected PartyContext CurrentParty = PartyContext.Empty;
 
     protected TeamDto CurrentTeam = TeamDto.Empty;
 

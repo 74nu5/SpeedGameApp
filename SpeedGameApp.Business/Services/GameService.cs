@@ -1,7 +1,7 @@
 ﻿namespace SpeedGameApp.Business.Services;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using SpeedGameApp.Business.Context;
 using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services.Models;
 using SpeedGameApp.DataAccessLayer.AccessLayers;
@@ -10,35 +10,31 @@ using SpeedGameApp.DataEnum;
 /// <summary>
 ///     Class which defines all game mathods.
 /// </summary>
-public sealed class GameService
+/// <remarks>
+///     Initializes a new instance of the <see cref="GameService" /> class.
+/// </remarks>
+/// <param name="serviceProvider">The DI service provider.</param>
+/// <param name="partyAccessLayer">The party access layer.</param>
+/// <param name="questionAccessLayer">The question access layer.</param>
+/// <param name="themeAccessLayer">The theme access layer.</param>
+public sealed class GameService(
+    IServiceProvider serviceProvider,
+    PartyAccessLayer partyAccessLayer,
+    QuestionAccessLayer questionAccessLayer,
+    ThemeAccessLayer themeAccessLayer)
 {
-    private readonly PartyContext context;
+    private readonly PartiesContext context = serviceProvider.GetRequiredService<PartiesContext>();
 
-    private readonly PartyAccessLayer partyAccessLayer;
+    private readonly PartyAccessLayer partyAccessLayer = partyAccessLayer;
 
-    private readonly QuestionAccessLayer questionAccessLayer;
+    private readonly QuestionAccessLayer questionAccessLayer = questionAccessLayer;
 
-    private readonly ThemeAccessLayer themeAccessLayer;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GameService" /> class.
-    /// </summary>
-    /// <param name="serviceProvider">The DI service provider.</param>
-    /// <param name="partyAccessLayer">The party access layer.</param>
-    /// <param name="questionAccessLayer">The question access layer.</param>
-    /// <param name="themeAccessLayer">The theme access layer.</param>
-    public GameService(IServiceProvider serviceProvider, PartyAccessLayer partyAccessLayer, QuestionAccessLayer questionAccessLayer, ThemeAccessLayer themeAccessLayer)
-    {
-        this.context = serviceProvider.GetRequiredService<PartyContext>();
-        this.partyAccessLayer = partyAccessLayer;
-        this.questionAccessLayer = questionAccessLayer;
-        this.themeAccessLayer = themeAccessLayer;
-    }
+    private readonly ThemeAccessLayer themeAccessLayer = themeAccessLayer;
 
     /// <summary>
     ///     Event fired when party changed.
     /// </summary>
-    public event EventHandler<PartyDto>? PartyChanged
+    public event EventHandler<PartyContext>? PartyChanged
     {
         add => this.context.PartyChanged += value;
         remove => this.context.PartyChanged -= value;
@@ -47,7 +43,7 @@ public sealed class GameService
     /// <summary>
     ///     Gets the parties.
     /// </summary>
-    public IReadOnlyDictionary<Guid, PartyDto> Parties
+    public IReadOnlyDictionary<Guid, PartyContext> Parties
         => this.context.Parties;
 
     /// <summary>
@@ -119,7 +115,7 @@ public sealed class GameService
     /// <param name="id">The ID of the party to retrieve.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation. The result of the task is the party with the specified ID, or null if the party was not found.</returns>
-    public async Task<PartyDto?> GetPartyAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<PartyContext?> GetPartyAsync(Guid id, CancellationToken cancellationToken)
     {
         // Check if the party exists in the context
         if (this.context.Parties.TryGetValue(id, out var party))
@@ -130,7 +126,7 @@ public sealed class GameService
 
         // If the party was not found in the database, return null
         // Otherwise, load the party into the context and return it
-        return dbParty is null ? default : this.context.LoadParty(PartyDto.FromDbParty(dbParty));
+        return dbParty is null ? default : this.context.LoadParty(PartyContext.FromDbParty(dbParty));
     }
 
     /// <summary>
@@ -138,13 +134,13 @@ public sealed class GameService
     /// </summary>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation. The result of the task is a dictionary mapping party IDs to party data.</returns>
-    public async Task<Dictionary<Guid, PartyDto>> GetDbPartiesAsync(CancellationToken cancellationToken)
+    public async Task<Dictionary<Guid, PartyContext>> GetDbPartiesAsync(CancellationToken cancellationToken)
     {
         // Retrieve the parties from the database
         var dbParties = await this.partyAccessLayer.GetPartiesAsync(cancellationToken);
 
         // Convert the database parties to DTOs
-        return PartyDto.FromDbParties(dbParties);
+        return PartyContext.FromDbParties(dbParties);
     }
 
     public async Task DeleteDbPartyAsync(Guid id, CancellationToken cancellationToken) => await this.partyAccessLayer.DeletePartyAsync(id, cancellationToken);
@@ -156,7 +152,7 @@ public sealed class GameService
         if (partyFound is null)
             return;
 
-        _ = this.context.LoadParty(PartyDto.FromDbParty(partyFound));
+        _ = this.context.LoadParty(PartyContext.FromDbParty(partyFound));
     }
 
     public async Task DeleteTeamAsync(Guid partyId, Guid teamId, CancellationToken cancellationToken)
@@ -280,5 +276,11 @@ public sealed class GameService
         // TimeOnly to TimeSpan
         var timeSpan = new TimeSpan(propositionDuration.Hour, propositionDuration.Minute, propositionDuration.Second);
         this.context.SetCurrentResponse(partyId, ResponseType.TimedProposition, timeSpan);
+    }
+
+    public void ResumeTimedPropositionResponse(Guid partyId)
+    {
+        // TimeOnly to TimeSpan
+        this.context.ResumeResponse(partyId, ResponseType.TimedProposition);
     }
 }

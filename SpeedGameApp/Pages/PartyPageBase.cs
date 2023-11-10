@@ -1,8 +1,7 @@
 ﻿namespace SpeedGameApp.Pages;
 
 using Microsoft.AspNetCore.Components;
-
-using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Context;
 
 /// <summary>
 ///     The party page base.
@@ -24,9 +23,9 @@ public class PartyPageBase : GamePageBase
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
-        this.CurrentParty = await this.GameService.GetPartyAsync(this.PartyId, this.CancellationTokenSource.Token) ?? PartyDto.Empty;
+        this.CurrentParty = await this.GameService.GetPartyAsync(this.PartyId, this.CancellationTokenSource.Token) ?? PartyContext.Empty;
 
-        if (this.CurrentParty == PartyDto.Empty)
+        if (this.CurrentParty == PartyContext.Empty)
         {
             this.NavigationManager.NavigateTo("/");
             return;
