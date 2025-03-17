@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <EditForm Model="this.response" OnValidSubmit="this.Callback">
-            <fieldset disabled="@this.AlreadyResponse">
+            <fieldset disabled="@(this.AlreadyResponse)">
                 <InputText class="form-control proposition" type="text" placeholder="Réponse" @ref="this.inputResponse" @bind-Value="this.response"/>
                 <button class="btn btn-success w-100" type="submit">Valider</button>
             </fieldset>
@@ -38,6 +38,11 @@
     public async Task ResetAsync()
     {
         this.response = string.Empty;
+        var inputText = this.inputResponse;
+        if (inputText is { Element: not null })
+            await inputText.Element.Value.FocusAsync().ConfigureAwait(true);
+
         await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
     }
+
 }

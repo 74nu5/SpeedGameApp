@@ -16,6 +16,7 @@ public sealed partial class PartyAdmin : PartyPageBase
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
+        await base.OnParametersSetAsync().ConfigureAwait(true);
         this.CurrentParty.TickTimer += this.CurrentPartyOnTickTimerAsync;
         this.CurrentParty.ResponseStarted += this.CurrentPartyOnResponseStartedAsync;
         this.CurrentParty.TimerEnd += this.CurrentPartyOnTimerEndAsync;

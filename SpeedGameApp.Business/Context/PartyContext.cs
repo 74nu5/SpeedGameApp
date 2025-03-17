@@ -146,6 +146,9 @@ public sealed record PartyContext
 
     public void StartTimer(TimeSpan timeSpan)
     {
+        if (timeSpan == TimeSpan.Zero)
+            return;
+
         this.timerProposition = new(timeSpan);
         this.timerProposition.Elapsed += this.TimerPropositionElapsed;
         this.elapsedTime = this.timerProposition.Interval;
