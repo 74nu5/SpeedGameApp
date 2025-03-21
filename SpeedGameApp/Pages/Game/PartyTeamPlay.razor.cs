@@ -89,7 +89,7 @@ public sealed partial class PartyTeamPlay : PartyPageBase
     private async void CurrentPartyOnPartyResetAsync(object? sender, EventArgs e)
     {
         if (this.proposition is not null)
-            await this.proposition.ResetAsync().ConfigureAwait(true);
+            await this.proposition.ResetAsync(this.CurrentTeam.Answered).ConfigureAwait(true);
 
         if (this.qcm is not null)
             await this.qcm.ResetAsync().ConfigureAwait(true);

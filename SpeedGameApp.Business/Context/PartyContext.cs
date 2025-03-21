@@ -135,14 +135,14 @@ public sealed record PartyContext
     /// </summary>
     /// <param name="themesDtos">The themesDtos to load.</param>
     public void LoadThemes(IEnumerable<ThemeDto> themesDtos)
-        => this.themes = themesDtos.ToList();
+        => this.themes = [.. themesDtos];
 
     /// <summary>
     ///     Method to load themesDtos.
     /// </summary>
     /// <param name="themesDtos">The themesDtos to load.</param>
     public void LoadRandomThemes(IEnumerable<ThemeDto> themesDtos)
-        => this.randomThemes = themesDtos.ToList();
+        => this.randomThemes = [.. themesDtos];
 
     public void StartTimer(TimeSpan timeSpan)
     {

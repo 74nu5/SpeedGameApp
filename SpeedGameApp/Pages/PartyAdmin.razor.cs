@@ -20,7 +20,6 @@ public sealed partial class PartyAdmin : PartyPageBase
         this.CurrentParty.TickTimer += this.CurrentPartyOnTickTimerAsync;
         this.CurrentParty.ResponseStarted += this.CurrentPartyOnResponseStartedAsync;
         this.CurrentParty.TimerEnd += this.CurrentPartyOnTimerEndAsync;
-
     }
 
     private void CurrentPartyOnTimerEndAsync(object? sender, EventArgs e)

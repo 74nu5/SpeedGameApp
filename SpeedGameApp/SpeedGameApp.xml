@@ -10,6 +10,17 @@
         <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.OnInitializedAsync">
             <inheritdoc />
         </member>
+        <member name="T:SpeedGameApp.Pages.Game.PartyTeamPlay">
+            <summary>
+                The party team play.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.GameService">
             <summary>
                 Gets or sets the game service.
@@ -21,17 +32,6 @@
             </summary>
         </member>
         <member name="M:SpeedGameApp.Pages.GamePageBase.Dispose">
-            <inheritdoc />
-        </member>
-        <member name="T:SpeedGameApp.Pages.Game.PartyTeamPlay">
-            <summary>
-                The party team play.
-            </summary>
-        </member>
-        <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.OnParametersSetAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
             <inheritdoc />
         </member>
         <member name="P:SpeedGameApp.Pages.Index.GameService">

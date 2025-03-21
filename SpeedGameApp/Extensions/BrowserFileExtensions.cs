@@ -21,6 +21,6 @@ public static class BrowserFileExtensions
         }
 
         // Convert the list to an array and return it
-        return lines.ToArray();
+        return [.. lines];
     }
 }

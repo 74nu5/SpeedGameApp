@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="../Aspire/SpeedGameApp.Aspire.ServiceDefaults/SpeedGameApp.Aspire.ServiceDefaults.csproj" />
         <ProjectReference Include="..\SpeedGameApp.Business\SpeedGameApp.Business.csproj" />
     </ItemGroup>
 

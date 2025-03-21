@@ -31,7 +31,7 @@ public partial class AdminQuestions
         try
         {
             var questionsParsed = this.CsvService.CsvToQuestions(lines.Skip(1));
-            await this.CsvService.InsertQuestionsAsync(questionsParsed.ToList());
+            await this.CsvService.InsertQuestionsAsync([.. questionsParsed]);
         }
         catch (Exception e)
         {

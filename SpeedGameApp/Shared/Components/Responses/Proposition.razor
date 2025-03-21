@@ -35,9 +35,14 @@
             await inputResponseElement.Value.FocusAsync().ConfigureAwait(true);
     }
 
-    public async Task ResetAsync()
+    public async Task ResetAsync(bool resetResponse)
     {
-        this.response = string.Empty;
+        if (resetResponse)
+        {
+            this.response = string.Empty;
+            this.AlreadyResponse = false;
+        }
+
         var inputText = this.inputResponse;
         if (inputText is { Element: not null })
             await inputText.Element.Value.FocusAsync().ConfigureAwait(true);
