@@ -9,6 +9,15 @@ using SpeedGameApp.DataEnum;
 /// <summary>
 ///     The party context.
 /// </summary>
+/// <remarks>
+///     DEPRECATED: This class violates the Single Responsibility Principle and has been split into:
+///     - <see cref="Services.Interfaces.IPartyRepository"/> for storage operations
+///     - <see cref="Services.Interfaces.IPartyStateManager"/> for game state management
+///     - <see cref="Services.Interfaces.IPartyEventPublisher"/> for event publishing
+///     - <see cref="Services.Interfaces.IThemeManager"/> for theme management
+///     This class is kept for backwards compatibility and will be removed in a future version.
+/// </remarks>
+[Obsolete("Use IPartyRepository, IPartyStateManager, IPartyEventPublisher, and IThemeManager instead. This class will be removed in a future version.")]
 internal sealed class PartyContext
 {
     private readonly IDictionary<Guid, PartyDto> parties = new ConcurrentDictionary<Guid, PartyDto>();
