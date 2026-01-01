@@ -22,5 +22,6 @@ public static class BusinessExtensions
         services.TryAddTransient<GameService>();
         services.TryAddTransient<CsvService>();
         services.TryAddSingleton<PartyContext>();
+        services.TryAddSingleton(TimeProvider.System); // .NET 8+ TimeProvider pour testabilité
     }
 }

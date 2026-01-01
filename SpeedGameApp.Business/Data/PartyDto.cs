@@ -17,9 +17,9 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// </summary>
     public static readonly PartyDto Empty = new(Guid.Empty, string.Empty);
 
-    private List<ThemeDto> themes = new();
+    private List<ThemeDto> themes = [];
 
-    private List<ThemeDto> randomThemes = new();
+    private List<ThemeDto> randomThemes = [];
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="PartyDto" /> class.
@@ -27,7 +27,7 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// <param name="id">The party id.</param>
     /// <param name="name">The party game.</param>
     public PartyDto(Guid id, string name)
-        : this(id, name, new())
+        : this(id, name, [])
     {
     }
 

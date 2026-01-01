@@ -10,30 +10,14 @@ using SpeedGameApp.DataEnum;
 /// <summary>
 ///     Class which defines all game mathods.
 /// </summary>
-public sealed class GameService
+public sealed class GameService(
+    IServiceProvider serviceProvider,
+    PartyAccessLayer partyAccessLayer,
+    QuestionAccessLayer questionAccessLayer,
+    ThemeAccessLayer themeAccessLayer,
+    TimeProvider timeProvider)
 {
-    private readonly PartyContext context;
-
-    private readonly PartyAccessLayer partyAccessLayer;
-
-    private readonly QuestionAccessLayer questionAccessLayer;
-
-    private readonly ThemeAccessLayer themeAccessLayer;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GameService" /> class.
-    /// </summary>
-    /// <param name="serviceProvider">The DI service provider.</param>
-    /// <param name="partyAccessLayer">The party access layer.</param>
-    /// <param name="questionAccessLayer">The question access layer.</param>
-    /// <param name="themeAccessLayer">The theme access layer.</param>
-    public GameService(IServiceProvider serviceProvider, PartyAccessLayer partyAccessLayer, QuestionAccessLayer questionAccessLayer, ThemeAccessLayer themeAccessLayer)
-    {
-        this.context = serviceProvider.GetRequiredService<PartyContext>();
-        this.partyAccessLayer = partyAccessLayer;
-        this.questionAccessLayer = questionAccessLayer;
-        this.themeAccessLayer = themeAccessLayer;
-    }
+    private readonly PartyContext context = serviceProvider.GetRequiredService<PartyContext>();
 
     /// <summary>
     ///     Event fired when party changed.
@@ -239,8 +223,8 @@ public sealed class GameService
     public void GenerateThemes(Guid partyId)
     {
         var currentParty = this.Parties[partyId];
-        var random = new Random();
-        var themes = new List<ThemeDto>();
+        var random = Random.Shared; // .NET 6+ amélioration - thread-safe random partagé
+        List<ThemeDto> themes = [];
 
         foreach (var (_, team) in currentParty.Teams)
         {
@@ -255,9 +239,10 @@ public sealed class GameService
             }
         }
 
-        var otherThemes = currentParty.Themes.Where(th => !themes.DistinctBy(theme => theme.Name).Select(theme => theme.Name).Contains(th.Name));
+        var selectedThemeNames = themes.DistinctBy(theme => theme.Name).Select(theme => theme.Name);
+        var otherThemes = currentParty.Themes.Where(th => !selectedThemeNames.Contains(th.Name));
 
-        var otherThemesLimited = new List<ThemeDto>();
+        List<ThemeDto> otherThemesLimited = [];
         foreach (var otherTheme in otherThemes)
         {
             for (var i = 0; i < 5; i++)
@@ -268,7 +253,7 @@ public sealed class GameService
 
         themes.AddRange(themes.Count < 50 ? otherThemesLimited.Take(50 - themes.Count) : otherThemesLimited);
 
-        var randomThemes = themes.OrderBy(x => random.Next());
+        var randomThemes = themes.OrderBy(_ => random.Next());
         currentParty.LoadRandomThemes(randomThemes);
     }
 }

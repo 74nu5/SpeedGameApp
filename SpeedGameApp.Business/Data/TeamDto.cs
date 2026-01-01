@@ -21,7 +21,7 @@ public sealed record TeamDto(Guid Id, string Name, List<Player> Players)
     /// <param name="id">The team id.</param>
     /// <param name="name">The team name.</param>
     public TeamDto(Guid id, string name)
-        : this(id, name, new())
+        : this(id, name, [])
         => this.Score = 0;
 
     /// <summary>
