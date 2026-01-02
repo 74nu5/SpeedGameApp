@@ -1,10 +1,19 @@
 namespace SpeedGameApp.Pages.Game;
 
+using Microsoft.AspNetCore.Components;
+
 using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Services.Interfaces;
 
 public partial class PartyThemes : PartyPageBase
 {
     private IEnumerable<ThemeDto> themes = new List<ThemeDto>();
+
+    /// <inheritdoc />
+    public PartyThemes(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
+            : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)
+    {
+    }
 
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()

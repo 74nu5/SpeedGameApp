@@ -27,7 +27,7 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// <param name="id">The party id.</param>
     /// <param name="name">The party game.</param>
     public PartyDto(Guid id, string name)
-        : this(id, name, [])
+            : this(id, name, [])
     {
     }
 
@@ -52,7 +52,7 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     public ResponseType CurrentResponseType { get; internal set; }
 
     /// <summary>
-    ///    Gets a value indicating whether the themes displayed.
+    ///     Gets or sets a value indicating whether the themes displayed.
     /// </summary>
     public bool ShowThemes { get; set; }
 
@@ -77,7 +77,21 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// </summary>
     public IReadOnlyList<ThemeDto> RandomThemes
         => this.randomThemes.AsReadOnly();
-    
+
+    /// <summary>
+    ///     Method to load themesDtos.
+    /// </summary>
+    /// <param name="themesDtos">The themesDtos to load.</param>
+    public void LoadThemes(IEnumerable<ThemeDto> themesDtos)
+        => this.themes = themesDtos.ToList();
+
+    /// <summary>
+    ///     Method to load themesDtos.
+    /// </summary>
+    /// <param name="themesDtos">The themesDtos to load.</param>
+    public void LoadRandomThemes(IEnumerable<ThemeDto> themesDtos)
+        => this.randomThemes = themesDtos.ToList();
+
     /// <summary>
     ///     Method to get <see cref="PartyDto" /> from <see cref="Party" />.
     /// </summary>
@@ -105,19 +119,4 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// </summary>
     internal void OnPartyReset()
         => this.PartyReset?.Invoke(this, EventArgs.Empty);
-
-    /// <summary>
-    ///     Method to load themesDtos.
-    /// </summary>
-    /// <param name="themesDtos">The themesDtos to load.</param>
-    public void LoadThemes(IEnumerable<ThemeDto> themesDtos)
-        => this.themes = themesDtos.ToList();
-    
-    /// <summary>
-    ///     Method to load themesDtos.
-    /// </summary>
-    /// <param name="themesDtos">The themesDtos to load.</param>
-    public void LoadRandomThemes(IEnumerable<ThemeDto> themesDtos)
-        => this.randomThemes = themesDtos.ToList();
-
 }

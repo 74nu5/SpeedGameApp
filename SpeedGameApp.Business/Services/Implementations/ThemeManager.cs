@@ -8,11 +8,14 @@ using SpeedGameApp.Business.Services.Interfaces;
 /// </summary>
 internal sealed class ThemeManager(IPartyRepository repository) : IThemeManager
 {
+    private readonly IPartyRepository repository = repository;
+
     /// <inheritdoc/>
     public void LoadThemes(Guid partyId, IEnumerable<ThemeDto> themes)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         party.LoadThemes(themes.ToList());
     }
@@ -20,8 +23,9 @@ internal sealed class ThemeManager(IPartyRepository repository) : IThemeManager
     /// <inheritdoc/>
     public void SelectTheme(Guid partyId, Guid? teamId, ThemeDto theme)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         var themeDto = party.RandomThemes.FirstOrDefault(t => t.Id == theme.Id);
 
@@ -35,8 +39,9 @@ internal sealed class ThemeManager(IPartyRepository repository) : IThemeManager
     /// <inheritdoc/>
     public void ChoiceTheme(Guid partyId, Guid? teamId, ThemeDto theme)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null || teamId is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null || teamId is null)
+            return;
 
         var themeDto = party.Themes.FirstOrDefault(t => t.Id == theme.Id);
 
@@ -50,8 +55,9 @@ internal sealed class ThemeManager(IPartyRepository repository) : IThemeManager
     /// <inheritdoc/>
     public void ResetThemesChoices(Guid partyId)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         foreach (var theme in party.Themes)
         {

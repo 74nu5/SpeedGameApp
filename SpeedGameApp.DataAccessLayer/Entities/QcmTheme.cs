@@ -1,5 +1,7 @@
 ﻿namespace SpeedGameApp.DataAccessLayer.Entities;
 
+using System.ComponentModel.DataAnnotations;
+
 /// <summary>
 ///     Class which represents a question theme.
 /// </summary>
@@ -13,7 +15,8 @@ public sealed class QcmTheme
     /// <summary>
     ///     Gets or sets the thme name.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    [MaxLength(250)]
+    public required string Name { get; set; }
 
     /// <summary>
     ///     Gets or sets the theme questions.

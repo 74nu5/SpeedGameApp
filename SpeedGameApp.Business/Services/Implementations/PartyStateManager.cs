@@ -10,10 +10,12 @@ using SpeedGameApp.DataEnum;
 /// </summary>
 internal sealed class PartyStateManager(IPartyRepository repository) : IPartyStateManager
 {
+    private readonly IPartyRepository repository = repository;
+
     /// <inheritdoc/>
     public void AddPoints(TeamDto teamDto, int points)
     {
-        var party = repository.Parties.FirstOrDefault(kvp => kvp.Value.Teams.Any(t => t.Key == teamDto.Id)).Value;
+        var party = this.repository.Parties.FirstOrDefault(kvp => kvp.Value.Teams.Any(t => t.Key == teamDto.Id)).Value;
         teamDto.AddPoint(points);
         party.OnPartyChanged();
     }
@@ -21,8 +23,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void SetCurrentResponse(Guid partyId, ResponseType responseType)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         party.CurrentResponseType = responseType;
         party.OnPartyChanged();
@@ -31,8 +34,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void BuzzTeam(Guid partyId, Guid teamId)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         var (_, team) = party.Teams.FirstOrDefault(pair => pair.Key == teamId);
 
@@ -48,8 +52,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void ResetTeam(Guid partyId)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         party.AlreadyResponse = false;
 
@@ -66,8 +71,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void PropositionTeam(Guid partyId, Guid teamId, string response)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         var (_, team) = party.Teams.FirstOrDefault(pair => pair.Key == teamId);
 
@@ -83,8 +89,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void PropositionQcmTeam(Guid partyId, Guid teamId, string response)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         var (_, team) = party.Teams.FirstOrDefault(pair => pair.Key == teamId);
 
@@ -100,8 +107,9 @@ internal sealed class PartyStateManager(IPartyRepository repository) : IPartySta
     /// <inheritdoc/>
     public void SetCurrentQcm(Guid partyId, QcmQuestionDto question)
     {
-        var party = repository.GetParty(partyId);
-        if (party is null) return;
+        var party = this.repository.GetParty(partyId);
+        if (party is null)
+            return;
 
         party.CurrentQcm = question;
         party.OnPartyChanged();

@@ -1,5 +1,7 @@
 ﻿namespace SpeedGameApp.DataAccessLayer.Entities;
 
+using System.ComponentModel.DataAnnotations;
+
 /// <summary>
 ///     Class which represent a team.
 /// </summary>
@@ -18,7 +20,8 @@ public sealed class Team
     /// <summary>
     ///     Gets or sets the team name.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    [MaxLength(250)]
+    public required string Name { get; set; }
 
     /// <summary>
     ///     Gets or sets the party id.

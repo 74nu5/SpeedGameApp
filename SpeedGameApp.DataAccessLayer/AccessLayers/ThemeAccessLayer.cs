@@ -10,7 +10,9 @@ using SpeedGameApp.DataAccessLayer.Interfaces;
 /// </summary>
 public sealed class ThemeAccessLayer(SpeedGameDbContext context) : IThemeAccessLayer
 {
+    private readonly SpeedGameDbContext context = context;
+
     /// <inheritdoc/>
     public async Task<List<Theme>> GetAllThemesAsync()
-        => await context.Themes.ToListAsync();
+        => await this.context.Themes.ToListAsync();
 }

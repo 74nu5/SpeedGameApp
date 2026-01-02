@@ -24,7 +24,7 @@ public readonly record struct Result<T>
     /// <summary>
     ///     Gets a value indicating whether the operation failed.
     /// </summary>
-    public bool IsFailure => !IsSuccess;
+    public bool IsFailure => !this.IsSuccess;
 
     /// <summary>
     ///     Creates a successful result with a value.
@@ -35,7 +35,7 @@ public readonly record struct Result<T>
     {
         Value = value,
         IsSuccess = true,
-        Error = string.Empty
+        Error = string.Empty,
     };
 
     /// <summary>
@@ -47,7 +47,7 @@ public readonly record struct Result<T>
     {
         Value = default,
         IsSuccess = false,
-        Error = error
+        Error = error,
     };
 }
 
@@ -69,7 +69,7 @@ public readonly record struct Result
     /// <summary>
     ///     Gets a value indicating whether the operation failed.
     /// </summary>
-    public bool IsFailure => !IsSuccess;
+    public bool IsFailure => !this.IsSuccess;
 
     /// <summary>
     ///     Creates a successful result.
@@ -78,7 +78,7 @@ public readonly record struct Result
     public static Result Success() => new()
     {
         IsSuccess = true,
-        Error = string.Empty
+        Error = string.Empty,
     };
 
     /// <summary>
@@ -89,6 +89,6 @@ public readonly record struct Result
     public static Result Failure(string error) => new()
     {
         IsSuccess = false,
-        Error = error
+        Error = error,
     };
 }

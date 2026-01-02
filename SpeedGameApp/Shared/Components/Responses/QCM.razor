@@ -1,5 +1,4 @@
-﻿@using SpeedGameApp.Business.Services.Models
-@if (this.Question == null)
+﻿@if (this.Question == null)
 {
     return;
 }
@@ -28,30 +27,8 @@
                         <label class="form-check-label" for="option4">@(this.Question.Option4)</label>
                 </div>
             </InputRadioGroup>
-            <button class="btn btn-success" @onclick="this.Callback">Valider</button>
+            <button class="btn btn-success" @onclick="this.CallbackQcmAsync">Valider</button>
         </EditForm>
     </div>
 </div>
 
-@code {
-
-    private string response = string.Empty;
-
-    [Parameter]
-    public QcmQuestionDto? Question { get; set; }
-
-    [Parameter]
-    public EventCallback<string> ResponseCallback { get; set; }
-
-    private async Task Callback()
-    {
-        await this.ResponseCallback.InvokeAsync(this.response).ConfigureAwait(true);
-    }
-
-    public async Task ResetAsync()
-    {
-        this.response = string.Empty;
-        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
-    }
-
-}

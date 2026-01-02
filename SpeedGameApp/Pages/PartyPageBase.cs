@@ -3,12 +3,19 @@
 using Microsoft.AspNetCore.Components;
 
 using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Services.Interfaces;
 
 /// <summary>
 ///     The party page base.
 /// </summary>
 public class PartyPageBase : GamePageBase
 {
+    /// <inheritdoc />
+    public PartyPageBase(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
+            : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)
+    {
+    }
+
     /// <summary>
     ///     Gets or sets the current party id.
     /// </summary>
@@ -32,8 +39,11 @@ public class PartyPageBase : GamePageBase
             return;
         }
 
-        if (this.TeamId is not null && !this.CurrentParty.Teams.TryGetValue(this.TeamId.Value, out this.CurrentTeam!))
+        TeamDto? currentTeam = null;
+        if (this.TeamId is not null && !this.CurrentParty.Teams.TryGetValue(this.TeamId.Value, out currentTeam))
             this.NavigationManager.NavigateTo("/");
+
+        this.CurrentTeam = currentTeam!;
 
         this.CurrentParty.PartyChanged += async (_, _) => await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
     }

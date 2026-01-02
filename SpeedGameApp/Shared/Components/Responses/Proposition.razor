@@ -3,7 +3,7 @@
         Proposition
     </div>
     <div class="card-body">
-        <EditForm Model="this.response" OnValidSubmit="this.Callback">
+        <EditForm Model="this.response" OnValidSubmit="this.CallbackPropositionAsync">
             <fieldset disabled="@this.AlreadyResponse">
                 <InputText class="form-control proposition" type="text" placeholder="Réponse" @ref="this.inputResponse" @bind-Value="this.response"/>
                 <button class="btn btn-success w-100" type="submit">Valider</button>
@@ -12,32 +12,3 @@
     </div>
 </div>
 
-@code {
-
-    private InputText? inputResponse;
-
-    private string response = string.Empty;
-
-    [Parameter]
-    public EventCallback<string> ResponseCallback { get; set; }
-
-    [Parameter]
-    public bool AlreadyResponse { get; set; }
-
-    private async Task Callback()
-        => await this.ResponseCallback.InvokeAsync(this.response).ConfigureAwait(true);
-
-    /// <inheritdoc />
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        var inputResponseElement = this.inputResponse?.Element;
-        if (inputResponseElement is not null)
-            await inputResponseElement.Value.FocusAsync().ConfigureAwait(true);
-    }
-
-    public async Task ResetAsync()
-    {
-        this.response = string.Empty;
-        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
-    }
-}

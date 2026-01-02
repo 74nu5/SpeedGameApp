@@ -11,26 +11,29 @@ public sealed class GameplayService(
     IPartyStateManager stateManager,
     IPartyManagementService partyManagementService) : IGameplayService
 {
+    private readonly IPartyStateManager stateManager = stateManager;
+    private readonly IPartyManagementService partyManagementService = partyManagementService;
+
     /// <inheritdoc />
     public async Task AddPointsAsync(TeamDto teamDto, int points, CancellationToken cancellationToken)
     {
-        stateManager.AddPoints(teamDto, points);
-        await partyManagementService.SavePartyAsync(teamDto.PartyId, cancellationToken);
+        this.stateManager.AddPoints(teamDto, points);
+        await this.partyManagementService.SavePartyAsync(teamDto.PartyId, cancellationToken);
     }
 
     /// <inheritdoc />
     public void BuzzTeam(Guid partyId, Guid teamId)
-        => stateManager.BuzzTeam(partyId, teamId);
+        => this.stateManager.BuzzTeam(partyId, teamId);
 
     /// <inheritdoc />
     public void PropositionTeam(Guid partyId, Guid teamId, string response)
-        => stateManager.PropositionTeam(partyId, teamId, response);
+        => this.stateManager.PropositionTeam(partyId, teamId, response);
 
     /// <inheritdoc />
     public void ResetTeam(Guid partyId)
-        => stateManager.ResetTeam(partyId);
+        => this.stateManager.ResetTeam(partyId);
 
     /// <inheritdoc />
     public void SetCurrentResponse(Guid partyId, ResponseType responseType)
-        => stateManager.SetCurrentResponse(partyId, responseType);
+        => this.stateManager.SetCurrentResponse(partyId, responseType);
 }

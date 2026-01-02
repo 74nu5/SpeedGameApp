@@ -1,8 +1,18 @@
 namespace SpeedGameApp.Pages.Game;
 
+using Microsoft.AspNetCore.Components;
+
+using SpeedGameApp.Business.Services.Interfaces;
+
 public sealed partial class PartyTeamCreation : PartyPageBase
 {
     private string? teamName = string.Empty;
+
+    /// <inheritdoc />
+    public PartyTeamCreation(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
+            : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)
+    {
+    }
 
     private async Task CreateTeamPartyAsync()
     {

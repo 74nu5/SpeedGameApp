@@ -256,7 +256,8 @@ internal sealed class PartyContext
 
     public void ResetThemesChoices(Guid partyId)
     {
-        foreach (var theme in this.parties[partyId].Themes) {
+        foreach (var theme in this.parties[partyId].Themes)
+        {
             theme.Team = null;
         }
 

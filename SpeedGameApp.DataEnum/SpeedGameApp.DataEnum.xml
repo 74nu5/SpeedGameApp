@@ -4,5 +4,50 @@
         <name>SpeedGameApp.DataEnum</name>
     </assembly>
     <members>
+        <member name="T:SpeedGameApp.DataEnum.Difficulty">
+            <summary>
+                Énumération des niveaux de difficulté disponibles dans le jeu.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.Difficulty.Facile">
+            <summary>
+                Niveau de difficulté facile.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.Difficulty.Moyenne">
+            <summary>
+                Niveau de difficulté moyen.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.Difficulty.Difficile">
+            <summary>
+                Niveau de difficulté difficile.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.DataEnum.ResponseType">
+            <summary>
+                Représente les différents types de réponses possibles dans l'application.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.ResponseType.None">
+            <summary>
+                Aucun type de réponse spécifié.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.ResponseType.Buzzer">
+            <summary>
+                Réponse de type buzzer (premier à répondre).
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.ResponseType.Proposition">
+            <summary>
+                Réponse sous forme de proposition libre.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.ResponseType.Qcm">
+            <summary>
+                Réponse sous forme de QCM (question à choix multiples).
+            </summary>
+        </member>
     </members>
 </doc>

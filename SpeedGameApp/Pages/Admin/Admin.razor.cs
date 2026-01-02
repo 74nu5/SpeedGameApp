@@ -1,10 +1,19 @@
 namespace SpeedGameApp.Pages.Admin;
 
+using Microsoft.AspNetCore.Components;
+
 using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Services.Interfaces;
 
 public partial class Admin : GamePageBase
 {
     private Dictionary<Guid, PartyDto> dbParties = new();
+
+    /// <inheritdoc />
+    public Admin(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
+            : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)
+    {
+    }
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()

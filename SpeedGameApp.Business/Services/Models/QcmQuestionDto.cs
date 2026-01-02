@@ -62,7 +62,7 @@ public sealed class QcmQuestionDto
     {
         Id = question.Id,
         Difficulty = question.Difficulty,
-        Theme = QcmThemeDto.FromQcmTheme(question.Theme),
+        Theme = QcmThemeDto.FromQcmTheme(question.Theme!),
         Question = question.Question,
         Option1 = question.Option1,
         Option2 = question.Option2,

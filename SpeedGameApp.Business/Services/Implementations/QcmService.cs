@@ -11,14 +11,17 @@ public sealed class QcmService(
     IQuestionAccessLayer questionAccessLayer,
     IPartyStateManager stateManager) : IQcmService
 {
+    private readonly IQuestionAccessLayer questionAccessLayer = questionAccessLayer;
+    private readonly IPartyStateManager stateManager = stateManager;
+
     /// <inheritdoc />
     public void SetRandomQcm(Guid partyId)
     {
-        var question = questionAccessLayer.GetRandom();
-        stateManager.SetCurrentQcm(partyId, QcmQuestionDto.FromQcmQuestion(question));
+        var question = this.questionAccessLayer.GetRandom();
+        this.stateManager.SetCurrentQcm(partyId, QcmQuestionDto.FromQcmQuestion(question));
     }
 
     /// <inheritdoc />
     public void PropositionQcmTeam(Guid partyId, Guid teamId, string response)
-        => stateManager.PropositionQcmTeam(partyId, teamId, response);
+        => this.stateManager.PropositionQcmTeam(partyId, teamId, response);
 }

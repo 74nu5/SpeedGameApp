@@ -1,10 +1,10 @@
 ﻿namespace SpeedGameApp.Business.Extensions;
 
 using FluentValidation;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services;
 using SpeedGameApp.Business.Services.Implementations;
 using SpeedGameApp.Business.Services.Interfaces;
@@ -25,7 +25,7 @@ public static class BusinessExtensions
         services.AddDalServices();
 
         // Validators
-        services.AddValidatorsFromAssemblyContaining<PartyNameValidator>(ServiceLifetime.Singleton);
+        _ = services.AddValidatorsFromAssemblyContaining<PartyNameValidator>(ServiceLifetime.Singleton);
 
         // Specialized business services (following SRP)
         services.TryAddTransient<IPartyManagementService, PartyManagementService>();
@@ -42,8 +42,5 @@ public static class BusinessExtensions
         services.TryAddSingleton<IPartyRepository, PartyRepository>();
         services.TryAddSingleton<IPartyStateManager, PartyStateManager>();
         services.TryAddSingleton<IThemeManager, ThemeManager>();
-
-        // Legacy (kept for backwards compatibility, will be removed)
-        services.TryAddSingleton<PartyContext>();
     }
 }

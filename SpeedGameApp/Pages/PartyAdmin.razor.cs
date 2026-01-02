@@ -1,10 +1,19 @@
 namespace SpeedGameApp.Pages;
 
+using Microsoft.AspNetCore.Components;
+
 using SpeedGameApp.Business.Data;
+using SpeedGameApp.Business.Services.Interfaces;
 using SpeedGameApp.DataEnum;
 
 public sealed partial class PartyAdmin : PartyPageBase
 {
+    /// <inheritdoc />
+    public PartyAdmin(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
+            : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)
+    {
+    }
+
     private async Task AddPointsAsync(TeamDto teamDto, int points)
     {
         this.CancellationTokenSource = new();
@@ -37,7 +46,8 @@ public sealed partial class PartyAdmin : PartyPageBase
     }
 
     private string GetCardCss(ThemeDto themeDto)
-        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch {
+        => (this.TeamId, themeDto.AlreadyTaken, themeDto.Team?.Id) switch
+        {
             (null, _, _) => "card bg-light",
             (_, true, var teamId) when teamId == this.TeamId => "card bg-success",
             (_, true, { } teamId) when this.CurrentParty.Teams.ContainsKey(teamId) => "card bg-danger",

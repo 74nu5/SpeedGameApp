@@ -5,12 +5,24 @@ using SpeedGameApp.DataAccessLayer;
 using SpeedGameApp.DataAccessLayer.Entities;
 using SpeedGameApp.DataEnum;
 
+/// <summary>
+///     Provides services for importing and processing QCM questions from CSV data.
+/// </summary>
 public sealed class CsvService
 {
     private readonly SpeedGameDbContext context;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="CsvService" /> class.
+    /// </summary>
+    /// <param name="context">The database context to use for data operations.</param>
     public CsvService(SpeedGameDbContext context) => this.context = context;
 
+    /// <summary>
+    ///     Inserts a list of QCM questions into the database, adding new themes if necessary.
+    /// </summary>
+    /// <param name="questions">The list of questions to insert.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task InsertQuestionsAsync(List<QcmQuestionDto> questions)
     {
         foreach (var themeDto in questions.Select(q => q.Theme).DistinctBy(t => t.Name))
@@ -57,8 +69,18 @@ public sealed class CsvService
         }
     }
 
+    /// <summary>
+    ///     Converts a collection of CSV lines to a collection of <see cref="QcmQuestionDto" /> objects.
+    /// </summary>
+    /// <param name="lines">The CSV lines to convert.</param>
+    /// <returns>An enumerable of <see cref="QcmQuestionDto" /> objects.</returns>
     public IEnumerable<QcmQuestionDto> CsvToQuestions(IEnumerable<string> lines) => lines.Select(ProcessLine);
 
+    /// <summary>
+    ///     Processes a single CSV line and converts it to a <see cref="QcmQuestionDto" /> object.
+    /// </summary>
+    /// <param name="line">The CSV line to process.</param>
+    /// <returns>A <see cref="QcmQuestionDto" /> object representing the data in the line.</returns>
     private static QcmQuestionDto ProcessLine(string line)
     {
         var values = line.Split(',');

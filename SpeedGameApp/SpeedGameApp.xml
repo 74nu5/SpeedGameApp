@@ -4,38 +4,131 @@
         <name>SpeedGameApp</name>
     </assembly>
     <members>
+        <member name="T:SpeedGameApp.Extensions.BrowserFileExtensions">
+            <summary>
+                Fournit des méthodes d'extension pour la manipulation des fichiers <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile" /> dans Blazor.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Extensions.BrowserFileExtensions.ConvertFileToStringArrayAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+                Lit le contenu d'un fichier <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile" /> et le convertit en un tableau de chaînes, chaque élément représentant une ligne du fichier.
+            </summary>
+            <param name="file">Le fichier à lire.</param>
+            <returns>
+                Une tâche asynchrone qui, lorsqu'elle est terminée, retourne un tableau de chaînes contenant chaque ligne du fichier.
+            </returns>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Admin.Admin.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
+            <inheritdoc />
+        </member>
         <member name="M:SpeedGameApp.Pages.Admin.Admin.OnInitializedAsync">
             <inheritdoc />
         </member>
+        <member name="T:SpeedGameApp.Pages.Admin.AdminQuestions">
+            <summary>
+                Composant Blazor pour la gestion des questions administrateur.
+                Permet l'affichage, l'importation et l'insertion de questions via un fichier CSV.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Pages.Admin.AdminQuestions.csvService">
+            <summary>
+                Service pour la gestion des opérations CSV.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Pages.Admin.AdminQuestions.appContext">
+            <summary>
+                Contexte de base de données de l'application.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Pages.Admin.AdminQuestions.questions">
+            <summary>
+                Liste des questions chargées depuis la base de données.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.#ctor(SpeedGameApp.Business.Services.CsvService,SpeedGameApp.DataAccessLayer.SpeedGameDbContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpeedGameApp.Pages.Admin.AdminQuestions"/> class.
+                Initialise une nouvelle instance de la classe <see cref="T:SpeedGameApp.Pages.Admin.AdminQuestions" />.
+            </summary>
+            <param name="csvService">Service de gestion des fichiers CSV.</param>
+            <param name="appContext">Contexte de base de données de l'application.</param>
+        </member>
         <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.OnInitializedAsync">
-            <inheritdoc />
+            <summary>
+                Méthode appelée lors de l'initialisation du composant.
+                Charge la liste des questions avec leur thème associé depuis la base de données.
+            </summary>
+            <returns>Une tâche asynchrone représentant l'opération d'initialisation.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.InputFileHandlerAsync(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs)">
+            <summary>
+                Gère l'importation d'un fichier CSV contenant des questions.
+                Convertit le fichier en tableau de chaînes, parse les questions et les insère en base.
+            </summary>
+            <param name="arg">Événement de changement de fichier d'entrée.</param>
+            <returns>Une tâche asynchrone représentant l'opération d'importation.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Pages.GamePageBase">
+            <summary>
+                Base class for the game page, providing required services and data.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.GamePageBase.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Pages.GamePageBase" /> class with the required services.
+            </summary>
+            <param name="partyManagementService">The party management service.</param>
+            <param name="qcmService">The QCM management service.</param>
+            <param name="gameplayService">The gameplay management service.</param>
+            <param name="themeService">The theme management service.</param>
+            <param name="navigationManager">The navigation manager.</param>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.CancellationTokenSource">
+            <summary>
+                Gets or sets Cancellation token source used to manage the cancellation of asynchronous operations.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.CurrentParty">
+            <summary>
+                Gets or sets represents the current party.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.CurrentTeam">
+            <summary>
+                Gets or sets represents the current team.
+            </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.PartyManagementService">
             <summary>
-                Gets or sets the party management service.
+                Gets the party management service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.QcmService">
             <summary>
-                Gets or sets the QCM service.
+                Gets the QCM management service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.GameplayService">
             <summary>
-                Gets or sets the gameplay service.
+                Gets the gameplay management service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.ThemeService">
             <summary>
-                Gets or sets the theme service.
+                Gets the theme management service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.NavigationManager">
             <summary>
-                Gets or sets the navigation manager.
+                Gets the navigation manager.
             </summary>
         </member>
         <member name="M:SpeedGameApp.Pages.GamePageBase.Dispose">
+            <summary>
+                Releases the resources used by the <see cref="T:SpeedGameApp.Pages.GamePageBase" /> instance.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyTeamCreation.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
             <inheritdoc />
         </member>
         <member name="T:SpeedGameApp.Pages.Game.PartyTeamPlay">
@@ -43,7 +136,13 @@
                 The party team play.
             </summary>
         </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
+            <inheritdoc />
+        </member>
         <member name="M:SpeedGameApp.Pages.Game.PartyTeamPlay.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Pages.Game.PartyThemes.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
             <inheritdoc />
         </member>
         <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
@@ -59,10 +158,16 @@
                 Gets or sets the navigation manager.
             </summary>
         </member>
+        <member name="M:SpeedGameApp.Pages.PartyAdmin.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
+            <inheritdoc />
+        </member>
         <member name="T:SpeedGameApp.Pages.PartyPageBase">
             <summary>
                 The party page base.
             </summary>
+        </member>
+        <member name="M:SpeedGameApp.Pages.PartyPageBase.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
+            <inheritdoc />
         </member>
         <member name="P:SpeedGameApp.Pages.PartyPageBase.PartyId">
             <summary>
@@ -77,11 +182,113 @@
         <member name="M:SpeedGameApp.Pages.PartyPageBase.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:SpeedGameApp.Shared.Components.Responses.Buzzer">
+            <summary>
+                Represents a buzzer component for user interaction in a game context.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Shared.Components.Responses.Buzzer.button">
+            <summary>
+                Reference to the button element in the component.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.Buzzer.Buzz">
+            <summary>
+                Event callback triggered when the buzzer is pressed.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.Buzzer.AlreadyResponse">
+            <summary>
+                Gets or sets a value indicating whether a response has already been given.
+            </summary>
+        </member>
         <member name="M:SpeedGameApp.Shared.Components.Responses.Buzzer.OnAfterRenderAsync(System.Boolean)">
-            <inheritdoc />
+            <summary>
+                Sets focus to the button element after the component has rendered.
+            </summary>
+            <param name="firstRender">Indicates whether this is the first time the component has rendered.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.Buzzer.CallbackBuzzerAsync">
+            <summary>
+                Invokes the <see cref="P:SpeedGameApp.Shared.Components.Responses.Buzzer.Buzz" /> event callback asynchronously.
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Shared.Components.Responses.Proposition">
+            <summary>
+                Blazor component allowing the user to enter a response proposition.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Shared.Components.Responses.Proposition.inputResponse">
+            <summary>
+                Reference to the input field for the response.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Shared.Components.Responses.Proposition.response">
+            <summary>
+                Stores the current response entered by the user.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.Proposition.ResponseCallback">
+            <summary>
+                Event callback triggered when the user submits a response.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.Proposition.AlreadyResponse">
+            <summary>
+                Indicates whether a response has already been submitted.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.ResetAsync">
+            <summary>
+                Resets the response input to an empty string and refreshes the component state.
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
         </member>
         <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.OnAfterRenderAsync(System.Boolean)">
-            <inheritdoc />
+            <summary>
+                Sets focus to the input field after the component has rendered.
+            </summary>
+            <param name="firstRender">Indicates if this is the first render.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.CallbackPropositionAsync">
+            <summary>
+                Invokes the <see cref="P:SpeedGameApp.Shared.Components.Responses.Proposition.ResponseCallback" /> event with the current response.
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Shared.Components.Responses.QCM">
+            <summary>
+                Represents a Blazor component for displaying and handling a multiple-choice question (QCM).
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.Shared.Components.Responses.QCM.response">
+            <summary>
+                Stores the user's selected response.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.QCM.Question">
+            <summary>
+                Gets or sets the question data to display.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.Responses.QCM.ResponseCallback">
+            <summary>
+                Gets or sets the callback invoked when the user submits a response.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.QCM.ResetAsync">
+            <summary>
+                Resets the user's response and updates the component state.
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Shared.Components.Responses.QCM.CallbackQcmAsync">
+            <summary>
+                Invokes the <see cref="P:SpeedGameApp.Shared.Components.Responses.QCM.ResponseCallback" /> with the current response.
+            </summary>
         </member>
         <member name="T:Program">
             <summary>

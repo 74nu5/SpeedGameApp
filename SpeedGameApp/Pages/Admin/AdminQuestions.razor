@@ -17,7 +17,7 @@
     @foreach (var question in this.questions)
     {
         <tr>
-            <td>@question.Theme.Name</td>
+            <td>@question.Theme?.Name</td>
             <td>@question.Difficulty.ToString()</td>
             <td>@question.Question</td>
         </tr>

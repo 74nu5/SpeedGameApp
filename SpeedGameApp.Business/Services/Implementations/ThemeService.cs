@@ -12,54 +12,58 @@ public sealed class ThemeService(
     IThemeManager themeManager,
     IPartyRepository partyRepository) : IThemeService
 {
+    private readonly IPartyRepository partyRepository = partyRepository;
+    private readonly IThemeAccessLayer themeAccessLayer = themeAccessLayer;
+    private readonly IThemeManager themeManager = themeManager;
+
     /// <inheritdoc />
     public async Task<IEnumerable<ThemeDto>> GetThemesAsync(Guid partyId)
     {
-        if (partyRepository.Parties[partyId].Themes.Any())
-            return partyRepository.Parties[partyId].Themes;
+        if (this.partyRepository.Parties[partyId].Themes.Any())
+            return this.partyRepository.Parties[partyId].Themes;
 
-        var allThemes = await themeAccessLayer.GetAllThemesAsync();
+        var allThemes = await this.themeAccessLayer.GetAllThemesAsync();
 
-        themeManager.LoadThemes(partyId,
+        this.themeManager.LoadThemes(partyId,
                                 allThemes.Select(t => new ThemeDto
                                 {
                                     Id = t.Id,
                                     Name = t.Name,
                                 }));
 
-        return partyRepository.Parties[partyId].Themes;
+        return this.partyRepository.Parties[partyId].Themes;
     }
 
     /// <inheritdoc />
     public void SelectTheme(Guid partyId, Guid? teamId, ThemeDto theme)
-        => themeManager.SelectTheme(partyId, teamId, theme);
+        => this.themeManager.SelectTheme(partyId, teamId, theme);
 
     /// <inheritdoc />
     public void ChoiceTheme(Guid partyId, Guid? teamId, ThemeDto theme)
-        => themeManager.ChoiceTheme(partyId, teamId, theme);
+        => this.themeManager.ChoiceTheme(partyId, teamId, theme);
 
     /// <inheritdoc />
     public void ResetThemesChoices(Guid partyId)
-        => themeManager.ResetThemesChoices(partyId);
+        => this.themeManager.ResetThemesChoices(partyId);
 
     /// <inheritdoc />
     public void HideTheme(Guid partyId)
     {
-        partyRepository.Parties[partyId].ShowThemes = false;
-        partyRepository.Parties[partyId].OnPartyChanged();
+        this.partyRepository.Parties[partyId].ShowThemes = false;
+        this.partyRepository.Parties[partyId].OnPartyChanged();
     }
 
     /// <inheritdoc />
     public void ShowTheme(Guid partyId)
     {
-        partyRepository.Parties[partyId].ShowThemes = true;
-        partyRepository.Parties[partyId].OnPartyChanged();
+        this.partyRepository.Parties[partyId].ShowThemes = true;
+        this.partyRepository.Parties[partyId].OnPartyChanged();
     }
 
     /// <inheritdoc />
     public void GenerateThemes(Guid partyId)
     {
-        var currentParty = partyRepository.Parties[partyId];
+        var currentParty = this.partyRepository.Parties[partyId];
         var random = Random.Shared;
         List<ThemeDto> themes = [];
 

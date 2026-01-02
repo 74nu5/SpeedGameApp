@@ -269,7 +269,7 @@
         </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.ShowThemes">
             <summary>
-               Gets a value indicating whether the themes displayed.
+                Gets or sets a value indicating whether the themes displayed.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.AlreadyResponse">
@@ -291,6 +291,18 @@
             <summary>
                 Gets the parties.
             </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadRandomThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Method to load themesDtos.
+            </summary>
+            <param name="themesDtos">The themesDtos to load.</param>
         </member>
         <member name="M:SpeedGameApp.Business.Data.PartyDto.FromDbParty(SpeedGameApp.DataAccessLayer.Entities.Party)">
             <summary>
@@ -315,18 +327,6 @@
             <summary>
                 Method to raise the <see cref="E:SpeedGameApp.Business.Data.PartyDto.PartyReset" /> event.
             </summary>
-        </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
-            <summary>
-                Method to load themesDtos.
-            </summary>
-            <param name="themesDtos">The themesDtos to load.</param>
-        </member>
-        <member name="M:SpeedGameApp.Business.Data.PartyDto.LoadRandomThemes(System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
-            <summary>
-                Method to load themesDtos.
-            </summary>
-            <param name="themesDtos">The themesDtos to load.</param>
         </member>
         <member name="T:SpeedGameApp.Business.Data.Player">
             <summary>
@@ -472,6 +472,38 @@
                 Add business services.
             </summary>
             <param name="services">The service collection.</param>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.CsvService">
+            <summary>
+                Provides services for importing and processing QCM questions from CSV data.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.CsvService.#ctor(SpeedGameApp.DataAccessLayer.SpeedGameDbContext)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Services.CsvService" /> class.
+            </summary>
+            <param name="context">The database context to use for data operations.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.CsvService.InsertQuestionsAsync(System.Collections.Generic.List{SpeedGameApp.Business.Services.Models.QcmQuestionDto})">
+            <summary>
+                Inserts a list of QCM questions into the database, adding new themes if necessary.
+            </summary>
+            <param name="questions">The list of questions to insert.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.CsvService.CsvToQuestions(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+                Converts a collection of CSV lines to a collection of <see cref="T:SpeedGameApp.Business.Services.Models.QcmQuestionDto" /> objects.
+            </summary>
+            <param name="lines">The CSV lines to convert.</param>
+            <returns>An enumerable of <see cref="T:SpeedGameApp.Business.Services.Models.QcmQuestionDto" /> objects.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.CsvService.ProcessLine(System.String)">
+            <summary>
+                Processes a single CSV line and converts it to a <see cref="T:SpeedGameApp.Business.Services.Models.QcmQuestionDto" /> object.
+            </summary>
+            <param name="line">The CSV line to process.</param>
+            <returns>A <see cref="T:SpeedGameApp.Business.Services.Models.QcmQuestionDto" /> object representing the data in the line.</returns>
         </member>
         <member name="T:SpeedGameApp.Business.Services.Implementations.GameplayService">
             <summary>
@@ -1098,7 +1130,7 @@
         </member>
         <member name="M:SpeedGameApp.Business.Validators.PartyNameValidator.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.PartyNameValidator"/> class.
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.PartyNameValidator" /> class.
             </summary>
         </member>
         <member name="T:SpeedGameApp.Business.Validators.TeamNameValidator">
@@ -1108,7 +1140,7 @@
         </member>
         <member name="M:SpeedGameApp.Business.Validators.TeamNameValidator.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.TeamNameValidator"/> class.
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.TeamNameValidator" /> class.
             </summary>
         </member>
     </members>
