@@ -3,17 +3,17 @@ namespace SpeedGameApp.Pages;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-using SpeedGameApp.Business.Services;
+using SpeedGameApp.Business.Services.Interfaces;
 
 public partial class Index
 {
     private string partyName = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the game service.
+    ///     Gets or sets the party management service.
     /// </summary>
     [Inject]
-    public GameService GameService { get; set; } = default!;
+    public IPartyManagementService PartyManagementService { get; set; } = default!;
 
     /// <summary>
     ///     Gets or sets the navigation manager.
@@ -28,7 +28,10 @@ public partial class Index
 
         var cancellationTokenSource = new CancellationTokenSource();
 
-        var guidParty = await this.GameService.CreatePartyAsync(this.partyName, cancellationTokenSource.Token);
-        this.NavigationManager.NavigateTo($"/party/{guidParty}/admin");
+        var result = await this.PartyManagementService.CreatePartyAsync(this.partyName, cancellationTokenSource.Token);
+
+        if (result.IsSuccess)
+            this.NavigationManager.NavigateTo($"/party/{result.Value}/admin");
+        // TODO: Handle error case - could display error message to user
     }
 }

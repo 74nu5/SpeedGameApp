@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using SpeedGameApp.Business.Data;
-using SpeedGameApp.Business.Services;
 using SpeedGameApp.Business.Services.Implementations;
 using SpeedGameApp.Business.Services.Interfaces;
 using SpeedGameApp.Business.Validators;
@@ -34,7 +33,6 @@ public static class BusinessExtensions
         services.TryAddTransient<IThemeService, ThemeService>();
 
         // Core services
-        services.TryAddTransient<GameService>(); // Legacy facade - use specialized services instead
         services.TryAddTransient<CsvService>();
         services.TryAddSingleton(TimeProvider.System); // .NET 8+ TimeProvider pour testabilité
 

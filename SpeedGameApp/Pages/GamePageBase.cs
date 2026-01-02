@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Components;
 
 using SpeedGameApp.Business.Data;
-using SpeedGameApp.Business.Services;
+using SpeedGameApp.Business.Services.Interfaces;
 
 public class GamePageBase : ComponentBase, IDisposable
 {
@@ -14,10 +14,28 @@ public class GamePageBase : ComponentBase, IDisposable
     protected TeamDto CurrentTeam = TeamDto.Empty;
 
     /// <summary>
-    ///     Gets or sets the game service.
+    ///     Gets or sets the party management service.
     /// </summary>
     [Inject]
-    public GameService GameService { get; set; } = default!;
+    public IPartyManagementService PartyManagementService { get; set; } = default!;
+
+    /// <summary>
+    ///     Gets or sets the QCM service.
+    /// </summary>
+    [Inject]
+    public IQcmService QcmService { get; set; } = default!;
+
+    /// <summary>
+    ///     Gets or sets the gameplay service.
+    /// </summary>
+    [Inject]
+    public IGameplayService GameplayService { get; set; } = default!;
+
+    /// <summary>
+    ///     Gets or sets the theme service.
+    /// </summary>
+    [Inject]
+    public IThemeService ThemeService { get; set; } = default!;
 
     /// <summary>
     ///     Gets or sets the navigation manager.

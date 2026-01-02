@@ -8,32 +8,32 @@ public sealed partial class PartyAdmin : PartyPageBase
     private async Task AddPointsAsync(TeamDto teamDto, int points)
     {
         this.CancellationTokenSource = new();
-        await this.GameService.AddPointsAsync(teamDto, points, this.CancellationTokenSource.Token);
+        await this.GameplayService.AddPointsAsync(teamDto, points, this.CancellationTokenSource.Token);
     }
 
     private void SetResponse(ResponseType responseType)
-        => this.GameService.SetCurrentResponse(this.PartyId, responseType);
+        => this.GameplayService.SetCurrentResponse(this.PartyId, responseType);
 
     private async Task DeleteTeamAsync(Guid partyId, Guid teamId)
     {
         this.CancellationTokenSource = new();
-        await this.GameService.DeleteTeamAsync(partyId, teamId, this.CancellationTokenSource.Token);
+        await this.PartyManagementService.DeleteTeamAsync(partyId, teamId, this.CancellationTokenSource.Token);
         await this.InvokeAsync(this.StateHasChanged);
     }
 
     private void RandomizeQcm()
-        => this.GameService.SetRandomQcm(this.PartyId);
+        => this.QcmService.SetRandomQcm(this.PartyId);
 
     private void ResetQuestion()
-        => this.GameService.ResetTeam(this.PartyId);
+        => this.GameplayService.ResetTeam(this.PartyId);
 
     private void HideTheme()
-        => this.GameService.HideTheme(this.PartyId);
+        => this.ThemeService.HideTheme(this.PartyId);
 
     private void ShowTheme()
     {
-        this.GameService.GenerateThemes(this.PartyId);
-        this.GameService.ShowTheme(this.PartyId);
+        this.ThemeService.GenerateThemes(this.PartyId);
+        this.ThemeService.ShowTheme(this.PartyId);
     }
 
     private string GetCardCss(ThemeDto themeDto)

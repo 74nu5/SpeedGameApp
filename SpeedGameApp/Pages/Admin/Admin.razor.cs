@@ -9,34 +9,34 @@ public partial class Admin : GamePageBase
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        this.GameService.PartyChanged += async (_, _) => await this.InvokeAsync(this.StateHasChanged);
-        this.dbParties = await this.GameService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
+        this.PartyManagementService.PartyChanged += async (_, _) => await this.InvokeAsync(this.StateHasChanged);
+        this.dbParties = await this.PartyManagementService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
     }
 
-    private void DeleteParty(Guid id) => this.GameService.DeleteParty(id);
+    private void DeleteParty(Guid id) => this.PartyManagementService.DeleteParty(id);
 
-    private void DeleteAllParties() => this.GameService.DeleteAllParties();
+    private void DeleteAllParties() => this.PartyManagementService.DeleteAllParties();
 
     private async Task SavePartyAsync(Guid id)
     {
         this.CancellationTokenSource = new();
-        await this.GameService.SavePartyAsync(id, this.CancellationTokenSource.Token);
-        this.dbParties = await this.GameService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
+        await this.PartyManagementService.SavePartyAsync(id, this.CancellationTokenSource.Token);
+        this.dbParties = await this.PartyManagementService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
         await this.InvokeAsync(this.StateHasChanged);
     }
 
     private async Task DeleteDbPartyAsync(Guid id)
     {
         this.CancellationTokenSource = new();
-        await this.GameService.DeleteDbPartyAsync(id, this.CancellationTokenSource.Token);
-        this.dbParties = await this.GameService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
+        await this.PartyManagementService.DeleteDbPartyAsync(id, this.CancellationTokenSource.Token);
+        this.dbParties = await this.PartyManagementService.GetDbPartiesAsync(this.CancellationTokenSource.Token);
         await this.InvokeAsync(this.StateHasChanged);
     }
 
     private async Task LoadPartyAsync(Guid id)
     {
         this.CancellationTokenSource = new();
-        await this.GameService.LoadPartyAsync(id, this.CancellationTokenSource.Token);
+        await this.PartyManagementService.LoadPartyAsync(id, this.CancellationTokenSource.Token);
         await this.InvokeAsync(this.StateHasChanged);
     }
 }

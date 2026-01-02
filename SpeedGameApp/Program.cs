@@ -1,12 +1,10 @@
 using SpeedGameApp.Business.Extensions;
-using SpeedGameApp.Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddTransient<GameService>();
 builder.Services.AddBusinessServices();
 
 var app = builder.Build();

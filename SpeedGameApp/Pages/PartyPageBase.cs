@@ -24,7 +24,7 @@ public class PartyPageBase : GamePageBase
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
-        this.CurrentParty = await this.GameService.GetPartyAsync(this.PartyId, this.CancellationTokenSource.Token) ?? PartyDto.Empty;
+        this.CurrentParty = await this.PartyManagementService.GetPartyAsync(this.PartyId, this.CancellationTokenSource.Token) ?? PartyDto.Empty;
 
         if (this.CurrentParty == PartyDto.Empty)
         {

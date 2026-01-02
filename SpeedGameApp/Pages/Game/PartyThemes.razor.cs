@@ -10,7 +10,7 @@ public partial class PartyThemes : PartyPageBase
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        this.themes = await this.GameService.GetThemesAsync(this.PartyId);
+        this.themes = await this.ThemeService.GetThemesAsync(this.PartyId);
     }
 
     private async Task SelectThemeAsync(ThemeDto theme)
@@ -19,7 +19,7 @@ public partial class PartyThemes : PartyPageBase
             return;
 
         this.CancellationTokenSource = new();
-        this.GameService.ChoiceTheme(this.PartyId, this.TeamId, theme);
+        this.ThemeService.ChoiceTheme(this.PartyId, this.TeamId, theme);
         await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(true);
     }
 
@@ -34,6 +34,6 @@ public partial class PartyThemes : PartyPageBase
 
     private void ResetChoices()
     {
-         this.GameService.ResetThemesChoices(this.PartyId);
+         this.ThemeService.ResetThemesChoices(this.PartyId);
     }
 }
