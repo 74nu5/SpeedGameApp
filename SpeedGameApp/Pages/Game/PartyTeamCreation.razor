@@ -5,6 +5,14 @@
 
 <h3>Création d'une équipe pour la partie @this.CurrentParty.Name</h3>
 
+@if (!string.IsNullOrEmpty(this.errorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Erreur :</strong> @this.errorMessage
+        <button type="button" class="btn-close" @onclick="this.ClearError"></button>
+    </div>
+}
+
 <EditForm Model="this.teamName">
 
     <InputText class="form-control" placeholder="Nom de l'équipe" type="text" id="party-name" @bind-Value="this.teamName" />
