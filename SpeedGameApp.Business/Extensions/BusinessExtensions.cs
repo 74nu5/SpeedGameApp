@@ -1,5 +1,6 @@
 ﻿namespace SpeedGameApp.Business.Extensions;
 
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -7,6 +8,7 @@ using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services;
 using SpeedGameApp.Business.Services.Implementations;
 using SpeedGameApp.Business.Services.Interfaces;
+using SpeedGameApp.Business.Validators;
 using SpeedGameApp.DataAccessLayer.Extensions;
 
 /// <summary>
@@ -21,6 +23,9 @@ public static class BusinessExtensions
     public static void AddBusinessServices(this IServiceCollection services)
     {
         services.AddDalServices();
+
+        // Validators
+        services.AddValidatorsFromAssemblyContaining<PartyNameValidator>(ServiceLifetime.Singleton);
 
         // Core services
         services.TryAddTransient<GameService>();

@@ -1,9 +1,11 @@
 namespace SpeedGameApp.Business.Services;
 
+using SpeedGameApp.Business.Common;
 using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services.Interfaces;
 using SpeedGameApp.Business.Services.Models;
-using SpeedGameApp.DataAccessLayer.AccessLayers;
+using SpeedGameApp.Business.Validators;
+using SpeedGameApp.DataAccessLayer.Interfaces;
 using SpeedGameApp.DataEnum;
 
 /// <summary>
@@ -14,9 +16,11 @@ public sealed class GameService(
     IPartyStateManager stateManager,
     IPartyEventPublisher eventPublisher,
     IThemeManager themeManager,
-    PartyAccessLayer partyAccessLayer,
-    QuestionAccessLayer questionAccessLayer,
-    ThemeAccessLayer themeAccessLayer,
+    IPartyAccessLayer partyAccessLayer,
+    IQuestionAccessLayer questionAccessLayer,
+    IThemeAccessLayer themeAccessLayer,
+    PartyNameValidator partyNameValidator,
+    TeamNameValidator teamNameValidator,
     TimeProvider timeProvider)
 {
     /// <summary>
@@ -39,9 +43,14 @@ public sealed class GameService(
     /// </summary>
     /// <param name="partyName">The name of the party to create.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task representing the asynchronous operation. The result of the task is the ID of the newly created party.</returns>
-    public async Task<Guid> CreatePartyAsync(string partyName, CancellationToken cancellationToken)
+    /// <returns>A task representing the asynchronous operation. The result contains either the ID of the newly created party or an error message.</returns>
+    public async Task<Result<Guid>> CreatePartyAsync(string partyName, CancellationToken cancellationToken)
     {
+        // Validate party name
+        var validationResult = await partyNameValidator.ValidateAsync(partyName, cancellationToken);
+        if (!validationResult.IsValid)
+            return Result<Guid>.Failure(validationResult.Errors[0].ErrorMessage);
+
         // Create the party in the database
         var party = await partyAccessLayer.CreatePartyAsync(partyName, cancellationToken);
 
@@ -49,7 +58,7 @@ public sealed class GameService(
         partyRepository.AddParty(party.Id, partyName);
 
         // Return the ID of the newly created party
-        return party.Id;
+        return Result<Guid>.Success(party.Id);
     }
 
     /// <summary>
@@ -58,26 +67,27 @@ public sealed class GameService(
     /// <param name="partyId">The ID of the party to which the team belongs.</param>
     /// <param name="teamName">The name of the team to be created.</param>
     /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
-    /// <returns>The ID of the newly created team, or null if the operation was unsuccessful.</returns>
-    public async Task<Guid?> CreateTeamPartyAsync(Guid partyId, string? teamName, CancellationToken cancellationToken)
+    /// <returns>A task representing the asynchronous operation. The result contains either the ID of the newly created team or an error message.</returns>
+    public async Task<Result<Guid>> CreateTeamPartyAsync(Guid partyId, string teamName, CancellationToken cancellationToken)
     {
-        // Return default value if team name is null or empty
-        if (string.IsNullOrWhiteSpace(teamName))
-            return default;
+        // Validate team name
+        var validationResult = await teamNameValidator.ValidateAsync(teamName, cancellationToken);
+        if (!validationResult.IsValid)
+            return Result<Guid>.Failure(validationResult.Errors[0].ErrorMessage);
 
-        // Return default value if party does not exist
+        // Check if party exists
         if (!partyRepository.ExistsParty(partyId))
-            return default;
+            return Result<Guid>.Failure("La partie spécifiée n'existe pas.");
 
-        // Create team party and return default value if operation is unsuccessful
+        // Create team party
         var team = await partyAccessLayer.CreateTeamPartyAsync(partyId, teamName, cancellationToken);
 
         if (team is null)
-            return default;
+            return Result<Guid>.Failure("Impossible de créer l'équipe.");
 
         // Add team to repository and return its ID
         _ = partyRepository.AddTeamParty(partyId, team);
-        return team.Id;
+        return Result<Guid>.Success(team.Id);
     }
 
     /// <summary>

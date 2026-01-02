@@ -1,21 +1,16 @@
 ﻿namespace SpeedGameApp.DataAccessLayer.AccessLayers;
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 using Microsoft.EntityFrameworkCore;
 
 using SpeedGameApp.DataAccessLayer.Entities;
+using SpeedGameApp.DataAccessLayer.Interfaces;
 
 /// <summary>
-///     Class which represents the theme access layer.
+///     Data access layer for theme operations.
 /// </summary>
-public sealed class ThemeAccessLayer(AppContext context)
+public sealed class ThemeAccessLayer(SpeedGameDbContext context) : IThemeAccessLayer
 {
-    /// <summary>
-    ///     Gets all themes.
-    /// </summary>
-    /// <returns>The list of themes.</returns>
+    /// <inheritdoc/>
     public async Task<List<Theme>> GetAllThemesAsync()
         => await context.Themes.ToListAsync();
 }
