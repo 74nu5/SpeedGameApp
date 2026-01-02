@@ -27,12 +27,18 @@ public static class BusinessExtensions
         // Validators
         services.AddValidatorsFromAssemblyContaining<PartyNameValidator>(ServiceLifetime.Singleton);
 
+        // Specialized business services (following SRP)
+        services.TryAddTransient<IPartyManagementService, PartyManagementService>();
+        services.TryAddTransient<IQcmService, QcmService>();
+        services.TryAddTransient<IGameplayService, GameplayService>();
+        services.TryAddTransient<IThemeService, ThemeService>();
+
         // Core services
-        services.TryAddTransient<GameService>();
+        services.TryAddTransient<GameService>(); // Legacy facade - use specialized services instead
         services.TryAddTransient<CsvService>();
         services.TryAddSingleton(TimeProvider.System); // .NET 8+ TimeProvider pour testabilité
 
-        // Party management services (separated responsibilities)
+        // Party management infrastructure (separated responsibilities)
         services.TryAddSingleton<IPartyEventPublisher, PartyEventPublisher>();
         services.TryAddSingleton<IPartyRepository, PartyRepository>();
         services.TryAddSingleton<IPartyStateManager, PartyStateManager>();
