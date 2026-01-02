@@ -3,6 +3,15 @@
 <PageTitle>Speed Game App - Accueil</PageTitle>
 
 <h1>Création d'une partie</h1>
+
+@if (!string.IsNullOrEmpty(this.errorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Erreur :</strong> @this.errorMessage
+        <button type="button" class="btn-close" @onclick="this.ClearError"></button>
+    </div>
+}
+
 <EditForm Model="this.partyName">
     <InputText class="form-control" placeholder="Nom de la partie" type="text" id="party-name" @bind-Value="this.partyName"/>
 

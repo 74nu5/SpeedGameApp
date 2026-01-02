@@ -1,6 +1,23 @@
 ﻿@page "/admin"
 @inherits GamePageBase
+@using SpeedGameApp.Shared.Components
 <PageTitle>Speed Game App - Admin</PageTitle>
+
+<ConfirmDialog
+    IsVisible="@showDeleteDialog"
+    Title="Supprimer la partie"
+    Message="@deleteDialogMessage"
+    ConfirmText="Supprimer"
+    OnConfirm="ConfirmDelete"
+    OnCancel="CancelDelete" />
+
+<ConfirmDialog
+    IsVisible="@showDeleteAllDialog"
+    Title="Supprimer toutes les parties"
+    Message="Voulez-vous vraiment supprimer toutes les parties ? Cette action est irréversible."
+    ConfirmText="Tout supprimer"
+    OnConfirm="ConfirmDeleteAll"
+    OnCancel="CancelDeleteAll" />
 
 <h3>Admin</h3>
 <h4>Parties en cours</h4>
@@ -11,8 +28,8 @@
         <th>Party name</th>
         <th>Urls</th>
         <th>Teams</th>
-        <th>   
-            <button class="btn btn-danger" @onclick="this.DeleteAllParties">Supprimer tout</button>
+        <th>
+            <button class="btn btn-danger" @onclick="this.ShowDeleteAllDialog">Supprimer tout</button>
         </th>
     </tr>
     </thead>
@@ -34,7 +51,7 @@
                 </ol>
             </td>
             <td>
-                <button class="btn btn-danger" @onclick="() => this.DeleteParty(id)">Supprimer</button>
+                <button class="btn btn-danger" @onclick="() => this.ShowDeleteDialog(id, name, false)">Supprimer</button>
                 <button class="btn btn-success" @onclick="() => this.SavePartyAsync(id)">Sauvegarder</button>
             </td>
         </tr>
@@ -50,8 +67,8 @@
         <th>Party name</th>
         <th>Urls</th>
         <th>Teams</th>
-        <th>   
-            <button class="btn btn-danger" @onclick="this.DeleteAllParties">Supprimer tout</button>
+        <th>
+            <button class="btn btn-danger" @onclick="this.ShowDeleteAllDialog">Supprimer tout</button>
         </th>
     </tr>
     </thead>
@@ -73,7 +90,7 @@
                 </ol>
             </td>
             <td>
-                <button class="btn btn-danger" @onclick="() => this.DeleteDbPartyAsync(id)">Supprimer de la base</button>
+                <button class="btn btn-danger" @onclick="() => this.ShowDeleteDialog(id, name, true)">Supprimer de la base</button>
                 <button class="btn btn-success" @onclick="() => this.LoadPartyAsync(id)">Charger la partie</button>
             </td>
         </tr>

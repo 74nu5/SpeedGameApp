@@ -1,8 +1,17 @@
 ﻿@page "/party/{PartyId:guid}/admin"
 
 @using SpeedGameApp.DataEnum
+@using SpeedGameApp.Shared.Components
 @inherits PartyPageBase
 <PageTitle>Speed Game App - Party admin</PageTitle>
+
+<ConfirmDialog
+    IsVisible="@showDeleteTeamDialog"
+    Title="Supprimer l'équipe"
+    Message="@deleteTeamDialogMessage"
+    ConfirmText="Supprimer"
+    OnConfirm="ConfirmDeleteTeam"
+    OnCancel="CancelDeleteTeam" />
 
 <h3>Party @(this.CurrentParty.Name) (@(this.PartyId.ToString("D")))</h3>
 <p>
@@ -66,7 +75,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <a class="fs-4" target="_blank" href="@($"/party/{this.PartyId}/team/{team.Id}/play")">@team.Name</a>
                         <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/themes/{team.Id}"))" target="_blank">Lien à partager aux joueurs pour le choix des thèmes</a>
-                        <button class="btn btn-danger" @onclick="() => this.DeleteTeamAsync(this.PartyId, team.Id)">Supprimer</button>
+                        <button class="btn btn-danger" @onclick="() => this.ShowDeleteTeamDialog(team.Id, team.Name)">Supprimer</button>
                     </div>
                     <div class="card-body @(team.Answered ? "bg-team-success" : string.Empty)">
                         <p class="fs-2 fw-bolder">

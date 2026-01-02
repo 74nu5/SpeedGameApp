@@ -290,6 +290,36 @@
                 Invokes the <see cref="P:SpeedGameApp.Shared.Components.Responses.QCM.ResponseCallback" /> with the current response.
             </summary>
         </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.IsVisible">
+            <summary>
+                Gets or sets a value indicating whether the dialog is visible.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.Title">
+            <summary>
+                Gets or sets the dialog title.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.Message">
+            <summary>
+                Gets or sets the dialog message.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.ConfirmText">
+            <summary>
+                Gets or sets the confirm button text.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.OnConfirm">
+            <summary>
+                Gets or sets the event callback when user confirms.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.OnCancel">
+            <summary>
+                Gets or sets the event callback when user cancels.
+            </summary>
+        </member>
         <member name="T:Program">
             <summary>
             Auto-generated public partial Program class for top-level statement apps.

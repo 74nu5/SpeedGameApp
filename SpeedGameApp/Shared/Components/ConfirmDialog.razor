@@ -1,0 +1,68 @@
+@if (IsVisible)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Title</h5>
+                    <button type="button" class="btn-close" @onclick="Cancel"></button>
+                </div>
+                <div class="modal-body">
+                    <p>@Message</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="Cancel">Annuler</button>
+                    <button type="button" class="btn btn-danger" @onclick="Confirm">@ConfirmText</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    /// <summary>
+    ///     Gets or sets a value indicating whether the dialog is visible.
+    /// </summary>
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the dialog title.
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = "Confirmation";
+
+    /// <summary>
+    ///     Gets or sets the dialog message.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; } = "Êtes-vous sûr ?";
+
+    /// <summary>
+    ///     Gets or sets the confirm button text.
+    /// </summary>
+    [Parameter]
+    public string ConfirmText { get; set; } = "Confirmer";
+
+    /// <summary>
+    ///     Gets or sets the event callback when user confirms.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the event callback when user cancels.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    private async Task Confirm()
+    {
+        await OnConfirm.InvokeAsync();
+    }
+
+    private async Task Cancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}
