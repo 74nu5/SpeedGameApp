@@ -17,7 +17,7 @@ public partial class AdminQuestions
     public CsvService CsvService { get; set; } = default!;
 
     [Inject]
-    public AppContext AppContext { get; set; } = default!;
+    public SpeedGameDbContext AppContext { get; set; } = default!;
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()

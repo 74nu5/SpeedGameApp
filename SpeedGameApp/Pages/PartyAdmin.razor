@@ -6,7 +6,7 @@
 
 <h3>Party @(this.CurrentParty.Name) (@(this.PartyId.ToString("D")))</h3>
 <p>
-    <button class="btn btn-danger" @onclick="@(() => this.GameService.SavePartyAsync(this.PartyId, CancellationToken.None))">Save party</button>
+    <button class="btn btn-danger" @onclick="@(() => this.PartyManagementService.SavePartyAsync(this.PartyId, CancellationToken.None))">Save party</button>
     <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/team/new"))" target="_blank">Lien à partager aux joueurs</a>
 </p>
 

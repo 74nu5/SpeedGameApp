@@ -4,10 +4,91 @@
         <name>SpeedGameApp.Business</name>
     </assembly>
     <members>
+        <member name="T:SpeedGameApp.Business.Common.Result`1">
+            <summary>
+                Represents the result of an operation that can succeed or fail.
+            </summary>
+            <typeparam name="T">The type of the value returned on success.</typeparam>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result`1.Value">
+            <summary>
+                Gets the value if the operation succeeded.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result`1.IsSuccess">
+            <summary>
+                Gets a value indicating whether the operation succeeded.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result`1.Error">
+            <summary>
+                Gets the error message if the operation failed.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result`1.IsFailure">
+            <summary>
+                Gets a value indicating whether the operation failed.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Common.Result`1.Success(`0)">
+            <summary>
+                Creates a successful result with a value.
+            </summary>
+            <param name="value">The value to return.</param>
+            <returns>A successful result.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Common.Result`1.Failure(System.String)">
+            <summary>
+                Creates a failed result with an error message.
+            </summary>
+            <param name="error">The error message.</param>
+            <returns>A failed result.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Business.Common.Result">
+            <summary>
+                Represents the result of an operation without a return value.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result.IsSuccess">
+            <summary>
+                Gets a value indicating whether the operation succeeded.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result.Error">
+            <summary>
+                Gets the error message if the operation failed.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Common.Result.IsFailure">
+            <summary>
+                Gets a value indicating whether the operation failed.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Common.Result.Success">
+            <summary>
+                Creates a successful result.
+            </summary>
+            <returns>A successful result.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Common.Result.Failure(System.String)">
+            <summary>
+                Creates a failed result with an error message.
+            </summary>
+            <param name="error">The error message.</param>
+            <returns>A failed result.</returns>
+        </member>
         <member name="T:SpeedGameApp.Business.Data.PartyContext">
             <summary>
                 The party context.
             </summary>
+            <remarks>
+                DEPRECATED: This class violates the Single Responsibility Principle and has been split into:
+                - <see cref="T:SpeedGameApp.Business.Services.Interfaces.IPartyRepository"/> for storage operations
+                - <see cref="T:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager"/> for game state management
+                - <see cref="T:SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher"/> for event publishing
+                - <see cref="T:SpeedGameApp.Business.Services.Interfaces.IThemeManager"/> for theme management
+                This class is kept for backwards compatibility and will be removed in a future version.
+            </remarks>
         </member>
         <member name="E:SpeedGameApp.Business.Data.PartyContext.PartyChanged">
             <summary>
@@ -392,69 +473,544 @@
             </summary>
             <param name="services">The service collection.</param>
         </member>
-        <member name="T:SpeedGameApp.Business.Services.GameService">
+        <member name="T:SpeedGameApp.Business.Services.Implementations.GameplayService">
             <summary>
-                Class which defines all game mathods.
+                Service responsible for real-time gameplay mechanics (scoring, buzzing, responses).
             </summary>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.#ctor(System.IServiceProvider,SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer,SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer,SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer)">
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyStateManager,SpeedGameApp.Business.Services.Interfaces.IPartyManagementService)">
             <summary>
-                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Services.GameService" /> class.
-            </summary>
-            <param name="serviceProvider">The DI service provider.</param>
-            <param name="partyAccessLayer">The party access layer.</param>
-            <param name="questionAccessLayer">The question access layer.</param>
-            <param name="themeAccessLayer">The theme access layer.</param>
-        </member>
-        <member name="E:SpeedGameApp.Business.Services.GameService.PartyChanged">
-            <summary>
-                Event fired when party changed.
+                Service responsible for real-time gameplay mechanics (scoring, buzzing, responses).
             </summary>
         </member>
-        <member name="P:SpeedGameApp.Business.Services.GameService.Parties">
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.AddPointsAsync(SpeedGameApp.Business.Data.TeamDto,System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.BuzzTeam(System.Guid,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.PropositionTeam(System.Guid,System.Guid,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.ResetTeam(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.GameplayService.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.PartyEventPublisher">
             <summary>
-                Gets the parties.
+                Publishes party change events.
             </summary>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.CreatePartyAsync(System.String,System.Threading.CancellationToken)">
-            <summary>
-                Asynchronously creates a new party with the specified name.
-            </summary>
-            <param name="partyName">The name of the party to create.</param>
-            <param name="cancellationToken">A token to cancel the operation.</param>
-            <returns>A task representing the asynchronous operation. The result of the task is the ID of the newly created party.</returns>
+        <member name="E:SpeedGameApp.Business.Services.Implementations.PartyEventPublisher.PartyChanged">
+            <inheritdoc/>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.CreateTeamPartyAsync(System.Guid,System.String,System.Threading.CancellationToken)">
-            <summary>
-                Asynchronously creates a new team party with the specified parameters.
-            </summary>
-            <param name="partyId">The ID of the party to which the team belongs.</param>
-            <param name="teamName">The name of the team to be created.</param>
-            <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
-            <returns>The ID of the newly created team, or null if the operation was unsuccessful.</returns>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyEventPublisher.OnPartyChanged(SpeedGameApp.Business.Data.PartyDto)">
+            <inheritdoc/>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.SavePartyAsync(System.Guid,System.Threading.CancellationToken)">
+        <member name="T:SpeedGameApp.Business.Services.Implementations.PartyManagementService">
             <summary>
-                Asynchronously saves a party with the specified ID.
+                Service responsible for party and team lifecycle management (CRUD operations).
             </summary>
-            <param name="id">The ID of the party to save.</param>
-            <param name="cancellationToken">A token to cancel the operation.</param>
-            <returns>A task representing the asynchronous operation.</returns>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.GetPartyAsync(System.Guid,System.Threading.CancellationToken)">
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyRepository,SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer,SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher,SpeedGameApp.Business.Validators.PartyNameValidator,SpeedGameApp.Business.Validators.TeamNameValidator)">
             <summary>
-                Asynchronously retrieves a party with the specified ID.
+                Service responsible for party and team lifecycle management (CRUD operations).
             </summary>
-            <param name="id">The ID of the party to retrieve.</param>
-            <param name="cancellationToken">A token to cancel the operation.</param>
-            <returns>A task representing the asynchronous operation. The result of the task is the party with the specified ID, or null if the party was not found.</returns>
         </member>
-        <member name="M:SpeedGameApp.Business.Services.GameService.GetDbPartiesAsync(System.Threading.CancellationToken)">
+        <member name="E:SpeedGameApp.Business.Services.Implementations.PartyManagementService.PartyChanged">
+            <inheritdoc />
+        </member>
+        <member name="P:SpeedGameApp.Business.Services.Implementations.PartyManagementService.Parties">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.CreatePartyAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.CreateTeamPartyAsync(System.Guid,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.GetPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.GetDbPartiesAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.LoadPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.SavePartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.DeleteParty(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.DeleteAllParties">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.DeleteDbPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyManagementService.DeleteTeamAsync(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.PartyRepository">
             <summary>
-                Asynchronously retrieves all parties from the database.
+                In-memory repository for party storage.
             </summary>
-            <param name="cancellationToken">A token to cancel the operation.</param>
-            <returns>A task representing the asynchronous operation. The result of the task is a dictionary mapping party IDs to party data.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Services.Implementations.PartyRepository"/> class.
+            </summary>
+            <param name="eventPublisher">The event publisher.</param>
+        </member>
+        <member name="P:SpeedGameApp.Business.Services.Implementations.PartyRepository.Parties">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.LoadParty(SpeedGameApp.Business.Data.PartyDto)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.AddParty(System.Guid,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.AddTeamParty(System.Guid,SpeedGameApp.DataAccessLayer.Entities.Team)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.RemoveTeam(System.Guid,System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.DeleteParty(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.DeleteAllParties">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.ExistsParty(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyRepository.GetParty(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.PartyStateManager">
+            <summary>
+                Manages the game state of parties (buzz, responses, scores, etc.).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyRepository)">
+            <summary>
+                Manages the game state of parties (buzz, responses, scores, etc.).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.AddPoints(SpeedGameApp.Business.Data.TeamDto,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.BuzzTeam(System.Guid,System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.ResetTeam(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.PropositionTeam(System.Guid,System.Guid,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.PropositionQcmTeam(System.Guid,System.Guid,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.PartyStateManager.SetCurrentQcm(System.Guid,SpeedGameApp.Business.Services.Models.QcmQuestionDto)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.QcmService">
+            <summary>
+                Service responsible for QCM (multiple choice questions) management.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.QcmService.#ctor(SpeedGameApp.DataAccessLayer.Interfaces.IQuestionAccessLayer,SpeedGameApp.Business.Services.Interfaces.IPartyStateManager)">
+            <summary>
+                Service responsible for QCM (multiple choice questions) management.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.QcmService.SetRandomQcm(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.QcmService.PropositionQcmTeam(System.Guid,System.Guid,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.ThemeManager">
+            <summary>
+                Manages themes for parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeManager.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyRepository)">
+            <summary>
+                Manages themes for parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeManager.LoadThemes(System.Guid,System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeManager.SelectTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeManager.ChoiceTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeManager.ResetThemesChoices(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Implementations.ThemeService">
+            <summary>
+                Service responsible for theme management (loading, selection, generation, visibility).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.#ctor(SpeedGameApp.DataAccessLayer.Interfaces.IThemeAccessLayer,SpeedGameApp.Business.Services.Interfaces.IThemeManager,SpeedGameApp.Business.Services.Interfaces.IPartyRepository)">
+            <summary>
+                Service responsible for theme management (loading, selection, generation, visibility).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.GetThemesAsync(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.SelectTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.ChoiceTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.ResetThemesChoices(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.HideTheme(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.ShowTheme(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Implementations.ThemeService.GenerateThemes(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IGameplayService">
+            <summary>
+                Service responsible for real-time gameplay mechanics (scoring, buzzing, responses).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IGameplayService.AddPointsAsync(SpeedGameApp.Business.Data.TeamDto,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+                Adds points to a team and saves to database.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IGameplayService.BuzzTeam(System.Guid,System.Guid)">
+            <summary>
+                Registers a team buzz.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IGameplayService.PropositionTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Submits a team's proposition/answer.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IGameplayService.ResetTeam(System.Guid)">
+            <summary>
+                Resets team states for a party.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IGameplayService.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+            <summary>
+                Sets the current response type for a party.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher">
+            <summary>
+                Interface for publishing party events.
+            </summary>
+        </member>
+        <member name="E:SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher.PartyChanged">
+            <summary>
+                Event raised when a party changes.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyEventPublisher.OnPartyChanged(SpeedGameApp.Business.Data.PartyDto)">
+            <summary>
+                Raises the party changed event.
+            </summary>
+            <param name="party">The party that changed.</param>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService">
+            <summary>
+                Service responsible for party and team lifecycle management (CRUD operations).
+            </summary>
+        </member>
+        <member name="E:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.PartyChanged">
+            <summary>
+                Event fired when a party changes.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.Parties">
+            <summary>
+                Gets all parties currently in memory.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.CreatePartyAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+                Creates a new party with validation.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.CreateTeamPartyAsync(System.Guid,System.String,System.Threading.CancellationToken)">
+            <summary>
+                Creates a new team in a party with validation.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.GetPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Retrieves a party by ID (from memory or database).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.GetDbPartiesAsync(System.Threading.CancellationToken)">
+            <summary>
+                Retrieves all parties from the database.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.LoadPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Loads a party from the database into memory.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.SavePartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Saves party data (team scores) to the database.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.DeleteParty(System.Guid)">
+            <summary>
+                Deletes a party from memory.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.DeleteAllParties">
+            <summary>
+                Deletes all parties from memory.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.DeleteDbPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Deletes a party from the database.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyManagementService.DeleteTeamAsync(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Deletes a team from a party (both database and memory).
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IPartyRepository">
+            <summary>
+                Repository interface for party storage and retrieval.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.Parties">
+            <summary>
+                Gets all parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.LoadParty(SpeedGameApp.Business.Data.PartyDto)">
+            <summary>
+                Loads a party into the repository.
+            </summary>
+            <param name="partyDto">The party to load.</param>
+            <returns>The loaded party.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.AddParty(System.Guid,System.String)">
+            <summary>
+                Adds a new party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="partyName">The party name.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.AddTeamParty(System.Guid,SpeedGameApp.DataAccessLayer.Entities.Team)">
+            <summary>
+                Adds a team to a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="team">The team to add.</param>
+            <returns>The team id if successful, null otherwise.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.RemoveTeam(System.Guid,System.Guid)">
+            <summary>
+                Removes a team from a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.DeleteParty(System.Guid)">
+            <summary>
+                Deletes a party.
+            </summary>
+            <param name="partyId">The party id to delete.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.DeleteAllParties">
+            <summary>
+                Deletes all parties.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.ExistsParty(System.Guid)">
+            <summary>
+                Checks if a party exists.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <returns>True if the party exists, false otherwise.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyRepository.GetParty(System.Guid)">
+            <summary>
+                Gets a party by id.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <returns>The party if found, null otherwise.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager">
+            <summary>
+                Interface for managing party game states.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.AddPoints(SpeedGameApp.Business.Data.TeamDto,System.Int32)">
+            <summary>
+                Adds points to a team.
+            </summary>
+            <param name="teamDto">The team.</param>
+            <param name="points">The points to add.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.SetCurrentResponse(System.Guid,SpeedGameApp.DataEnum.ResponseType)">
+            <summary>
+                Sets the current response type for a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="responseType">The response type.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.BuzzTeam(System.Guid,System.Guid)">
+            <summary>
+                Records a buzz from a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.ResetTeam(System.Guid)">
+            <summary>
+                Resets all teams in a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.PropositionTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Records a proposition from a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="response">The team's response.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.PropositionQcmTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Records a QCM proposition from a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="response">The team's response.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IPartyStateManager.SetCurrentQcm(System.Guid,SpeedGameApp.Business.Services.Models.QcmQuestionDto)">
+            <summary>
+                Sets the current QCM question for a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="question">The QCM question.</param>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IQcmService">
+            <summary>
+                Service responsible for QCM (multiple choice questions) management.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IQcmService.SetRandomQcm(System.Guid)">
+            <summary>
+                Sets a random QCM question for a party.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IQcmService.PropositionQcmTeam(System.Guid,System.Guid,System.String)">
+            <summary>
+                Submits a team's answer to a QCM question.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IThemeManager">
+            <summary>
+                Interface for managing party themes.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeManager.LoadThemes(System.Guid,System.Collections.Generic.IEnumerable{SpeedGameApp.Business.Data.ThemeDto})">
+            <summary>
+                Loads themes for a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="themes">The themes to load.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeManager.SelectTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <summary>
+                Marks a theme as selected in the random theme list.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="theme">The theme to select.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeManager.ChoiceTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <summary>
+                Assigns a theme to a team.
+            </summary>
+            <param name="partyId">The party id.</param>
+            <param name="teamId">The team id.</param>
+            <param name="theme">The theme to assign.</param>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeManager.ResetThemesChoices(System.Guid)">
+            <summary>
+                Resets all theme choices for a party.
+            </summary>
+            <param name="partyId">The party id.</param>
+        </member>
+        <member name="T:SpeedGameApp.Business.Services.Interfaces.IThemeService">
+            <summary>
+                Service responsible for theme management (loading, selection, generation, visibility).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.GetThemesAsync(System.Guid)">
+            <summary>
+                Gets all themes for a party (loads from database if needed).
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.SelectTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <summary>
+                Selects a theme for a team.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.ChoiceTheme(System.Guid,System.Nullable{System.Guid},SpeedGameApp.Business.Data.ThemeDto)">
+            <summary>
+                Confirms the choice of a theme.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.ResetThemesChoices(System.Guid)">
+            <summary>
+                Resets all theme choices for a party.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.HideTheme(System.Guid)">
+            <summary>
+                Hides themes display for a party.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.ShowTheme(System.Guid)">
+            <summary>
+                Shows themes display for a party.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Services.Interfaces.IThemeService.GenerateThemes(System.Guid)">
+            <summary>
+                Generates randomized themes for a party.
+            </summary>
         </member>
         <member name="T:SpeedGameApp.Business.Services.Models.QcmQuestionDto">
             <summary>
@@ -534,6 +1090,26 @@
             </summary>
             <param name="questionTheme">The theme to map.</param>
             <returns>Returns the <see cref="T:SpeedGameApp.Business.Services.Models.QcmThemeDto" />.</returns>
+        </member>
+        <member name="T:SpeedGameApp.Business.Validators.PartyNameValidator">
+            <summary>
+                Validator for party names.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Validators.PartyNameValidator.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.PartyNameValidator"/> class.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Business.Validators.TeamNameValidator">
+            <summary>
+                Validator for team names.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Business.Validators.TeamNameValidator.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.Business.Validators.TeamNameValidator"/> class.
+            </summary>
         </member>
     </members>
 </doc>

@@ -7,9 +7,9 @@ using SpeedGameApp.DataEnum;
 
 public sealed class CsvService
 {
-    private readonly AppContext context;
+    private readonly SpeedGameDbContext context;
 
-    public CsvService(AppContext context) => this.context = context;
+    public CsvService(SpeedGameDbContext context) => this.context = context;
 
     public async Task InsertQuestionsAsync(List<QcmQuestionDto> questions)
     {

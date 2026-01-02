@@ -4,22 +4,62 @@
         <name>SpeedGameApp.DataAccessLayer</name>
     </assembly>
     <members>
+        <member name="T:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer">
+            <summary>
+                Data access layer for party operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.#ctor(SpeedGameApp.DataAccessLayer.SpeedGameDbContext)">
+            <summary>
+                Data access layer for party operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.CreatePartyAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.CreateTeamPartyAsync(System.Guid,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.GetPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.GetPartiesAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.DeletePartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.UpdateScoreAsync(System.Guid,System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.PartyAccessLayer.DeleteTeamAsync(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer">
+            <summary>
+                Data access layer for question operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer.#ctor(SpeedGameApp.DataAccessLayer.SpeedGameDbContext)">
+            <summary>
+                Data access layer for question operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.QuestionAccessLayer.GetRandom">
+            <inheritdoc/>
+        </member>
         <member name="T:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer">
             <summary>
-                Class which represents the theme access layer.
+                Data access layer for theme operations.
             </summary>
         </member>
-        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer.#ctor(SpeedGameApp.DataAccessLayer.AppContext)">
+        <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer.#ctor(SpeedGameApp.DataAccessLayer.SpeedGameDbContext)">
             <summary>
-               Initializes a new instance of the <see cref="T:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer"/> class.
+                Data access layer for theme operations.
             </summary>
-            <param name="context">The application context.</param>
         </member>
         <member name="M:SpeedGameApp.DataAccessLayer.AccessLayers.ThemeAccessLayer.GetAllThemesAsync">
-            <summary>
-                Gets all themes.
-            </summary>
-            <returns>The list of themes.</returns>
+            <inheritdoc/>
         </member>
         <member name="T:SpeedGameApp.DataAccessLayer.Entities.Party">
             <summary>
@@ -163,14 +203,132 @@
         </member>
         <member name="T:SpeedGameApp.DataAccessLayer.Extensions.DalExtensions">
             <summary>
-                Class which represents the dal extensions.
+                Extension methods for Data Access Layer services.
             </summary>
         </member>
         <member name="M:SpeedGameApp.DataAccessLayer.Extensions.DalExtensions.AddDalServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                Adds the dal services.
+                Adds the data access layer services.
             </summary>
-            <param name="services">The services.</param>
+            <param name="services">The service collection.</param>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer">
+            <summary>
+                Interface for party data access operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.CreatePartyAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+                Creates a new party asynchronously.
+            </summary>
+            <param name="partyName">The name of the party.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The created party.</returns>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.CreateTeamPartyAsync(System.Guid,System.String,System.Threading.CancellationToken)">
+            <summary>
+                Creates a new team for a party asynchronously.
+            </summary>
+            <param name="partyId">The party ID.</param>
+            <param name="teamName">The team name.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The created team, or null if the operation failed.</returns>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.GetPartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Gets a party by ID asynchronously.
+            </summary>
+            <param name="id">The party ID.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The party if found, null otherwise.</returns>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.GetPartiesAsync(System.Threading.CancellationToken)">
+            <summary>
+                Gets all parties asynchronously.
+            </summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>List of all parties.</returns>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.DeletePartyAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Deletes a party asynchronously.
+            </summary>
+            <param name="id">The party ID to delete.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.UpdateScoreAsync(System.Guid,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+                Updates a team's score asynchronously.
+            </summary>
+            <param name="teamId">The team ID.</param>
+            <param name="teamScore">The new score.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IPartyAccessLayer.DeleteTeamAsync(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>
+                Deletes a team asynchronously.
+            </summary>
+            <param name="partyId">The party ID.</param>
+            <param name="teamId">The team ID to delete.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Interfaces.IQuestionAccessLayer">
+            <summary>
+                Interface for question data access operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IQuestionAccessLayer.GetRandom">
+            <summary>
+                Gets a random QCM question.
+            </summary>
+            <returns>A random question.</returns>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.Interfaces.IThemeAccessLayer">
+            <summary>
+                Interface for theme data access operations.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.Interfaces.IThemeAccessLayer.GetAllThemesAsync">
+            <summary>
+                Gets all themes asynchronously.
+            </summary>
+            <returns>List of all themes.</returns>
+        </member>
+        <member name="T:SpeedGameApp.DataAccessLayer.SpeedGameDbContext">
+            <summary>
+                Database context for the SpeedGame application.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{SpeedGameApp.DataAccessLayer.SpeedGameDbContext})">
+            <summary>
+                Initializes a new instance of the <see cref="T:SpeedGameApp.DataAccessLayer.SpeedGameDbContext"/> class.
+            </summary>
+            <param name="options">The options for this context.</param>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.Parties">
+            <summary>
+                Gets the parties DbSet.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.Teams">
+            <summary>
+                Gets the teams DbSet.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.Questions">
+            <summary>
+                Gets the QCM questions DbSet.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.QcmThemes">
+            <summary>
+                Gets the QCM themes DbSet.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.DataAccessLayer.SpeedGameDbContext.Themes">
+            <summary>
+                Gets the blind test themes DbSet.
+            </summary>
         </member>
     </members>
 </doc>

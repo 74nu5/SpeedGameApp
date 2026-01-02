@@ -10,9 +10,24 @@
         <member name="M:SpeedGameApp.Pages.Admin.AdminQuestions.OnInitializedAsync">
             <inheritdoc />
         </member>
-        <member name="P:SpeedGameApp.Pages.GamePageBase.GameService">
+        <member name="P:SpeedGameApp.Pages.GamePageBase.PartyManagementService">
             <summary>
-                Gets or sets the game service.
+                Gets or sets the party management service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.QcmService">
+            <summary>
+                Gets or sets the QCM service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.GameplayService">
+            <summary>
+                Gets or sets the gameplay service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Pages.GamePageBase.ThemeService">
+            <summary>
+                Gets or sets the theme service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.GamePageBase.NavigationManager">
@@ -34,9 +49,9 @@
         <member name="M:SpeedGameApp.Pages.Game.PartyThemes.OnParametersSetAsync">
             <inheritdoc />
         </member>
-        <member name="P:SpeedGameApp.Pages.Index.GameService">
+        <member name="P:SpeedGameApp.Pages.Index.PartyManagementService">
             <summary>
-                Gets or sets the game service.
+                Gets or sets the party management service.
             </summary>
         </member>
         <member name="P:SpeedGameApp.Pages.Index.NavigationManager">
@@ -67,6 +82,11 @@
         </member>
         <member name="M:SpeedGameApp.Shared.Components.Responses.Proposition.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
         </member>
     </members>
 </doc>

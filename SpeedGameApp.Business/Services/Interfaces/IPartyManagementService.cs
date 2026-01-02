@@ -1,7 +1,7 @@
 namespace SpeedGameApp.Business.Services.Interfaces;
 
 using SpeedGameApp.Business.Common;
-using SpeedGameApp.Business.Services.Models;
+using SpeedGameApp.Business.Data;
 
 /// <summary>
 ///     Service responsible for party and team lifecycle management (CRUD operations).

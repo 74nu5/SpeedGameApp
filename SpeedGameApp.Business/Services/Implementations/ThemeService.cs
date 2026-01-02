@@ -2,7 +2,6 @@ namespace SpeedGameApp.Business.Services.Implementations;
 
 using SpeedGameApp.Business.Data;
 using SpeedGameApp.Business.Services.Interfaces;
-using SpeedGameApp.Business.Services.Models;
 using SpeedGameApp.DataAccessLayer.Interfaces;
 
 /// <summary>

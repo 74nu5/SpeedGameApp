@@ -1,6 +1,6 @@
 namespace SpeedGameApp.Business.Services.Interfaces;
 
-using SpeedGameApp.Business.Services.Models;
+using SpeedGameApp.Business.Data;
 
 /// <summary>
 ///     Service responsible for theme management (loading, selection, generation, visibility).
