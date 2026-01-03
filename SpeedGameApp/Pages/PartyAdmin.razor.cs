@@ -12,6 +12,20 @@ public sealed partial class PartyAdmin : PartyPageBase
     private string deleteTeamDialogMessage = string.Empty;
     private Guid? teamToDeleteId = null;
 
+    /// <summary>
+    ///     Changes the theme of the current party.
+    /// </summary>
+    /// <param name="theme">The new theme to apply.</param>
+    private void ChangeTheme(PartyTheme theme)
+    {
+        if (this.CurrentParty != null)
+        {
+            this.CurrentParty.Theme = theme;
+            this.CurrentParty.OnPartyChanged();
+            this.StateHasChanged();
+        }
+    }
+
     /// <inheritdoc />
     public PartyAdmin(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
             : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)

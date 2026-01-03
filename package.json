@@ -1,0 +1,21 @@
+{
+  "name": "speedgameapp",
+  "version": "1.0.0",
+  "description": "SpeedGameApp - Blazor Server quiz game application",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./SpeedGameApp/wwwroot/css/tailwind.css -o ./SpeedGameApp/wwwroot/css/app.css --minify",
+    "watch:css": "npx tailwindcss -i ./SpeedGameApp/wwwroot/css/tailwind.css -o ./SpeedGameApp/wwwroot/css/app.css --watch"
+  },
+  "keywords": [
+    "blazor",
+    "tailwind",
+    "quiz"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10"
+  }
+}

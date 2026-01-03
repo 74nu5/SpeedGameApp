@@ -1,0 +1,76 @@
+@using SpeedGameApp.DataEnum
+@inject IJSRuntime JSRuntime
+
+@* Apply theme class to wrapper div *@
+<div class="@GetThemeClass() min-h-screen">
+    @if (Theme == PartyTheme.Cyberpunk2077)
+    {
+        @* Scanline overlay for Cyberpunk theme *@
+        <div class="scanline-overlay"></div>
+    }
+
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    ///     Gets or sets the theme to apply.
+    /// </summary>
+    [Parameter]
+    public PartyTheme Theme { get; set; } = PartyTheme.ThreeBStudio;
+
+    /// <summary>
+    ///     Gets or sets the child content to render within the theme wrapper.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    ///     Gets the CSS class for the current theme.
+    /// </summary>
+    /// <returns>The theme CSS class.</returns>
+    private string GetThemeClass()
+    {
+        return Theme switch
+        {
+            PartyTheme.Cyberpunk2077 => "theme-cyberpunk",
+            PartyTheme.ThreeBStudio => "theme-3bstudio",
+            PartyTheme.Default => "theme-3bstudio",
+            _ => "theme-3bstudio"
+        };
+    }
+
+    /// <summary>
+    ///     Loads theme-specific fonts from Google Fonts.
+    /// </summary>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadThemeFontsAsync();
+        }
+    }
+
+    /// <summary>
+    ///     Dynamically loads fonts based on the current theme.
+    /// </summary>
+    private async Task LoadThemeFontsAsync()
+    {
+        var fontUrl = Theme switch
+        {
+            PartyTheme.Cyberpunk2077 => "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@400;700&display=swap",
+            PartyTheme.ThreeBStudio => "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap",
+            PartyTheme.Default => "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
+            _ => "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        };
+
+        await JSRuntime.InvokeVoidAsync("eval", $@"
+            if (!document.querySelector('link[href=""{fontUrl}""]')) {{
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '{fontUrl}';
+                document.head.appendChild(link);
+            }}
+        ");
+    }
+}

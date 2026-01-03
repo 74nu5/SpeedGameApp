@@ -13,10 +13,80 @@
     OnConfirm="ConfirmDeleteTeam"
     OnCancel="CancelDeleteTeam" />
 
-<h3>Party @(this.CurrentParty.Name) (@(this.PartyId.ToString("D")))</h3>
-<p>
-    <button class="btn btn-danger" @onclick="@(() => this.PartyManagementService.SavePartyAsync(this.PartyId, CancellationToken.None))">Save party</button>
-    <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/team/new"))" target="_blank">Lien à partager aux joueurs</a>
+@* Theme Selector Section *@
+<div class="card mb-6 border-l-4 border-3b-yellow">
+    <div class="card-header flex items-center justify-between">
+        <div>
+            <h3 class="text-2xl font-bold">Party: @(this.CurrentParty.Name)</h3>
+            <p class="text-sm text-gray-500">ID: @(this.PartyId.ToString("D"))</p>
+        </div>
+        <button class="btn-danger px-4 py-2 rounded-lg" @onclick="@(() => this.PartyManagementService.SavePartyAsync(this.PartyId, CancellationToken.None))">
+            <i class="bi bi-save mr-2"></i>Sauvegarder
+        </button>
+    </div>
+
+    <div class="p-6 bg-3b-gray-light">
+        <h4 class="font-bold text-lg mb-4 flex items-center">
+            <i class="bi bi-palette-fill text-3b-yellow mr-2"></i>
+            Thème visuel de la partie
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            @* 3bstudio Theme Card *@
+            <div @onclick="@(() => this.ChangeTheme(PartyTheme.ThreeBStudio))"
+                 class="cursor-pointer border-4 rounded-lg p-4 transition-all hover:shadow-large @(this.CurrentParty.Theme == PartyTheme.ThreeBStudio ? "border-3b-yellow bg-3b-yellow/10" : "border-gray-300 bg-white")">
+                <div class="flex items-center justify-between mb-2">
+                    <h5 class="font-bold text-lg">3bstudio</h5>
+                    @if (this.CurrentParty.Theme == PartyTheme.ThreeBStudio)
+                    {
+                        <i class="bi bi-check-circle-fill text-3b-yellow text-2xl"></i>
+                    }
+                </div>
+                <div class="h-20 rounded bg-gradient-to-r from-3b-blue to-3b-black mb-2"></div>
+                <p class="text-sm text-gray-600">Professionnel, moderne, bleu/noir/jaune</p>
+            </div>
+
+            @* Cyberpunk 2077 Theme Card *@
+            <div @onclick="@(() => this.ChangeTheme(PartyTheme.Cyberpunk2077))"
+                 class="cursor-pointer border-4 rounded-lg p-4 transition-all hover:shadow-large @(this.CurrentParty.Theme == PartyTheme.Cyberpunk2077 ? "border-cp-cyan bg-cp-cyan/10" : "border-gray-300 bg-white")">
+                <div class="flex items-center justify-between mb-2">
+                    <h5 class="font-bold text-lg">Cyberpunk 2077</h5>
+                    @if (this.CurrentParty.Theme == PartyTheme.Cyberpunk2077)
+                    {
+                        <i class="bi bi-check-circle-fill text-cp-cyan text-2xl"></i>
+                    }
+                </div>
+                <div class="h-20 rounded bg-gradient-to-r from-cp-cyan via-cp-pink to-cp-yellow mb-2"></div>
+                <p class="text-sm text-gray-600">Néon, futuriste, dystopique</p>
+            </div>
+
+            @* Default Theme Card *@
+            <div @onclick="@(() => this.ChangeTheme(PartyTheme.Default))"
+                 class="cursor-pointer border-4 rounded-lg p-4 transition-all hover:shadow-large @(this.CurrentParty.Theme == PartyTheme.Default ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white")">
+                <div class="flex items-center justify-between mb-2">
+                    <h5 class="font-bold text-lg">Par défaut</h5>
+                    @if (this.CurrentParty.Theme == PartyTheme.Default)
+                    {
+                        <i class="bi bi-check-circle-fill text-blue-500 text-2xl"></i>
+                    }
+                </div>
+                <div class="h-20 rounded bg-gradient-to-r from-blue-500 to-gray-800 mb-2"></div>
+                <p class="text-sm text-gray-600">Thème standard</p>
+            </div>
+        </div>
+
+        <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+            <p class="text-sm text-blue-800">
+                <i class="bi bi-info-circle-fill mr-2"></i>
+                <strong>Astuce :</strong> Le thème s'applique uniquement aux pages de jeu des joueurs. L'interface admin reste sur le thème 3bstudio.
+            </p>
+        </div>
+    </div>
+</div>
+
+<p class="mb-4">
+    <a href="@(this.NavigationManager.ToAbsoluteUri($"/party/{this.PartyId}/team/new"))" target="_blank" class="text-3b-blue hover:text-3b-yellow underline font-semibold">
+        <i class="bi bi-link-45deg"></i> Lien à partager aux joueurs
+    </a>
 </p>
 
 <div>
