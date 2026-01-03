@@ -1,11 +1,13 @@
 namespace SpeedGameApp.Pages.Admin;
 
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
 using SpeedGameApp.Business.Services;
 using SpeedGameApp.DataAccessLayer;
 using SpeedGameApp.DataAccessLayer.Entities;
+using SpeedGameApp.DataEnum;
 using SpeedGameApp.Extensions;
 
 /// <summary>
@@ -15,26 +17,31 @@ using SpeedGameApp.Extensions;
 public partial class AdminQuestions
 {
     /// <summary>
-    ///     Service pour la gestion des opÈrations CSV.
+    ///     Service pour la gestion des op√©rations CSV.
     /// </summary>
     private readonly CsvService csvService;
 
     /// <summary>
-    ///     Contexte de base de donnÈes de l'application.
+    ///     Contexte de base de donn√©es de l'application.
     /// </summary>
     private readonly SpeedGameDbContext appContext;
 
     /// <summary>
-    ///     Liste des questions chargÈes depuis la base de donnÈes.
+    ///     Liste des questions charg√©es depuis la base de donn√©es.
     /// </summary>
     private List<QcmQuestion> questions = new();
+
+    private bool isDragging = false;
+    private bool isUploading = false;
+    private string uploadMessage = string.Empty;
+    private bool uploadSuccess = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AdminQuestions"/> class.
     ///     Initialise une nouvelle instance de la classe <see cref="AdminQuestions" />.
     /// </summary>
     /// <param name="csvService">Service de gestion des fichiers CSV.</param>
-    /// <param name="appContext">Contexte de base de donnÈes de l'application.</param>
+    /// <param name="appContext">Contexte de base de donn√©es de l'application.</param>
     public AdminQuestions(CsvService csvService, SpeedGameDbContext appContext)
     {
         this.csvService = csvService;
@@ -42,33 +49,130 @@ public partial class AdminQuestions
     }
 
     /// <summary>
-    ///     MÈthode appelÈe lors de l'initialisation du composant.
-    ///     Charge la liste des questions avec leur thËme associÈ depuis la base de donnÈes.
+    ///     M√©thode appel√©e lors de l'initialisation du composant.
+    ///     Charge la liste des questions avec leur th√®me associ√© depuis la base de donn√©es.
     /// </summary>
-    /// <returns>Une t‚che asynchrone reprÈsentant l'opÈration d'initialisation.</returns>
+    /// <returns>Une t√¢che asynchrone repr√©sentant l'op√©ration d'initialisation.</returns>
     protected override async Task OnInitializedAsync()
         => this.questions = await this.appContext.Questions.Include(q => q.Theme).ToListAsync();
 
     /// <summary>
-    ///     GËre l'importation d'un fichier CSV contenant des questions.
-    ///     Convertit le fichier en tableau de chaÓnes, parse les questions et les insËre en base.
+    ///     G√®re l'importation d'un fichier CSV contenant des questions.
+    ///     Convertit le fichier en tableau de cha√Ænes, parse les questions et les ins√®re en base.
     /// </summary>
-    /// <param name="arg">…vÈnement de changement de fichier d'entrÈe.</param>
-    /// <returns>Une t‚che asynchrone reprÈsentant l'opÈration d'importation.</returns>
+    /// <param name="arg">√âv√©nement de changement de fichier d'entr√©e.</param>
+    /// <returns>Une t√¢che asynchrone repr√©sentant l'op√©ration d'importation.</returns>
     private async Task InputFileHandlerAsync(InputFileChangeEventArgs arg)
     {
+        this.isUploading = true;
+        this.uploadMessage = string.Empty;
+        this.StateHasChanged();
+
         var file = arg.File;
-        var lines = await file.ConvertFileToStringArrayAsync();
 
         try
         {
+            var lines = await file.ConvertFileToStringArrayAsync();
             var questionsParsed = this.csvService.CsvToQuestions(lines.Skip(1));
-            await this.csvService.InsertQuestionsAsync(questionsParsed.ToList());
+            var questionsList = questionsParsed.ToList();
+
+            await this.csvService.InsertQuestionsAsync(questionsList);
+
+            this.uploadSuccess = true;
+            this.uploadMessage = $"{questionsList.Count} question(s) import√©e(s) avec succ√®s !";
+
+            // Reload questions
+            this.questions = await this.appContext.Questions.Include(q => q.Theme).ToListAsync();
         }
         catch (Exception e)
         {
+            this.uploadSuccess = false;
+            this.uploadMessage = $"Erreur lors de l'import : {e.Message}";
             Console.WriteLine(e);
-            throw;
         }
+        finally
+        {
+            this.isUploading = false;
+            this.StateHasChanged();
+        }
+    }
+
+    private void HandleDragEnter(DragEventArgs e)
+    {
+        this.isDragging = true;
+    }
+
+    private void HandleDragLeave(DragEventArgs e)
+    {
+        this.isDragging = false;
+    }
+
+    private async Task HandleDrop(DragEventArgs e)
+    {
+        this.isDragging = false;
+
+        // Note: File drop handling in Blazor requires InputFile component
+        // The actual file handling is done through the InputFile OnChange event
+        // This method is here for visual feedback only
+        this.StateHasChanged();
+    }
+
+    private string GetDragDropClasses()
+    {
+        if (this.isDragging)
+        {
+            return "block border-4 border-dashed border-3b-blue bg-3b-blue/5 rounded-lg shadow-large";
+        }
+
+        if (this.isUploading)
+        {
+            return "block border-4 border-dashed border-3b-blue bg-3b-blue/5 rounded-lg animate-pulse";
+        }
+
+        return "block border-4 border-dashed border-gray-300 bg-gray-50 rounded-lg hover:border-3b-blue hover:bg-3b-blue/5 hover:shadow-medium";
+    }
+
+    private string GetDifficultyBadgeClass(Difficulty difficulty)
+        => difficulty switch
+        {
+            Difficulty.Easy => "bg-green-100 text-green-800",
+            Difficulty.Medium => "bg-yellow-100 text-yellow-800",
+            Difficulty.Hard => "bg-red-100 text-red-800",
+            _ => "bg-gray-100 text-gray-800",
+        };
+
+    private string GetUploadMessageClasses()
+    {
+        if (this.uploadSuccess)
+        {
+            return "bg-green-100 border-green-500 text-green-700";
+        }
+
+        return "bg-red-100 border-red-500 text-red-700";
+    }
+
+    private string GetUploadMessageIcon()
+    {
+        if (this.uploadSuccess)
+        {
+            return "bi bi-check-circle-fill text-green-600";
+        }
+
+        return "bi bi-exclamation-triangle-fill text-red-600";
+    }
+
+    private string GetUploadMessageTitle()
+    {
+        if (this.uploadSuccess)
+        {
+            return "Succ√®s";
+        }
+
+        return "Erreur";
+    }
+
+    private void ClearUploadMessage()
+    {
+        this.uploadMessage = string.Empty;
     }
 }
