@@ -1,12 +1,47 @@
-﻿<div class="card text-black">
-    <div class="card-header">
-        Proposition
+﻿<div class="bg-white rounded-lg shadow-large overflow-hidden border-2 border-3b-blue">
+    <div class="bg-gradient-to-r from-3b-blue to-3b-blue-dark p-4">
+        <h3 class="text-xl font-bold text-white flex items-center">
+            <i class="bi bi-keyboard text-3b-yellow mr-2"></i>
+            Proposition rapide
+        </h3>
+        <p class="text-white/80 text-sm mt-1">Entrez votre réponse le plus rapidement possible</p>
     </div>
-    <div class="card-body">
+    <div class="p-6">
         <EditForm Model="this.response" OnValidSubmit="this.CallbackPropositionAsync">
-            <fieldset disabled="@this.AlreadyResponse">
-                <InputText class="form-control proposition" type="text" placeholder="Réponse" @ref="this.inputResponse" @bind-Value="this.response"/>
-                <button class="btn btn-success w-100" type="submit">Valider</button>
+            <fieldset disabled="@this.AlreadyResponse" class="space-y-4">
+                @if (this.AlreadyResponse)
+                {
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                        <div class="flex items-center">
+                            <i class="bi bi-info-circle-fill text-blue-500 text-2xl mr-3"></i>
+                            <div>
+                                <p class="font-bold text-blue-800">Réponse envoyée</p>
+                                <p class="text-sm text-blue-600">Vous avez déjà répondu à cette question</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <label for="response-input" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Votre réponse
+                    </label>
+                    <InputText
+                        id="response-input"
+                        class="w-full px-4 py-4 text-lg border-2 border-gray-300 rounded-lg focus:border-3b-blue focus:ring-2 focus:ring-3b-blue-light outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        type="text"
+                        placeholder="Tapez votre réponse ici..."
+                        @ref="this.inputResponse"
+                        @bind-Value="this.response"/>
+                </div>
+
+                <button
+                    class="w-full px-6 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all font-bold text-lg shadow-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    type="submit"
+                    disabled="@this.AlreadyResponse">
+                    <i class="bi bi-send-fill"></i>
+                    Valider la réponse
+                </button>
             </fieldset>
         </EditForm>
     </div>
