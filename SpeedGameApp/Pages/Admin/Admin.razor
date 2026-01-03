@@ -1,6 +1,9 @@
-﻿@page "/admin"
+@page "/admin"
 @inherits GamePageBase
 @using SpeedGameApp.Shared.Components
+@using SpeedGameApp.Shared.DesignSystem.Components.Buttons
+@using SpeedGameApp.Shared.DesignSystem.Components.Cards
+
 <PageTitle>Speed Game App - Admin</PageTitle>
 
 <ConfirmDialog
@@ -19,82 +22,215 @@
     OnConfirm="ConfirmDeleteAll"
     OnCancel="CancelDeleteAll" />
 
-<h3>Admin</h3>
-<h4>Parties en cours</h4>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Party name</th>
-        <th>Urls</th>
-        <th>Teams</th>
-        <th>
-            <button class="btn btn-danger" @onclick="this.ShowDeleteAllDialog">Supprimer tout</button>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-        @foreach (var (id, (_, name, teams)) in this.PartyManagementService.Parties)
-    {
-        <tr>
-            <td>@id.ToString("D")</td>
-            <td>@name</td>
-            <td>
-                    <p><a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/admin")">Admin</a></p>
-            </td>
-            <td>
-                <ol>
-                    @foreach (var (_ , team) in teams.OrderByDescending(pair => pair.Value.Score))
-                    {
-                            <li>@team.Name : @team.Score (@team.Players.Count joueurs) (<a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/team/{team.Id}/play")">Lien</a>)</li>
-                    }
-                </ol>
-            </td>
-            <td>
-                <button class="btn btn-danger" @onclick="() => this.ShowDeleteDialog(id, name, false)">Supprimer</button>
-                <button class="btn btn-success" @onclick="() => this.SavePartyAsync(id)">Sauvegarder</button>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+@* Header *@
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-3b-blue mb-2">Administration</h1>
+    <p class="text-gray-600">Gérez vos parties en cours et sauvegardées</p>
+</div>
 
-<h4>Parties sauvegardées</h4>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Party name</th>
-        <th>Urls</th>
-        <th>Teams</th>
-        <th>
-            <button class="btn btn-danger" @onclick="this.ShowDeleteAllDialog">Supprimer tout</button>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var (id, (_, name, teams)) in this.dbParties)
-    {
-        <tr>
-            <td>@id.ToString("D")</td>
-            <td>@name</td>
-            <td>
-                <p><a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/admin")">Admin</a></p>
-            </td>
-            <td>
-                <ol>
-                    @foreach (var (_ , team) in teams.OrderByDescending(pair => pair.Value.Score))
-                    {
-                        <li>@team.Name : @team.Score (@team.Players.Count joueurs) (<a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/team/{team.Id}/play")">Lien</a>)</li>
-                    }
-                </ol>
-            </td>
-            <td>
-                <button class="btn btn-danger" @onclick="() => this.ShowDeleteDialog(id, name, true)">Supprimer de la base</button>
-                <button class="btn btn-success" @onclick="() => this.LoadPartyAsync(id)">Charger la partie</button>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+@* In-Memory Parties Section *@
+<div class="mb-12">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold flex items-center">
+            <i class="bi bi-play-circle text-3b-yellow mr-2"></i>
+            Parties en cours (@this.PartyManagementService.Parties.Count)
+        </h2>
+        @if (this.PartyManagementService.Parties.Any())
+        {
+            <Button Variant="danger" OnClick="@(() => this.ShowDeleteAllDialog())">
+                <i class="bi bi-trash mr-2"></i>
+                Supprimer tout
+            </Button>
+        }
+    </div>
 
+    @if (!this.PartyManagementService.Parties.Any())
+    {
+        <div class="text-center p-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <i class="bi bi-inbox text-6xl text-gray-400 mb-4"></i>
+            <p class="text-xl text-gray-500 font-semibold">Aucune partie en cours</p>
+            <p class="text-gray-400 mt-2">Créez une nouvelle partie depuis la page d'accueil</p>
+            <a href="/" class="inline-block mt-4 px-6 py-3 bg-3b-blue text-white rounded-lg hover:bg-3b-blue-dark transition-colors font-semibold">
+                <i class="bi bi-plus-circle mr-2"></i>
+                Créer une partie
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            @foreach (var (id, (_, name, teams)) in this.PartyManagementService.Parties)
+            {
+                <Card Hoverable="true" AdditionalClasses="border-l-4 border-3b-yellow">
+                    <HeaderContent>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">@name</h3>
+                                <p class="text-xs text-gray-500 mt-1">ID: @id.ToString("D")</p>
+                            </div>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
+                                En cours
+                            </span>
+                        </div>
+                    </HeaderContent>
+
+                    <ChildContent>
+                        <div class="space-y-4">
+                            @* Teams List *@
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                                    <i class="bi bi-people-fill text-3b-blue mr-2"></i>
+                                    Équipes (@teams.Count)
+                            </p>
+                            @if (teams.Any())
+                            {
+                                <div class="space-y-2">
+                                    @foreach (var (_, team) in teams.OrderByDescending(pair => pair.Value.Score).Take(3))
+                                    {
+                                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-gray-900">@team.Name</span>
+                                                <span class="text-sm text-gray-500">(@team.Players.Count joueurs)</span>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-bold @(team.Score < 0 ? "text-red-600" : "text-green-600")">
+                                                    @team.Score pts
+                                                </span>
+                                                <a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/team/{team.Id}/play")"
+                                                   target="_blank"
+                                                   class="text-3b-blue hover:text-3b-yellow transition-colors">
+                                                    <i class="bi bi-box-arrow-up-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (teams.Count > 3)
+                                    {
+                                        <p class="text-xs text-gray-500 text-center">+@(teams.Count - 3) autre(s) équipe(s)</p>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-sm text-gray-500 italic">Aucune équipe</p>
+                            }
+                        </div>
+
+                        @* Actions *@
+                        <div class="flex gap-2 pt-2 border-t">
+                            <a href="@this.NavigationManager.ToAbsoluteUri($"/party/{id}/admin")"
+                               class="flex-1 px-4 py-2 bg-3b-blue text-white rounded-lg hover:bg-3b-blue-dark transition-colors text-center font-semibold text-sm">
+                                <i class="bi bi-gear-wide-connected mr-2"></i>
+                                Admin
+                            </a>
+                            <button
+                                class="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold text-sm"
+                                @onclick="() => this.SavePartyAsync(id)">
+                                <i class="bi bi-save mr-2"></i>
+                                Sauvegarder
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold text-sm"
+                                @onclick="() => this.ShowDeleteDialog(id, name, false)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        </div>
+                    </ChildContent>
+                </Card>
+            }
+        </div>
+    }
+</div>
+
+@* Saved Parties Section *@
+<div class="mb-12">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold flex items-center">
+            <i class="bi bi-database text-3b-yellow mr-2"></i>
+            Parties sauvegardées (@this.dbParties.Count)
+        </h2>
+    </div>
+
+    @if (!this.dbParties.Any())
+    {
+        <div class="text-center p-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <i class="bi bi-archive text-6xl text-gray-400 mb-4"></i>
+            <p class="text-xl text-gray-500 font-semibold">Aucune partie sauvegardée</p>
+            <p class="text-gray-400 mt-2">Sauvegardez une partie en cours pour la retrouver ici</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            @foreach (var (id, (_, name, teams)) in this.dbParties)
+            {
+                <Card Hoverable="true" AdditionalClasses="border-l-4 border-gray-400">
+                    <HeaderContent>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">@name</h3>
+                                <p class="text-xs text-gray-500 mt-1">ID: @id.ToString("D")</p>
+                            </div>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-semibold rounded-full">
+                                Sauvegardée
+                            </span>
+                        </div>
+                    </HeaderContent>
+
+                    <ChildContent>
+                        <div class="space-y-4">
+                            @* Teams List *@
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                                    <i class="bi bi-people-fill text-gray-600 mr-2"></i>
+                                    Équipes (@teams.Count)
+                            </p>
+                            @if (teams.Any())
+                            {
+                                <div class="space-y-2">
+                                    @foreach (var (_, team) in teams.OrderByDescending(pair => pair.Value.Score).Take(3))
+                                    {
+                                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-gray-900">@team.Name</span>
+                                                <span class="text-sm text-gray-500">(@team.Players.Count joueurs)</span>
+                                            </div>
+                                            <span class="font-bold @(team.Score < 0 ? "text-red-600" : "text-green-600")">
+                                                @team.Score pts
+                                            </span>
+                                        </div>
+                                    }
+                                    @if (teams.Count > 3)
+                                    {
+                                        <p class="text-xs text-gray-500 text-center">+@(teams.Count - 3) autre(s) équipe(s)</p>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-sm text-gray-500 italic">Aucune équipe</p>
+                            }
+                        </div>
+
+                        @* Actions *@
+                        <div class="flex gap-2 pt-2 border-t">
+                            <button
+                                class="flex-1 px-4 py-2 bg-3b-blue text-white rounded-lg hover:bg-3b-blue-dark transition-colors font-semibold text-sm"
+                                @onclick="() => this.LoadPartyAsync(id)">
+                                <i class="bi bi-upload mr-2"></i>
+                                Charger
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold text-sm"
+                                @onclick="() => this.ShowDeleteDialog(id, name, true)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        </div>
+                    </ChildContent>
+                </Card>
+            }
+        </div>
+    }
+</div>

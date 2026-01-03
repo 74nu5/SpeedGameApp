@@ -164,6 +164,13 @@
             </summary>
             <param name="theme">The new theme to apply.</param>
         </member>
+        <member name="M:SpeedGameApp.Pages.PartyAdmin.GetResponseTypeButtonClass(SpeedGameApp.DataEnum.ResponseType)">
+            <summary>
+                Gets the CSS class for a response type button based on whether it's selected.
+            </summary>
+            <param name="responseType">The response type to check.</param>
+            <returns>The CSS classes to apply.</returns>
+        </member>
         <member name="M:SpeedGameApp.Pages.PartyAdmin.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
             <inheritdoc />
         </member>

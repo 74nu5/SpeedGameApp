@@ -1,10 +1,172 @@
-﻿<div class="card text-black">
-    <div class="card-header">
-        Buzzer
-    </div>
-    <div class="card-body">
-        <button @ref="@(this.button)" class="buzzer btn btn-outline-primary w-100" @onclick="this.CallbackBuzzerAsync" disabled="@(this.AlreadyResponse)">Buzz !!</button>
-    </div>
+@* Buzzer component with theme-aware styling *@
+<div class="flex items-center justify-center min-h-[400px]">
+    <button
+        @ref="@(this.button)"
+        @onclick="this.CallbackBuzzerAsync"
+        disabled="@(this.AlreadyResponse)"
+        class="@GetBuzzerClasses()">
+        <div class="buzzer-inner">
+            <div class="buzzer-glow"></div>
+            <span class="buzzer-text">BUZZ!</span>
+            @if (this.AlreadyResponse)
+            {
+                <span class="buzzer-disabled-text">Déjà buzzé</span>
+            }
+        </div>
+    </button>
 </div>
 
+<style>
+    /* Buzzer base styles */
+    .buzzer-button {
+        position: relative;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        overflow: hidden;
+    }
 
+    .buzzer-button:not(:disabled):hover {
+        transform: scale(1.05);
+    }
+
+    .buzzer-button:not(:disabled):active {
+        transform: scale(0.95);
+    }
+
+    .buzzer-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .buzzer-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .buzzer-glow {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .buzzer-text {
+        font-size: 3rem;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        z-index: 3;
+    }
+
+    .buzzer-disabled-text {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        font-weight: 600;
+        z-index: 3;
+    }
+
+    /* 3bstudio theme */
+    .theme-3bstudio .buzzer-button {
+        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #3B82F6 100%);
+        box-shadow: 0 8px 32px rgba(30, 58, 138, 0.4);
+    }
+
+    .theme-3bstudio .buzzer-button:not(:disabled):hover {
+        box-shadow: 0 12px 48px rgba(30, 58, 138, 0.6);
+    }
+
+    .theme-3bstudio .buzzer-text {
+        color: white;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .theme-3bstudio .buzzer-disabled-text {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .theme-3bstudio .buzzer-glow {
+        background: radial-gradient(circle at center, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+        animation: pulse-3b 2s ease-in-out infinite;
+    }
+
+    /* Cyberpunk theme */
+    .theme-cyberpunk .buzzer-button {
+        background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+        border: 4px solid #00F0FF;
+        box-shadow:
+            0 0 20px #00F0FF,
+            0 0 40px #00F0FF,
+            inset 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+
+    .theme-cyberpunk .buzzer-button:not(:disabled):hover {
+        box-shadow:
+            0 0 30px #00F0FF,
+            0 0 60px #00F0FF,
+            0 0 90px #FF00FF,
+            inset 0 0 30px rgba(0, 240, 255, 0.3);
+        border-color: #FF00FF;
+    }
+
+    .theme-cyberpunk .buzzer-text {
+        color: #00F0FF;
+        text-shadow:
+            0 0 10px #00F0FF,
+            0 0 20px #00F0FF,
+            0 0 30px #00F0FF;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .theme-cyberpunk .buzzer-disabled-text {
+        color: #FF00FF;
+        text-shadow: 0 0 10px #FF00FF;
+        font-family: 'Roboto Mono', monospace;
+        text-transform: uppercase;
+    }
+
+    .theme-cyberpunk .buzzer-glow {
+        background: radial-gradient(circle at center, rgba(0, 240, 255, 0.3) 0%, rgba(255, 0, 255, 0.2) 50%, transparent 70%);
+        animation: pulse-cyber 1.5s ease-in-out infinite;
+    }
+
+    /* Pulse animations */
+    @@keyframes pulse-3b {
+        0%, 100% {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+    }
+
+    @@keyframes pulse-cyber {
+        0%, 100% {
+            opacity: 0.8;
+            transform: scale(1) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1) rotate(180deg);
+        }
+    }
+</style>
+
+@code {
+    private string GetBuzzerClasses()
+    {
+        var baseClasses = "buzzer-button";
+        var disabledClass = this.AlreadyResponse ? "opacity-50" : "";
+        return $"{baseClasses} {disabledClass}".Trim();
+    }
+}
