@@ -4,72 +4,157 @@
 @inherits PartyPageBase
 <PageTitle>Speed Game App - Equipe @(this.CurrentTeam.Name) - Partie en cours</PageTitle>
 
-<div class="row row-cols-1 row-cols-md-2 g-4">
-
-    <div class="col p-3 @(this.CurrentTeam.Buzz ? "text-white bg-success" : "bg-light")">
-        <h1>Speed Game App - Equipe @(this.CurrentTeam.Name) - Partie en cours</h1>
-        <h3>Equipe @(this.CurrentTeam.Name)</h3>
-
-        <h4>Score de l'équipe : @(this.CurrentTeam.Score)</h4>
-
-        <hr/>
-
-        @switch (this.CurrentParty.CurrentResponseType)
-        {
-            case ResponseType.None:
-                break;
-            case ResponseType.Buzzer:
-                <Buzzer Buzz="this.BuzzTeam" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
-                break;
-            case ResponseType.Proposition:
-                <Proposition @ref="@(this.proposition)" ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
-                break;
-            case ResponseType.Qcm:
-                <QCM Question="this.CurrentParty.CurrentQcm" ResponseCallback="this.CallbackQcm"/>
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                Autres équipes
+@* Main Game Container *@
+<div class="min-h-screen">
+    @* Team Header Section with Buzz State *@
+    <div class="@GetHeaderClasses() mb-8 p-6 rounded-lg shadow-large transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="text-4xl font-bold mb-2">Équipe @(this.CurrentTeam.Name)</h1>
+                <p class="text-lg opacity-90">@(this.CurrentParty.Name ?? "Partie en cours")</p>
             </div>
-            <ul class="list-group list-group-flush">
-                @foreach (var team in this.CurrentParty.TeamsSortedByScore)
-                {
-                    <li class="d-flex list-group-item @(this.GetTeamCss(team)) justify-content-between">
-                        <span>@team.Name : @team.Score</span><span class="text-end">@(!string.IsNullOrEmpty(team.Response) ? $"Réponse : {team.Response} " : string.Empty)</span>
-                    </li>
-                }
-            </ul>
+            @if (this.CurrentTeam.Buzz)
+            {
+                <div class="flex items-center gap-3 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-lg animate-pulse-slow">
+                    <i class="bi bi-lightning-charge-fill text-4xl"></i>
+                    <span class="text-2xl font-bold">Buzzé !</span>
+                </div>
+            }
+        </div>
+
+        @* Score Display *@
+        <div class="flex items-center gap-4">
+            <span class="text-2xl font-semibold opacity-75">Score :</span>
+            <div class="px-8 py-4 bg-white/30 backdrop-blur-sm rounded-lg shadow-medium">
+                <span class="text-5xl font-black @(this.CurrentTeam.Score < 0 ? "text-red-600" : "")">
+                    @(this.CurrentTeam.Score)
+                </span>
+                <span class="text-2xl font-bold ml-2">pts</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        @* Left Column: Game Response Area *@
+        <div class="lg:col-span-2">
+            @switch (this.CurrentParty.CurrentResponseType)
+            {
+                case ResponseType.None:
+                    <div class="text-center p-16 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
+                        <i class="bi bi-hourglass-split text-6xl text-gray-400 mb-4"></i>
+                        <p class="text-2xl text-gray-500 font-semibold">En attente de la prochaine question...</p>
+                        <p class="text-gray-400 mt-2">L'animateur va lancer une nouvelle question</p>
+                    </div>
+                    break;
+                case ResponseType.Buzzer:
+                    <Buzzer Buzz="this.BuzzTeam" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                    break;
+                case ResponseType.Proposition:
+                    <Proposition @ref="@(this.proposition)" ResponseCallback="this.Callback" AlreadyResponse="@(this.CurrentParty.AlreadyResponse)"/>
+                    break;
+                case ResponseType.Qcm:
+                    <QCM Question="this.CurrentParty.CurrentQcm" ResponseCallback="this.CallbackQcm"/>
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        </div>
+
+        @* Right Column: Leaderboard *@
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow-large overflow-hidden sticky top-4">
+                <div class="bg-gradient-to-r from-3b-blue to-3b-blue-dark p-4">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="bi bi-trophy-fill text-3b-yellow mr-2"></i>
+                        Classement
+                    </h3>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    @{
+                        var position = 1;
+                    }
+                    @foreach (var team in this.CurrentParty.TeamsSortedByScore)
+                    {
+                        <div class="@GetLeaderboardItemClasses(team) p-4 transition-all duration-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="@GetPositionBadgeClasses(position) w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+                                        @position
+                                    </span>
+                                    <span class="@GetTeamNameClasses(team) text-lg">
+                                        @team.Name
+                                    </span>
+                                    @if (team.Id == this.TeamId)
+                                    {
+                                        <span class="px-2 py-1 bg-3b-yellow text-3b-blue text-xs font-bold rounded-full">
+                                            VOUS
+                                        </span>
+                                    }
+                                    @if (team.Buzz)
+                                    {
+                                        <i class="bi bi-lightning-charge-fill text-yellow-500 text-xl animate-pulse"></i>
+                                    }
+                                </div>
+                                <span class="@GetScoreClasses(team) text-2xl font-black">
+                                    @team.Score
+                                </span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(team.Response))
+                            {
+                                <div class="mt-2 pl-11 text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                                    <span class="font-semibold">Réponse :</span> @team.Response
+                                </div>
+                            }
+                        </div>
+                        position++;
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+@* Blind Test Theme Selection Section *@
 @if (this.CurrentParty.ShowThemes)
 {
-    <div class="container">
-        <h1>Thèmes de musique pour un blind test</h1>
-        <div class="row row-cols-1 row-cols-md-6 g-4">
-            @{
-                var index = 0;
-            }
-            @foreach (var theme in this.CurrentParty.RandomThemes)
-            {
-                index++;
-                <div class="cursor-pointer col" @onclick="() => this.SelectThemeAsync(theme)">
-                    <div class="@(this.GetCardCss(theme))">
-                        <div class="card-body">
-                            <h5 class="card-title">@index</h5>
-                            @if (theme.AlreadyTaken)
+    <div class="mt-12 mb-8">
+        <div class="bg-gradient-to-r from-3b-blue to-3b-blue-dark p-6 rounded-t-lg">
+            <h2 class="text-3xl font-bold text-white flex items-center">
+                <i class="bi bi-music-note-beamed text-3b-yellow mr-3"></i>
+                Choisissez votre thème musical
+            </h2>
+            <p class="text-white/80 mt-2">Cliquez sur une case pour sélectionner un thème de blind test</p>
+        </div>
+        <div class="bg-white p-6 rounded-b-lg shadow-large">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @{
+                    var index = 0;
+                }
+                @foreach (var theme in this.CurrentParty.RandomThemes)
+                {
+                    index++;
+                    <div @onclick="() => this.SelectThemeAsync(theme)"
+                         class="@GetThemeCardClasses(theme) cursor-pointer aspect-square rounded-lg p-4 transition-all duration-200 hover:scale-105 hover:shadow-large flex flex-col items-center justify-center text-center">
+                        <div class="text-4xl font-black mb-2">@index</div>
+                        @if (theme.AlreadyTaken)
+                        {
+                            <div class="text-sm font-semibold break-words w-full">@theme.Name</div>
+                            @if (theme.Team?.Id == this.TeamId)
                             {
-                                <p>@theme.Name</p>
+                                <i class="bi bi-check-circle-fill text-xl mt-2"></i>
                             }
-                        </div>
+                            else if (theme.Team != null)
+                            {
+                                <div class="text-xs mt-1 opacity-75">@theme.Team.Name</div>
+                            }
+                        }
+                        else
+                        {
+                            <i class="bi bi-question-circle text-2xl opacity-50"></i>
+                        }
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 }

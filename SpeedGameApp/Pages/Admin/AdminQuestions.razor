@@ -1,26 +1,160 @@
 ﻿@page "/admin/questions"
+@using SpeedGameApp.Shared.DesignSystem.Components.Cards
 
-<h3>Gestion des questions</h3>
+<PageTitle>Speed Game App - Gestion des Questions</PageTitle>
 
-<InputFile OnChange="this.InputFileHandlerAsync" placeholder="Import QCM"/>
+@* Header *@
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-3b-blue mb-2">Gestion des Questions</h1>
+    <p class="text-gray-600">Importez et gérez vos questions de quiz</p>
+</div>
 
-<h4>Liste des questions</h4>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Thème</th>
-        <th>Difficulté</th>
-        <th>Question</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var question in this.questions)
-    {
-        <tr>
-            <td>@question.Theme?.Name</td>
-            <td>@question.Difficulty.ToString()</td>
-            <td>@question.Question</td>
-        </tr>
-    }
-    </tbody>
-</table>
+@* Import Section *@
+<Card AdditionalClasses="mb-8 border-l-4 border-3b-yellow">
+    <HeaderContent>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold flex items-center">
+                    <i class="bi bi-cloud-upload text-3b-yellow mr-2"></i>
+                    Importer des questions
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">Fichier CSV avec format: Thème, Difficulté, Question, Option1, Option2, Option3, Option4, Réponse</p>
+            </div>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">
+                @this.questions.Count questions
+            </span>
+        </div>
+    </HeaderContent>
+
+    <ChildContent>
+        <div class="p-6">
+            @if (!string.IsNullOrEmpty(this.uploadMessage))
+            {
+                <div class="@GetUploadMessageClasses() border-l-4 p-4 mb-6 rounded-lg flex items-start justify-between shadow-md" role="alert">
+                    <div class="flex items-start">
+                        <i class="@GetUploadMessageIcon() text-2xl mr-3"></i>
+                        <div>
+                            <p class="font-bold">@GetUploadMessageTitle()</p>
+                            <p class="text-sm">@this.uploadMessage</p>
+                        </div>
+                    </div>
+                    <button type="button" @onclick="this.ClearUploadMessage" class="hover:opacity-70 transition-colors">
+                        <i class="bi bi-x-lg text-xl"></i>
+                    </button>
+                </div>
+            }
+
+            <label for="file-upload" class="@GetDragDropClasses() cursor-pointer transition-all duration-200"
+                   @ondragenter="HandleDragEnter"
+                   @ondragleave="HandleDragLeave"
+                   @ondragover:preventDefault
+                   @ondrop="HandleDrop"
+                   @ondrop:preventDefault>
+                <div class="text-center py-12">
+                    <i class="bi bi-file-earmark-arrow-up text-6xl @(isDragging ? "text-3b-blue" : "text-gray-400") mb-4 transition-colors"></i>
+                    <h3 class="text-xl font-bold text-gray-700 mb-2">
+                        @if (isDragging)
+                        {
+                            <span class="text-3b-blue">Déposez le fichier ici</span>
+                        }
+                        else if (isUploading)
+                        {
+                            <span class="text-3b-blue">Import en cours...</span>
+                        }
+                        else
+                        {
+                            <span>Glissez-déposez votre fichier CSV</span>
+                        }
+                    </h3>
+                    <p class="text-gray-500 mb-4">ou cliquez pour sélectionner</p>
+                    <div class="inline-flex items-center px-4 py-2 bg-3b-blue text-white rounded-lg hover:bg-3b-blue-dark transition-colors font-semibold">
+                        <i class="bi bi-folder2-open mr-2"></i>
+                        Parcourir...
+                    </div>
+                </div>
+            </label>
+
+            <InputFile id="file-upload"
+                       OnChange="this.InputFileHandlerAsync"
+                       class="hidden"
+                       accept=".csv"/>
+        </div>
+    </ChildContent>
+</Card>
+
+@* Questions List Section *@
+<Card>
+    <HeaderContent>
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold flex items-center">
+                <i class="bi bi-list-ul text-3b-yellow mr-2"></i>
+                Liste des questions
+            </h2>
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-600">Total: </span>
+                <span class="px-3 py-1 bg-3b-blue text-white text-sm font-bold rounded-full">
+                    @this.questions.Count
+                </span>
+            </div>
+        </div>
+    </HeaderContent>
+
+    <ChildContent>
+        @if (!this.questions.Any())
+        {
+            <div class="text-center p-12 bg-gray-50">
+                <i class="bi bi-inbox text-6xl text-gray-400 mb-4"></i>
+                <p class="text-xl text-gray-500 font-semibold">Aucune question disponible</p>
+                <p class="text-gray-400 mt-2">Importez un fichier CSV pour commencer</p>
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100 border-b-2 border-gray-300">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                                <i class="bi bi-tag mr-2"></i>Thème
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                                <i class="bi bi-speedometer2 mr-2"></i>Difficulté
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                                <i class="bi bi-question-circle mr-2"></i>Question
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach (var question in this.questions)
+                        {
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    @if (question.Theme != null)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 bg-3b-blue/10 text-3b-blue rounded-full text-sm font-semibold">
+                                            <i class="bi bi-bookmark-fill mr-1 text-xs"></i>
+                                            @question.Theme.Name
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-400 italic">Sans thème</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="@GetDifficultyBadgeClass(question.Difficulty) px-3 py-1 rounded-full text-xs font-bold uppercase">
+                                        @question.Difficulty.ToString()
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-800 font-medium">
+                                    @question.Question
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </ChildContent>
+</Card>

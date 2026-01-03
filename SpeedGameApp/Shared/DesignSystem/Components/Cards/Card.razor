@@ -1,0 +1,104 @@
+@* Themed card component *@
+<div class="@GetCardClasses()">
+    @if (!string.IsNullOrEmpty(Header))
+    {
+        <div class="card-header">
+            @Header
+        </div>
+    }
+    @if (HeaderContent != null)
+    {
+        <div class="card-header">
+            @HeaderContent
+        </div>
+    }
+
+    <div class="@GetBodyClasses()">
+        @ChildContent
+    </div>
+
+    @if (FooterContent != null)
+    {
+        <div class="@GetFooterClasses()">
+            @FooterContent
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    ///     Gets or sets the card header text.
+    /// </summary>
+    [Parameter]
+    public string? Header { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the card header render fragment.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? HeaderContent { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the card footer render fragment.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? FooterContent { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the card body content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    ///     Gets or sets whether the card is hoverable.
+    /// </summary>
+    [Parameter]
+    public bool Hoverable { get; set; }
+
+    /// <summary>
+    ///     Gets or sets whether the card is clickable.
+    /// </summary>
+    [Parameter]
+    public bool Clickable { get; set; }
+
+    /// <summary>
+    ///     Gets or sets additional CSS classes.
+    /// </summary>
+    [Parameter]
+    public string? AdditionalClasses { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the click event callback.
+    /// </summary>
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    ///     Builds the card CSS classes.
+    /// </summary>
+    private string GetCardClasses()
+    {
+        var baseClasses = "card";
+        var hoverClass = Hoverable ? "hover-lift" : string.Empty;
+        var clickClass = Clickable ? "cursor-pointer" : string.Empty;
+
+        return $"{baseClasses} {hoverClass} {clickClass} {AdditionalClasses ?? string.Empty}".Trim();
+    }
+
+    /// <summary>
+    ///     Gets the body CSS classes.
+    /// </summary>
+    private string GetBodyClasses()
+    {
+        return Header != null || HeaderContent != null ? string.Empty : string.Empty;
+    }
+
+    /// <summary>
+    ///     Gets the footer CSS classes.
+    /// </summary>
+    private string GetFooterClasses()
+    {
+        return "border-t border-gray-200 dark:border-gray-700 pt-4 mt-4";
+    }
+}

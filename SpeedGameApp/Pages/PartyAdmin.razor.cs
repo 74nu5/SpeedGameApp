@@ -12,6 +12,38 @@ public sealed partial class PartyAdmin : PartyPageBase
     private string deleteTeamDialogMessage = string.Empty;
     private Guid? teamToDeleteId = null;
 
+    /// <summary>
+    ///     Changes the theme of the current party.
+    /// </summary>
+    /// <param name="theme">The new theme to apply.</param>
+    private void ChangeTheme(PartyTheme theme)
+    {
+        if (this.CurrentParty != null)
+        {
+            this.CurrentParty.Theme = theme;
+            this.CurrentParty.OnPartyChanged();
+            this.StateHasChanged();
+        }
+    }
+
+    /// <summary>
+    ///     Gets the CSS class for a response type button based on whether it's selected.
+    /// </summary>
+    /// <param name="responseType">The response type to check.</param>
+    /// <returns>The CSS classes to apply.</returns>
+    private string GetResponseTypeButtonClass(ResponseType responseType)
+    {
+        var isSelected = this.CurrentParty.CurrentResponseType == responseType;
+        var baseClasses = "px-4 py-2 rounded-lg transition-all font-semibold inline-flex items-center";
+
+        if (isSelected)
+        {
+            return $"{baseClasses} bg-3b-blue text-white border-2 border-3b-yellow shadow-medium";
+        }
+
+        return $"{baseClasses} bg-gray-200 text-gray-700 hover:bg-gray-300 border-2 border-transparent";
+    }
+
     /// <inheritdoc />
     public PartyAdmin(IPartyManagementService partyManagementService, IQcmService qcmService, IGameplayService gameplayService, IThemeService themeService, NavigationManager navigationManager)
             : base(partyManagementService, qcmService, gameplayService, themeService, navigationManager)

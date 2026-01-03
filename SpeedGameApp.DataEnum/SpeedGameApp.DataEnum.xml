@@ -24,6 +24,26 @@
                 Niveau de difficulté difficile.
             </summary>
         </member>
+        <member name="T:SpeedGameApp.DataEnum.PartyTheme">
+            <summary>
+                Énumération des thèmes visuels disponibles pour les parties.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.PartyTheme.Default">
+            <summary>
+                Thème par défaut - Design professionnel moderne (3bstudio).
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.PartyTheme.Cyberpunk2077">
+            <summary>
+                Thème Cyberpunk 2077 - Néon, futuriste, dystopique.
+            </summary>
+        </member>
+        <member name="F:SpeedGameApp.DataEnum.PartyTheme.ThreeBStudio">
+            <summary>
+                Thème 3bstudio - Professionnel, bleu/noir/jaune.
+            </summary>
+        </member>
         <member name="T:SpeedGameApp.DataEnum.ResponseType">
             <summary>
                 Représente les différents types de réponses possibles dans l'application.

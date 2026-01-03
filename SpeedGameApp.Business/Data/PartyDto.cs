@@ -67,6 +67,11 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     public QcmQuestionDto? CurrentQcm { get; internal set; }
 
     /// <summary>
+    ///     Gets or sets the visual theme for this party.
+    /// </summary>
+    public PartyTheme Theme { get; set; } = PartyTheme.ThreeBStudio;
+
+    /// <summary>
     ///     Gets the parties.
     /// </summary>
     public IReadOnlyList<ThemeDto> Themes
@@ -111,7 +116,7 @@ public sealed record PartyDto(Guid Id, string Name, Dictionary<Guid, TeamDto> Te
     /// <summary>
     ///     Method to raise the <see cref="PartyChanged" /> event.
     /// </summary>
-    internal void OnPartyChanged()
+    public void OnPartyChanged()
         => this.PartyChanged?.Invoke(this, EventArgs.Empty);
 
     /// <summary>

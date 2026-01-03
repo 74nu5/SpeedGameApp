@@ -282,6 +282,11 @@
                 Gets the current qcm.
             </summary>
         </member>
+        <member name="P:SpeedGameApp.Business.Data.PartyDto.Theme">
+            <summary>
+                Gets or sets the visual theme for this party.
+            </summary>
+        </member>
         <member name="P:SpeedGameApp.Business.Data.PartyDto.Themes">
             <summary>
                 Gets the parties.

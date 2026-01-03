@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  /* Cyberpunk Theme Components */
+  .theme-cyberpunk {
+    @apply bg-cp-bg-dark text-cp-text-primary font-cyber-mono;
+  }
+
+  .theme-cyberpunk .btn-primary {
+    @apply bg-cp-cyan text-cp-bg-dark font-bold py-3 px-6 rounded border-2 border-cp-cyan shadow-neon-cyan hover:shadow-neon-cyan-lg transition-all duration-300 uppercase tracking-wider;
+  }
+
+  .theme-cyberpunk .btn-secondary {
+    @apply bg-cp-bg-mid text-cp-pink font-bold py-3 px-6 rounded border-2 border-cp-pink shadow-neon-pink hover:shadow-neon-pink-lg transition-all duration-300 uppercase tracking-wider;
+  }
+
+  .theme-cyberpunk .btn-danger {
+    @apply bg-cp-red text-white font-bold py-3 px-6 rounded border-2 border-cp-red hover:shadow-neon-pink-lg transition-all duration-300 uppercase tracking-wider;
+  }
+
+  .theme-cyberpunk .card {
+    @apply bg-cp-bg-card border-2 border-cp-cyan rounded-lg p-6 shadow-neon-cyan;
+  }
+
+  .theme-cyberpunk .card-header {
+    @apply text-cp-cyan font-cyberpunk text-xl font-bold mb-4 pb-2 border-b-2 border-cp-cyan;
+  }
+
+  .theme-cyberpunk input[type="text"],
+  .theme-cyberpunk input[type="password"],
+  .theme-cyberpunk textarea {
+    @apply bg-cp-bg-mid border-2 border-cp-cyan text-cp-text-primary rounded px-4 py-2 focus:border-cp-pink focus:shadow-neon-pink outline-none transition-all;
+  }
+
+  .theme-cyberpunk .neon-text {
+    @apply text-cp-cyan animate-pulse-neon;
+  }
+
+  .theme-cyberpunk .scanline-overlay {
+    @apply pointer-events-none fixed inset-0 z-50 opacity-5;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 255, 0.1) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 255, 255, 0.1) 3px
+    );
+  }
+
+  /* 3bstudio Theme Components */
+  .theme-3bstudio {
+    @apply bg-white text-gray-900 font-3b-sans;
+  }
+
+  .theme-3bstudio .btn-primary {
+    @apply bg-3b-blue text-white font-semibold py-3 px-6 rounded-lg shadow-medium hover:bg-3b-blue-dark hover:shadow-large transition-all duration-300;
+  }
+
+  .theme-3bstudio .btn-secondary {
+    @apply bg-3b-yellow text-3b-black font-semibold py-3 px-6 rounded-lg shadow-medium hover:bg-3b-yellow-dark hover:shadow-large transition-all duration-300;
+  }
+
+  .theme-3bstudio .btn-danger {
+    @apply bg-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-medium hover:bg-red-600 hover:shadow-large transition-all duration-300;
+  }
+
+  .theme-3bstudio .card {
+    @apply bg-white rounded-xl shadow-medium p-6 hover:shadow-large transition-shadow duration-300;
+  }
+
+  .theme-3bstudio .card-header {
+    @apply text-3b-blue font-bold text-2xl mb-4 pb-2 border-b-2 border-3b-gray-light;
+  }
+
+  .theme-3bstudio input[type="text"],
+  .theme-3bstudio input[type="password"],
+  .theme-3bstudio textarea {
+    @apply bg-white border-2 border-gray-300 text-gray-900 rounded-lg px-4 py-2 focus:border-3b-blue focus:ring-2 focus:ring-3b-blue-light outline-none transition-all;
+  }
+
+  .theme-3bstudio .accent-highlight {
+    @apply text-3b-yellow font-bold;
+  }
+
+  .theme-3bstudio .gradient-header {
+    @apply bg-3b-gradient text-white;
+  }
+}
+
+/* Custom utility styles */
+@layer utilities {
+  /* Cyberpunk utilities */
+  .glitch-effect {
+    animation: glitch 1s linear infinite;
+  }
+
+  .text-shadow-neon-cyan {
+    text-shadow: 0 0 5px #00F0FF, 0 0 10px #00F0FF, 0 0 15px #00F0FF;
+  }
+
+  .text-shadow-neon-pink {
+    text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 15px #FF00FF;
+  }
+
+  .border-gradient-cyber {
+    border-image: linear-gradient(135deg, #00F0FF, #FF00FF) 1;
+  }
+
+  /* 3bstudio utilities */
+  .wave-decoration {
+    position: relative;
+  }
+
+  .wave-decoration::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23FBBF24'/%3E%3C/svg%3E");
+    background-size: cover;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  .focus-visible-ring {
+    @apply focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+  }
+}
+
+/* Blazor error boundary */
+.blazor-error-boundary {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative;
+}
+
+.blazor-error-boundary::after {
+  content: "An error has occurred.";
+}
+
+/* Loading indicator */
+.loading {
+  @apply inline-block w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin;
+}
+
+/* Validation styles */
+.valid.modified:not([type=checkbox]) {
+  @apply border-green-500 focus:border-green-600 focus:ring-green-500;
+}
+
+.invalid {
+  @apply border-red-500 focus:border-red-600 focus:ring-red-500;
+}
+
+.validation-message {
+  @apply text-red-600 text-sm mt-1;
+}
+
+/* Hide Blazor error UI by default - it should only appear when there's an actual error */
+#blazor-error-ui {
+  display: none !important;
+  background: lightyellow;
+  bottom: 0;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+  cursor: pointer;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+}

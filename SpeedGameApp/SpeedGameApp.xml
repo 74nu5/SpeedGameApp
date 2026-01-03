@@ -158,6 +158,19 @@
                 Gets or sets the navigation manager.
             </summary>
         </member>
+        <member name="M:SpeedGameApp.Pages.PartyAdmin.ChangeTheme(SpeedGameApp.DataEnum.PartyTheme)">
+            <summary>
+                Changes the theme of the current party.
+            </summary>
+            <param name="theme">The new theme to apply.</param>
+        </member>
+        <member name="M:SpeedGameApp.Pages.PartyAdmin.GetResponseTypeButtonClass(SpeedGameApp.DataEnum.ResponseType)">
+            <summary>
+                Gets the CSS class for a response type button based on whether it's selected.
+            </summary>
+            <param name="responseType">The response type to check.</param>
+            <returns>The CSS classes to apply.</returns>
+        </member>
         <member name="M:SpeedGameApp.Pages.PartyAdmin.#ctor(SpeedGameApp.Business.Services.Interfaces.IPartyManagementService,SpeedGameApp.Business.Services.Interfaces.IQcmService,SpeedGameApp.Business.Services.Interfaces.IGameplayService,SpeedGameApp.Business.Services.Interfaces.IThemeService,Microsoft.AspNetCore.Components.NavigationManager)">
             <inheritdoc />
         </member>
@@ -318,6 +331,157 @@
         <member name="P:SpeedGameApp.Shared.Components.ConfirmDialog.OnCancel">
             <summary>
                 Gets or sets the event callback when user cancels.
+            </summary>
+        </member>
+        <member name="T:SpeedGameApp.Shared.PlayerLayoutBase">
+            <summary>
+                Base class for PlayerLayout that retrieves party theme.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.PlayerLayoutBase.PartyRepository">
+            <summary>
+                Gets or sets the party repository service.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.PlayerLayoutBase.NavigationManager">
+            <summary>
+                Gets or sets the navigation manager.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.PlayerLayoutBase.CurrentTheme">
+            <summary>
+                Gets the current theme based on the party in context.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.PlayerLayoutBase.OnParametersSet">
+            <summary>
+                Called when parameters are set.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.Variant">
+            <summary>
+                Gets or sets the button variant (primary, secondary, danger, ghost).
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.Size">
+            <summary>
+                Gets or sets the button size (sm, md, lg).
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.Disabled">
+            <summary>
+                Gets or sets whether the button is disabled.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.Loading">
+            <summary>
+                Gets or sets whether the button is in loading state.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.Type">
+            <summary>
+                Gets or sets the button type (button, submit, reset).
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.AdditionalClasses">
+            <summary>
+                Gets or sets additional CSS classes.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.OnClick">
+            <summary>
+                Gets or sets the click event callback.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.ChildContent">
+            <summary>
+                Gets or sets the child content.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.Components.Buttons.Button.GetButtonClasses">
+            <summary>
+                Builds the button CSS classes based on variant and size.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.Header">
+            <summary>
+                Gets or sets the card header text.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.HeaderContent">
+            <summary>
+                Gets or sets the card header render fragment.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.FooterContent">
+            <summary>
+                Gets or sets the card footer render fragment.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.ChildContent">
+            <summary>
+                Gets or sets the card body content.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.Hoverable">
+            <summary>
+                Gets or sets whether the card is hoverable.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.Clickable">
+            <summary>
+                Gets or sets whether the card is clickable.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.AdditionalClasses">
+            <summary>
+                Gets or sets additional CSS classes.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.OnClick">
+            <summary>
+                Gets or sets the click event callback.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.GetCardClasses">
+            <summary>
+                Builds the card CSS classes.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.GetBodyClasses">
+            <summary>
+                Gets the body CSS classes.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.Components.Cards.Card.GetFooterClasses">
+            <summary>
+                Gets the footer CSS classes.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.ThemeProvider.Theme">
+            <summary>
+                Gets or sets the theme to apply.
+            </summary>
+        </member>
+        <member name="P:SpeedGameApp.Shared.DesignSystem.ThemeProvider.ChildContent">
+            <summary>
+                Gets or sets the child content to render within the theme wrapper.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.ThemeProvider.GetThemeClass">
+            <summary>
+                Gets the CSS class for the current theme.
+            </summary>
+            <returns>The theme CSS class.</returns>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.ThemeProvider.OnAfterRenderAsync(System.Boolean)">
+            <summary>
+                Loads theme-specific fonts from Google Fonts.
+            </summary>
+        </member>
+        <member name="M:SpeedGameApp.Shared.DesignSystem.ThemeProvider.LoadThemeFontsAsync">
+            <summary>
+                Dynamically loads fonts based on the current theme.
             </summary>
         </member>
         <member name="T:Program">

@@ -1,41 +1,58 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">SpeedGameApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="this.ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+@* Navigation menu with Tailwind styling *@
+<div class="h-full bg-gradient-to-b from-3b-blue via-3b-blue-dark to-3b-black flex flex-col shadow-large">
+    @* Logo / Brand *@
+    <div class="p-6 border-b border-3b-yellow/20">
+        <a href="" class="flex items-center space-x-3 group">
+            <div class="w-10 h-10 bg-3b-yellow rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
+                <span class="text-2xl font-bold text-3b-black">SG</span>
+            </div>
+            <span class="text-xl font-bold text-white">SpeedGame<span class="text-3b-yellow">App</span></span>
+        </a>
+    </div>
+
+    @* Navigation Links *@
+    <nav class="flex-1 p-4 space-y-2">
+        <NavLink href="" Match="NavLinkMatch.All"
+                 class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200 group">
+            <i class="bi bi-plus-circle text-xl group-hover:text-3b-yellow transition-colors"></i>
+            <span class="font-medium">Créer une partie</span>
+        </NavLink>
+
+        <NavLink href="admin"
+                 class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200 group">
+            <i class="bi bi-gear-wide-connected text-xl group-hover:text-3b-yellow transition-colors"></i>
+            <span class="font-medium">Admin</span>
+        </NavLink>
+
+        <NavLink href="admin/questions"
+                 class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200 group">
+            <i class="bi bi-question-square text-xl group-hover:text-3b-yellow transition-colors"></i>
+            <span class="font-medium">Questions</span>
+        </NavLink>
+    </nav>
+
+    @* Footer *@
+    <div class="p-4 border-t border-3b-yellow/20">
+        <div class="text-sm text-gray-400 text-center">
+            <p class="font-semibold text-3b-yellow">SpeedGameApp</p>
+            <p class="text-xs mt-1">v1.0.0</p>
+        </div>
     </div>
 </div>
 
-<div class="@(this.NavMenuCssClass) nav-scrollable" @onclick="this.ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <i class="bi bi-plus-circle fs-4 mx-3"></i> Créer une partie
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="admin">
-                <i class="bi bi-gear-wide-connected fs-4 mx-3"></i> Admin
-            </NavLink>
-        </div>       
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="admin/questions">
-                <i class="bi bi-question-square fs-4 mx-3"></i> Questions
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => this.collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        this.collapseNavMenu = !this.collapseNavMenu;
+<style>
+    /* Active link styling */
+    nav a.active {
+        background-color: rgba(251, 191, 36, 0.1);
+        color: white;
+        border-left: 4px solid #FBBF24;
     }
 
+    nav a.active i {
+        color: #FBBF24;
+    }
+</style>
+
+@code {
+    // Navigation state removed as we use fixed sidebar
 }
