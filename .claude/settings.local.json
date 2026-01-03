@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --version:*)",
+      "Bash(dotnet build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\n✨ Implement FEAT-001 and FEAT-002: Error display and confirmation dialogs\n\nThis commit implements two high-priority features from FEATURE_IMPROVEMENTS.md:\n\nFEAT-001: User Error Display\n- Add error message display in Index.razor for party creation failures\n- Add error message display in PartyTeamCreation.razor for team creation failures\n- Display validation errors from Result<T> pattern in Bootstrap alert-danger style\n- Add dismissible error messages with close button\n- Handle both local validation (empty fields) and service-level errors\n\nFEAT-002: Confirmation Dialogs for Destructive Actions\n- Create reusable ConfirmDialog.razor component with Bootstrap modal\n- Add confirmation dialog for party deletion (in-memory)\n- Add confirmation dialog for party deletion (database)\n- Add confirmation dialog for \"Delete All Parties\" action\n- Add confirmation dialog for team deletion\n- Display personalized messages with party/team names\n- Prevent accidental data loss with clear Cancel/Confirm buttons\n\nAdditional:\n- Add CLAUDE.md documentation for future AI instances\n- Update SpeedGameApp.xml with new public API documentation\n\nAll changes follow existing architecture patterns and StyleCop rules.\nBuild verified successfully with no compilation errors.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git branch:*)"
+    ]
+  }
+}
